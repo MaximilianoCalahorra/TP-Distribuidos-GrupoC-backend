@@ -1,0 +1,12 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package proto.models;
+
+enum Categoria {
+    DESCONOCIDA = 0;
+    ROPA = 1;
+    ALIMENTOS = 2;
+    JUGUETES = 3;
+    UTILES_ESCOLARES = 4;
+}
