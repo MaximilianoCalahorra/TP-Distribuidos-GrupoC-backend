@@ -1,4 +1,4 @@
-package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.D_Models;
+package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
+
 import java.time.LocalDateTime;
 
 @Builder
@@ -25,7 +27,8 @@ public class Donacion {
     private LocalDateTime fechaHoraModificacion;
 
     @Column(name = "categoria", nullable = false)
-    private String categoria;
+    @Enumerated(EnumType.STRING)
+    private Categoria categoria;
 
     @Column(name = "descripcion", nullable = false)
     private String descripcion;

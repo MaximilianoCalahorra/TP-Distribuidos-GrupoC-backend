@@ -1,4 +1,4 @@
-package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.D_Models;
+package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

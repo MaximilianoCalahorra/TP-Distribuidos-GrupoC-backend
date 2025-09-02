@@ -1,10 +1,11 @@
-package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.D_Models;
+package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.NombreRol;
 
 @Builder
 @Data
@@ -20,5 +21,6 @@ public class Rol {
     private Long idRol;
 
     @Column(name = "nombre", nullable = false)
-    private String nombre;
+    @Enumerated(EnumType.STRING)
+    private NombreRol nombreRol;
 }
