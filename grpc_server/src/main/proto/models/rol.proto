@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package proto.models;
+
+enum Nombre {
+    DESCONOCIDO = 0;
+    PRESIDENTE = 1;
+    VOCAL = 2;
+    COORDINADOR = 3;
+    VOLUNTARIO = 4;
+}
+
+message Rol {
+	int64 idRol = 1;
+	Nombre nombre = 2;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package proto.models;
+
+import "google/protobuf/timestamp.proto";
+import "models/usuario.proto";
+import "models/categoria.proto";
+
+message Inventario {
+	int64 idInventario = 1;
+	Categoria categoria = 2;
+	string descripcion = 3;
+	int32 cantidad = 4;
+	bool eliminado = 5;
+	google.protobuf.Timestamp fechaHoraAlta = 6;
+	google.protobuf.Timestamp fechaHoraModificacion = 7;
+	Usuario usuarioAlta = 8;
+	Usuario usuarioModificacion = 9;
+}
