@@ -1,0 +1,15 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package proto.models;
+
+import "google/protobuf/timestamp.proto";
+import "models/usuario.proto";
+
+message EventoSolidario {
+	int64 idEventoSolidario = 1;
+	string nombre = 2;
+	int32 descripcion = 3;
+	google.protobuf.Timestamp fechaHora = 4;
+	repeated Usuario miembros = 5;
+}
