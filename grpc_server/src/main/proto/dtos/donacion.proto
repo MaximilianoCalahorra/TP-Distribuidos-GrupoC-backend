@@ -1,19 +1,19 @@
 syntax = "proto3";
 option java_multiple_files = true;
 
-package proto.models;
+package proto.dtos;
 
-import "google/protobuf/timestamp.proto";
-import "models/usuario.proto";
-import "models/evento_solidario.proto";
-import "models/categoria.proto";
+import "dtos/categoria.proto";
 
-message Donacion {
-	int64 idDonacion = 1;
-	google.protobuf.Timestamp fechaHoraModificacion = 2;
-	Categoria categoria = 3;
+message CrearDonacionProto {
+	int64 idEvento = 1;
+	CategoriaProto categoria = 2;
+	int32 cantidad = 3;
 	string descripcion = 4;
-	int32 cantidad = 5;
-	Usuario usuario = 6;
-	EventoSolidario eventoSolidario = 7;
+}
+
+message DonacionProto {
+	CategoriaProto categoria = 1;
+	int32 cantidad = 2;
+	string descripcion = 3;
 }

@@ -1,20 +1,24 @@
 syntax = "proto3";
 option java_multiple_files = true;
 
-package proto.models;
+package proto.dtos;
 
-import "google/protobuf/timestamp.proto";
-import "models/usuario.proto";
-import "models/categoria.proto";
+import "dtos/categoria.proto";
 
-message Inventario {
-	int64 idInventario = 1;
-	Categoria categoria = 2;
-	string descripcion = 3;
-	int32 cantidad = 4;
-	bool eliminado = 5;
-	google.protobuf.Timestamp fechaHoraAlta = 6;
-	google.protobuf.Timestamp fechaHoraModificacion = 7;
-	Usuario usuarioAlta = 8;
-	Usuario usuarioModificacion = 9;
+message CrearInventarioProto {
+	CategoriaProto categoria = 1;
+	string descripcion = 2;
+	int32 cantidad = 3;
+}
+
+message ModificarInventarioProto {
+	string descripcion = 1;
+	int32 cantidad = 2;
+}
+
+message InventarioProto {
+	CategoriaProto categoria = 1;
+	string descripcion = 2;
+	int32 cantidad = 3;
+	bool eliminado = 4;
 }
