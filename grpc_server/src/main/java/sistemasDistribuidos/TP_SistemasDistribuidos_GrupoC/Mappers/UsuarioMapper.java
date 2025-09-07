@@ -9,6 +9,11 @@ import proto.dtos.CrearUsuarioProto;
 import proto.dtos.LoginUsuarioProto;
 import proto.dtos.MiembroProto;
 import proto.dtos.Nombre;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 
 public class UsuarioMapper {
 
@@ -18,38 +23,90 @@ public class UsuarioMapper {
 	
     // UsuarioDTO <-> Usuario
     public static UsuarioDTO aDTO(Usuario entidad) {
-    	//TODO
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setIdUsuario(entidad.getIdUsuario());
+        dto.setNombreUsuario(entidad.getNombreUsuario());
+        dto.setNombre(entidad.getNombre());
+        dto.setApellido(entidad.getApellido());
+        dto.setTelefono(entidad.getTelefono());
+        dto.setEmail(entidad.getEmail());
+        dto.setClave(entidad.getClave());
+        dto.setRol(entidad.getRol());
+        dto.setActivo(entidad.isActivo());
+        return dto;
     }
     
     public static Usuario aEntidad(UsuarioDTO dto) {
-    	//TODO
+        Usuario entidad = new Usuario();
+        entidad.setIdUsuario(dto.getIdUsuario());
+        entidad.setNombreUsuario(dto.getNombreUsuario());
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
+        entidad.setTelefono(dto.getTelefono());
+        entidad.setEmail(dto.getEmail());
+        entidad.setClave(dto.getClave());
+        entidad.setRol(dto.getRol());
+        entidad.setActivo(dto.isActivo());
+        return entidad;
     }
 
     // CrearUsuarioDTO <-> Usuario
     public static CrearUsuarioDTO aCrearUsuarioDTO(Usuario entidad) {
-    	//TODO
+        CrearUsuarioDTO dto = new CrearUsuarioDTO();
+        dto.setNombreUsuario(entidad.getNombreUsuario());
+        dto.setNombre(entidad.getNombre());
+        dto.setApellido(entidad.getApellido());
+        dto.setTelefono(entidad.getTelefono());
+        dto.setEmail(entidad.getEmail());
+        dto.setClave(entidad.getClave());
+        dto.setRol(entidad.getRol());
+        return dto;
     }
     
     public static Usuario aEntidad(CrearUsuarioDTO dto) {
-    	//TODO
+        Usuario entidad = new Usuario();
+        entidad.setNombreUsuario(dto.getNombreUsuario());
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
+        entidad.setTelefono(dto.getTelefono());
+        entidad.setEmail(dto.getEmail());
+        entidad.setClave(dto.getClave());
+        entidad.setRol(dto.getRol());
+        return entidad;
     }
 
     // LoginUsuarioDTO <-> Usuario
     public static LoginUsuarioDTO aLoginUsuarioDTO(Usuario entidad) {
-    	//TODO
+        LoginUsuarioDTO dto = new LoginUsuarioDTO();
+        dto.setNombreUsuario(entidad.getNombreUsuario());
+        dto.setClave(entidad.getClave());
+        return dto;
     }
     
     public static Usuario aEntidad(LoginUsuarioDTO dto) {
-    	//TODO
+        Usuario entidad = new Usuario();
+        entidad.setNombreUsuario(dto.getNombreUsuario());
+        entidad.setClave(dto.getClave());
+        return entidad;
     }
     
     // MiembroDTO <-> Usuario
     public static MiembroDTO aMiembroDTO(Usuario entidad) {
-    	//TODO
+        MiembroDTO dto = new MiembroDTO();
+        dto.setNombre(entidad.getNombre());
+        dto.setApellido(entidad.getApellido());
+        dto.setEmail(entidad.getEmail());
+        dto.setRol(entidad.getRol());
+        return dto;
     }
     
     public static Usuario aEntidad(MiembroDTO dto) {
-    	//TODO
+        Usuario entidad = new Usuario();
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
+        entidad.setEmail(dto.getEmail());
+        entidad.setRol(dto.getRol());
+        return entidad;
     }
 
     // =======================
