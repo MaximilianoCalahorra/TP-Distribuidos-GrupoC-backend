@@ -6,6 +6,8 @@ import proto.dtos.CategoriaProto;
 import proto.dtos.CrearDonacionProto;
 import proto.dtos.CrearInventarioProto;
 import proto.dtos.DonacionProto;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearDonacionDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
 
 public class DonacionMapper {
 
@@ -15,20 +17,40 @@ public class DonacionMapper {
 	
     // DonacionDTO <-> Donacion
     public static DonacionDTO aDTO(Donacion entidad) {
-    	//TODO
+        DonacionDTO dto = new DonacionDTO();
+        dto.setIdDonacion(entidad.getIdDonacion());
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        dto.setCategoria(entidad.getCategoria());
+        dto.setFechaHoraModificacion(entidad.getFechaHoraModificacion());
+        return dto;
     }
     
     public static Donacion aEntidad(DonacionDTO dto) {
-    	//TODO
+        Donacion entidad = new Donacion();
+        entidad.setIdDonacion(dto.getIdDonacion());
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        entidad.setCategoria(Categoria.valueOf(dto.getCategoria().name()));
+        entidad.setFechaHoraModificacion(dto.getFechaHoraModificacion());
+        return entidad;
     }
 
     // CrearDonacionDTO <-> Donacion
     public static CrearDonacionDTO aCrearDonacionDTO(Donacion entidad) {
-    	//TODO
+        CrearDonacionDTO dto = new CrearDonacionDTO();
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        dto.setCategoria(CategoriaProto.valueOf(entidad.getCategoria().name()));
+        return dto;
     }
     
     public static Donacion aEntidad(CrearDonacionDTO dto) {
-    	//TODO
+        Donacion entidad = new Donacion();
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        entidad.setCategoria(Categoria.valueOf(dto.getCategoria().name()));
+        return entidad;
     }
 
     // =======================

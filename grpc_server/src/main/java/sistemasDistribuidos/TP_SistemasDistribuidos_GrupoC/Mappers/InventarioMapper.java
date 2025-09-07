@@ -3,6 +3,9 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 import proto.dtos.ModificarInventarioProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearInventarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarInventarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.InventarioDTO;
 import proto.dtos.CategoriaProto;
 import proto.dtos.CrearInventarioProto;
 import proto.dtos.InventarioProto;
@@ -15,29 +18,65 @@ public class InventarioMapper {
 
     // InventarioDTO <-> Inventario
     public static InventarioDTO aDTO(Inventario entidad) {
-    	//TODO
+        InventarioDTO dto = new InventarioDTO();
+        dto.setIdInventario(entidad.getIdInventario());
+        dto.setCategoria(entidad.getCategoria().name());
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        dto.setEliminado(entidad.isEliminado());
+        dto.setFechaHoraAlta(entidad.getFechaHoraAlta());
+        dto.setFechaHoraModificacion(entidad.getFechaHoraModificacion());
+        dto.setUsuarioAlta(UsuarioMapper.aDTO(entidad.getUsuarioAlta()));
+        dto.setUsuarioModificacion(UsuarioMapper.aDTO(entidad.getUsuarioModificacion()));
+        return dto;
     }
     
     public static Inventario aEntidad(InventarioDTO dto) {
-    	//TODO
+        Inventario entidad = new Inventario();
+        entidad.setIdInventario(dto.getIdInventario());
+        entidad.setCategoria(Categoria.valueOf(dto.getCategoria()));
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        entidad.setEliminado(dto.isEliminado());
+        entidad.setFechaHoraAlta(dto.getFechaHoraAlta());
+        entidad.setFechaHoraModificacion(dto.getFechaHoraModificacion());
+        entidad.setUsuarioAlta(UsuarioMapper.aEntidad(dto.getUsuarioAlta()));
+        entidad.setUsuarioModificacion(UsuarioMapper.aEntidad(dto.getUsuarioModificacion()));
+        return entidad;
     }
 
     // CrearInventarioDTO <-> Inventario
     public static CrearInventarioDTO aCrearInventarioDTO(Inventario entidad) {
-    	//TODO
+        CrearInventarioDTO dto = new CrearInventarioDTO();
+        dto.setCategoria(entidad.getCategoria().name());
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        return dto;
     }
     
     public static Inventario aEntidad(CrearInventarioDTO dto) {
-    	//TODO
+        Inventario entidad = new Inventario();
+        entidad.setCategoria(Categoria.valueOf(dto.getCategoria()));
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        return entidad;
     }
 
     // ModificarInventarioDTO <-> Inventario
     public static ModificarInventarioDTO aModificarInventarioDTO(Inventario entidad) {
-    	//TODO
+        ModificarInventarioDTO dto = new ModificarInventarioDTO();
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        dto.setEliminado(entidad.isEliminado());
+        return dto;
     }
     
     public static Inventario aEntidad(ModificarInventarioDTO dto) {
-    	//TODO
+        Inventario entidad = new Inventario();
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        entidad.setEliminado(dto.isEliminado());
+        return entidad;
     }
 
     // =======================
