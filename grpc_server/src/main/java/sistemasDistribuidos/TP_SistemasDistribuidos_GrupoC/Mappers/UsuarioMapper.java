@@ -76,7 +76,6 @@ public class UsuarioMapper {
       entidad.setTelefono(dto.getTelefono());
       entidad.setEmail(dto.getEmail());
       entidad.setRol(dto.getRol());
-      entidad.setClave(dto.getClave());
       entidad.setRol(dto.getRol());
       
       return entidad;
