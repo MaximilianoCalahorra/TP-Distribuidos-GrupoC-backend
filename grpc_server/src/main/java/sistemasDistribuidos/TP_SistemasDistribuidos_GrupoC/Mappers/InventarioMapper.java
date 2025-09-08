@@ -6,6 +6,9 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import proto.dtos.CategoriaProto;
 import proto.dtos.CrearInventarioProto;
 import proto.dtos.InventarioProto;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.CrearInventarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.InventarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.ModificarInventarioDTO;
 
 public class InventarioMapper {
 

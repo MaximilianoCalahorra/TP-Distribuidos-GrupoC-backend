@@ -9,6 +9,11 @@ import proto.dtos.CrearUsuarioProto;
 import proto.dtos.LoginUsuarioProto;
 import proto.dtos.MiembroProto;
 import proto.dtos.Nombre;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.LoginUsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.MiembroDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.UsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.crearUsuarioDTO;
+
 
 public class UsuarioMapper {
 
@@ -26,11 +31,11 @@ public class UsuarioMapper {
     }
 
     // CrearUsuarioDTO <-> Usuario
-    public static CrearUsuarioDTO aCrearUsuarioDTO(Usuario entidad) {
+    public static crearUsuarioDTO aCrearUsuarioDTO(Usuario entidad) {
     	//TODO
     }
     
-    public static Usuario aEntidad(CrearUsuarioDTO dto) {
+    public static Usuario aEntidad(crearUsuarioDTO dto) {
     	//TODO
     }
 
@@ -84,10 +89,10 @@ public class UsuarioMapper {
     }
 
     // CrearUsuarioDTO <-> CrearUsuarioProto
-    public static CrearUsuarioDTO aCrearUsuarioDTO(CrearUsuarioProto proto) {
+    public static crearUsuarioDTO aCrearUsuarioDTO(crearUsuarioProto proto) {
         if (proto == null) return null;
-        CrearUsuarioDTO dto = new CrearUsuarioDTO();
-        dto.setNombreUsuario(proto.getNombreUsuario());
+        crearUsuarioDTO dto = new crearUsuarioDTO();
+        dto.setNombreUsuario(proto.getNombreUsuario);
         dto.setNombre(proto.getNombre());
         dto.setApellido(proto.getApellido());
         dto.setTelefono(proto.getTelefono());
@@ -96,7 +101,7 @@ public class UsuarioMapper {
         return dto;
     }
 
-    public static CrearUsuarioProto aCrearUsuarioProto(CrearUsuarioDTO dto) {
+    public static CrearUsuarioProto aCrearUsuarioProto(crearUsuarioDTO dto) {
         if (dto == null) return null;
         return CrearUsuarioProto.newBuilder()
                 .setNombreUsuario(dto.getNombreUsuario())

@@ -3,6 +3,9 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 import proto.dtos.CrearEventoSolidarioProto;
 import proto.dtos.ModificarEventoSolidarioProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.CrearEventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.ModificarEventoSolidarioDTO;
+
 
 public class EventoSolidarioMapper {
 

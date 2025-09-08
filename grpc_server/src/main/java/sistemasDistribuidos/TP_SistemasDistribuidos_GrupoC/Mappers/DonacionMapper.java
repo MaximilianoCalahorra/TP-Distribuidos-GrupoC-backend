@@ -6,6 +6,8 @@ import proto.dtos.CategoriaProto;
 import proto.dtos.CrearDonacionProto;
 import proto.dtos.CrearInventarioProto;
 import proto.dtos.DonacionProto;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.CrearDonacionDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.DonacionDTO;
 
 public class DonacionMapper {
 
