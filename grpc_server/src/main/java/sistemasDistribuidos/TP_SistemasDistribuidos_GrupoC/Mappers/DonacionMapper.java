@@ -5,6 +5,8 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import proto.dtos.CrearDonacionProto;
 import proto.dtos.DonacionProto;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.CrearDonacionDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.dtos.DonacionDTO;
 
 public class DonacionMapper {
 
