@@ -12,6 +12,5 @@ enum Nombre {
 }
 
 message RolProto {
-	int64 idRol = 1;
-	Nombre nombre = 2;
+	Nombre nombre = 1;
 }
