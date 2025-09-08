@@ -7,6 +7,7 @@ import proto.dtos.ModificarEventoSolidarioProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarEventoSolidarioDTO;
+
 public class EventoSolidarioMapper {
 
     // =======================
@@ -15,10 +16,10 @@ public class EventoSolidarioMapper {
 
     // CrearEventoSolidarioDTO <-> EventoSolidario
     public static CrearEventoSolidarioDTO aDTO(EventoSolidario entidad) {
-    	if (entidad == null) return null;
+        if (entidad == null) return null;
     	
-    	CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
-        
+    	  CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
+      
         dto.setNombre(entidad.getNombre());
         dto.setDescripcion(entidad.getDescripcion());
         dto.setFechaHora(entidad.getFechaHora());
@@ -27,14 +28,15 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aMiembroDTO)
                         .collect(Collectors.toList())
         );
-        
+      
         return dto;
     }
     
     public static EventoSolidario aEntidad(CrearEventoSolidarioDTO dto) {
-    	if (dto == null) return null;
+        if (dto == null) return null;
     	
-    	EventoSolidario entidad = new EventoSolidario();
+    	  EventoSolidario entidad = new EventoSolidario();
+      
         entidad.setNombre(dto.getNombre());
         entidad.setDescripcion(dto.getDescripcion());
         entidad.setFechaHora(dto.getFechaHora());
@@ -43,15 +45,16 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aEntidad)
                         .collect(Collectors.toList())
         );
-        
+      
         return entidad;
     }
 
     // ModificarEventoSolidarioDTO <-> EventoSolidario
     public static ModificarEventoSolidarioDTO aModificarEventoSolidarioDTO(EventoSolidario entidad) {
-    	if (entidad == null) return null;
+        if (entidad == null) return null;
     	
-    	ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
+    	  ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
+        
         dto.setNombre(entidad.getNombre());
         dto.setFechaHora(entidad.getFechaHora());
         dto.setMiembros(
@@ -59,14 +62,15 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aMiembroDTO)
                         .collect(Collectors.toList())
         );
-        
+      
         return dto;
     }
     
     public static EventoSolidario aEntidad(ModificarEventoSolidarioDTO dto) {
-    	if (dto == null) return null;
+        if (dto == null) return null;
     	
-    	EventoSolidario entidad = new EventoSolidario();
+    	  EventoSolidario entidad = new EventoSolidario();
+        
         entidad.setNombre(dto.getNombre());
         entidad.setFechaHora(dto.getFechaHora());
         entidad.setMiembros(
@@ -74,7 +78,7 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aEntidad)
                         .collect(Collectors.toList())
         );
-        
+      
         return entidad;
     }
 

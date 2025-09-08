@@ -23,14 +23,14 @@ public class UsuarioMapper {
     	UsuarioDTO dto = new UsuarioDTO();
         
     	dto.setNombreUsuario(entidad.getNombreUsuario());
-        dto.setNombre(entidad.getNombre());
-        dto.setApellido(entidad.getApellido());
-        dto.setTelefono(entidad.getTelefono());
-        dto.setEmail(entidad.getEmail());
-        dto.setRol(entidad.getRol());
-        dto.setActivo(entidad.isActivo());
-        
-        return dto;
+      dto.setNombre(entidad.getNombre());
+      dto.setApellido(entidad.getApellido());
+      dto.setTelefono(entidad.getTelefono());
+      dto.setEmail(entidad.getEmail());
+      dto.setRol(entidad.getRol());
+      dto.setActivo(entidad.isActivo());
+      
+      return dto;
     }
     
     public static Usuario aEntidad(UsuarioDTO dto) {
@@ -39,14 +39,14 @@ public class UsuarioMapper {
     	Usuario entidad = new Usuario();
         
     	entidad.setNombreUsuario(dto.getNombreUsuario());
-        entidad.setNombre(dto.getNombre());
-        entidad.setApellido(dto.getApellido());
-        entidad.setTelefono(dto.getTelefono());
-        entidad.setEmail(dto.getEmail());
-        entidad.setRol(dto.getRol());
-        entidad.setActivo(dto.isActivo());
-        
-        return entidad;
+      entidad.setNombre(dto.getNombre());
+      entidad.setApellido(dto.getApellido());
+      entidad.setTelefono(dto.getTelefono());
+      entidad.setEmail(dto.getEmail());
+      entidad.setRol(dto.getRol());
+      entidad.setActivo(dto.isActivo());
+
+      return entidad;
     }
 
     // CrearUsuarioDTO <-> Usuario
@@ -56,13 +56,13 @@ public class UsuarioMapper {
     	CrearUsuarioDTO dto = new CrearUsuarioDTO();
         
     	dto.setNombreUsuario(entidad.getNombreUsuario());
-        dto.setNombre(entidad.getNombre());
-        dto.setApellido(entidad.getApellido());
-        dto.setTelefono(entidad.getTelefono());
-        dto.setEmail(entidad.getEmail());
-        dto.setRol(entidad.getRol());
-        
-        return dto;
+      dto.setNombre(entidad.getNombre());
+      dto.setApellido(entidad.getApellido());
+      dto.setTelefono(entidad.getTelefono());
+      dto.setEmail(entidad.getEmail());
+      dto.setRol(entidad.getRol());
+      
+      return dto;
     }
     
     public static Usuario aEntidad(CrearUsuarioDTO dto) {
@@ -71,13 +71,15 @@ public class UsuarioMapper {
     	Usuario entidad = new Usuario();
         
     	entidad.setNombreUsuario(dto.getNombreUsuario());
-        entidad.setNombre(dto.getNombre());
-        entidad.setApellido(dto.getApellido());
-        entidad.setTelefono(dto.getTelefono());
-        entidad.setEmail(dto.getEmail());
-        entidad.setRol(dto.getRol());
-        
-        return entidad;
+      entidad.setNombre(dto.getNombre());
+      entidad.setApellido(dto.getApellido());
+      entidad.setTelefono(dto.getTelefono());
+      entidad.setEmail(dto.getEmail());
+      entidad.setRol(dto.getRol());
+      entidad.setClave(dto.getClave());
+      entidad.setRol(dto.getRol());
+      
+      return entidad;
     }
 
     // LoginUsuarioDTO <-> Usuario
@@ -87,9 +89,9 @@ public class UsuarioMapper {
     	LoginUsuarioDTO dto = new LoginUsuarioDTO();
         
     	dto.setNombreUsuario(entidad.getNombreUsuario());
-        dto.setClave(entidad.getClave());
-        
-        return dto;
+      dto.setClave(entidad.getClave());
+      
+      return dto;
     }
     
     public static Usuario aEntidad(LoginUsuarioDTO dto) {
@@ -98,9 +100,9 @@ public class UsuarioMapper {
     	Usuario entidad = new Usuario();
         
     	entidad.setNombreUsuario(dto.getNombreUsuario());
-        entidad.setClave(dto.getClave());
-        
-        return entidad;
+      entidad.setClave(dto.getClave());
+
+      return entidad;
     }
     
     // MiembroDTO <-> Usuario
@@ -110,11 +112,11 @@ public class UsuarioMapper {
     	MiembroDTO dto = new MiembroDTO();
         
     	dto.setNombre(entidad.getNombre());
-        dto.setApellido(entidad.getApellido());
-        dto.setEmail(entidad.getEmail());
-        dto.setRol(entidad.getRol());
-        
-        return dto;
+      dto.setApellido(entidad.getApellido());
+      dto.setEmail(entidad.getEmail());
+      dto.setRol(entidad.getRol());
+      
+      return dto;
     }
     
     public static Usuario aEntidad(MiembroDTO dto) {
@@ -123,11 +125,11 @@ public class UsuarioMapper {
     	Usuario entidad = new Usuario();
         
     	entidad.setNombre(dto.getNombre());
-        entidad.setApellido(dto.getApellido());
-        entidad.setEmail(dto.getEmail());
-        entidad.setRol(dto.getRol());
-        
-        return entidad;
+      entidad.setApellido(dto.getApellido());
+      entidad.setEmail(dto.getEmail());
+      entidad.setRol(dto.getRol());
+       
+      return entidad;
     }
 
     // =======================
