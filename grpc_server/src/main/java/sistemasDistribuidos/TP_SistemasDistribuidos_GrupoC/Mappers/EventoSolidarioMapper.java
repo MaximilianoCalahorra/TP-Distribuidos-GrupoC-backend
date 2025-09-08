@@ -66,7 +66,8 @@ public class EventoSolidarioMapper {
         return dto;
     }
     
-    public static EventoSolidario aEntidad(ModificarEventoSolidarioDTO dto) {
+    public static EventoSolidario
+    aEntidad(ModificarEventoSolidarioDTO dto) {
         if (dto == null) return null;
     	
     	  EventoSolidario entidad = new EventoSolidario();
