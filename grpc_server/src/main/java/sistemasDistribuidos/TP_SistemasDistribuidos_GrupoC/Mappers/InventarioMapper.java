@@ -1,9 +1,10 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
 import proto.dtos.ModificarInventarioProto;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
-import proto.dtos.CategoriaProto;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearInventarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarInventarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.InventarioDTO;
 import proto.dtos.CrearInventarioProto;
 import proto.dtos.InventarioProto;
 
@@ -15,29 +16,77 @@ public class InventarioMapper {
 
     // InventarioDTO <-> Inventario
     public static InventarioDTO aDTO(Inventario entidad) {
-    	//TODO
+    	if (entidad == null) return null;
+    	
+    	InventarioDTO dto = new InventarioDTO();
+        
+    	dto.setCategoria(entidad.getCategoria());
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        dto.setEliminado(entidad.isEliminado());
+        
+        return dto;
     }
     
     public static Inventario aEntidad(InventarioDTO dto) {
-    	//TODO
+    	if (dto == null) return null;
+    	
+    	Inventario entidad = new Inventario();
+        
+    	entidad.setCategoria(dto.getCategoria());
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        entidad.setEliminado(dto.isEliminado());
+        
+        return entidad;
     }
 
     // CrearInventarioDTO <-> Inventario
     public static CrearInventarioDTO aCrearInventarioDTO(Inventario entidad) {
-    	//TODO
+    	if (entidad == null) return null;
+    	
+    	CrearInventarioDTO dto = new CrearInventarioDTO();
+        
+    	dto.setCategoria(entidad.getCategoria());
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        
+        return dto;
     }
     
     public static Inventario aEntidad(CrearInventarioDTO dto) {
-    	//TODO
+    	if (dto == null) return null;
+    	
+    	Inventario entidad = new Inventario();
+        
+    	entidad.setCategoria(dto.getCategoria());
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        
+        return entidad;
     }
 
     // ModificarInventarioDTO <-> Inventario
     public static ModificarInventarioDTO aModificarInventarioDTO(Inventario entidad) {
-    	//TODO
+    	if (entidad == null) return null;
+    	
+    	ModificarInventarioDTO dto = new ModificarInventarioDTO();
+        
+    	dto.setDescripcion(entidad.getDescripcion());
+        dto.setCantidad(entidad.getCantidad());
+        
+        return dto;
     }
     
     public static Inventario aEntidad(ModificarInventarioDTO dto) {
-    	//TODO
+    	if (dto == null) return null;
+    	
+    	Inventario entidad = new Inventario();
+        
+    	entidad.setDescripcion(dto.getDescripcion());
+        entidad.setCantidad(dto.getCantidad());
+        
+        return entidad;
     }
 
     // =======================
@@ -52,30 +101,16 @@ public class InventarioMapper {
     	dto.setDescripcion(proto.getDescripcion());
     	dto.setCantidad(proto.getCantidad());
     	dto.setEliminado(proto.getEliminado());
-
-        try {
-        	dto.setCategoria(CategoriaProto.valueOf(proto.getCategoria().name()));
-        } catch (IllegalArgumentException e) {
-            dto.setCategoria(CategoriaProto.DESCONOCIDA);
-        }
+    	dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
 
         return dto;
     }
 
     public static InventarioProto aProto(InventarioDTO dto) {
         if (dto == null) return null;
-        
-        CategoriaProto categoria = CategoriaProto.DESCONOCIDA;
-        if (dto.getCategoria() != null) {
-            try {
-                categoria = Categoria.valueOf(dto.getCategoria().name());
-            } catch (IllegalArgumentException e) {
-            	categoria = CategoriaProto.DESCONOCIDA;
-            }
-        }
 
         return InventarioProto.newBuilder()
-                .setCategoria(categoria)
+                .setCategoria(CategoriaMapper.aProto(dto.getCategoria()))
                 .setCantidad(dto.getCantidad())
                 .setEliminado(dto.isEliminado())
                 .build();
@@ -84,15 +119,11 @@ public class InventarioMapper {
     // CrearInventarioDTO <-> CrearInventarioProto
     public static CrearInventarioDTO aCrearInventarioDTO(CrearInventarioProto proto) {
         if (proto == null) return null;
+        
         CrearInventarioDTO dto = new CrearInventarioDTO();
         dto.setDescripcion(proto.getDescripcion());
         dto.setCantidad(proto.getCantidad());
-        
-        try {
-        	dto.setCategoria(CategoriaProto.valueOf(proto.getCategoria().name()));
-        } catch (IllegalArgumentException e) {
-            dto.setCategoria(CategoriaProto.DESCONOCIDA);
-        }
+        dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
         
         return dto;
     }
@@ -100,17 +131,8 @@ public class InventarioMapper {
     public static CrearInventarioProto aCrearInventarioProto(CrearInventarioDTO dto) {
     	if (dto == null) return null;
         
-        CategoriaProto categoria = CategoriaProto.DESCONOCIDA;
-        if (dto.getCategoria() != null) {
-            try {
-                categoria = Categoria.valueOf(dto.getCategoria().name());
-            } catch (IllegalArgumentException e) {
-            	categoria = CategoriaProto.DESCONOCIDA;
-            }
-        }
-
-        return InventarioProto.newBuilder()
-                .setCategoria(categoria)
+    	return CrearInventarioProto.newBuilder()
+                .setCategoria(CategoriaMapper.aProto(dto.getCategoria()))
                 .setDescripcion(dto.getDescripcion())
                 .setCantidad(dto.getCantidad())
                 .build();
@@ -119,9 +141,11 @@ public class InventarioMapper {
     // ModificarInventarioDTO <-> ModificarInventarioProto
     public static ModificarInventarioDTO aModificarInventarioDTO(ModificarInventarioProto proto) {
     	if (proto == null) return null;
-        ModificarInventarioDTO dto = new ModificarInventarioDTO();
+        
+    	ModificarInventarioDTO dto = new ModificarInventarioDTO();
         dto.setDescripcion(proto.getDescripcion());
         dto.setCantidad(proto.getCantidad());
+        
         return dto;
     }
 
