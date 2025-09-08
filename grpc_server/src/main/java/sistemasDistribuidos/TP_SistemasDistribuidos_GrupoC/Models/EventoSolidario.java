@@ -25,7 +25,7 @@ public class EventoSolidario {
     private String nombre;
 
     @Column(name = "descripcion", nullable = false)
-    private int descripcion;
+    private String descripcion;
 
     @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
