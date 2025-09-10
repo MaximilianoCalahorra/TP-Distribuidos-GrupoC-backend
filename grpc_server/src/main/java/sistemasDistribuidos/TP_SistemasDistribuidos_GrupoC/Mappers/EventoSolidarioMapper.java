@@ -3,9 +3,11 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 import java.util.stream.Collectors;
 
 import proto.dtos.CrearEventoSolidarioProto;
+import proto.dtos.EventoSolidarioProto;
 import proto.dtos.ModificarEventoSolidarioProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarEventoSolidarioDTO;
 
 public class EventoSolidarioMapper {
@@ -18,7 +20,7 @@ public class EventoSolidarioMapper {
     public static CrearEventoSolidarioDTO aDTO(EventoSolidario entidad) {
         if (entidad == null) return null;
     	
-    	  CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
+    	CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
       
         dto.setNombre(entidad.getNombre());
         dto.setDescripcion(entidad.getDescripcion());
@@ -35,7 +37,7 @@ public class EventoSolidarioMapper {
     public static EventoSolidario aEntidad(CrearEventoSolidarioDTO dto) {
         if (dto == null) return null;
     	
-    	  EventoSolidario entidad = new EventoSolidario();
+    	EventoSolidario entidad = new EventoSolidario();
       
         entidad.setNombre(dto.getNombre());
         entidad.setDescripcion(dto.getDescripcion());
@@ -53,8 +55,9 @@ public class EventoSolidarioMapper {
     public static ModificarEventoSolidarioDTO aModificarEventoSolidarioDTO(EventoSolidario entidad) {
         if (entidad == null) return null;
     	
-    	  ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
+    	ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
         
+    	dto.setIdEventoSolidario(entidad.getIdEventoSolidario());
         dto.setNombre(entidad.getNombre());
         dto.setFechaHora(entidad.getFechaHora());
         dto.setMiembros(
@@ -66,12 +69,12 @@ public class EventoSolidarioMapper {
         return dto;
     }
     
-    public static EventoSolidario
-    aEntidad(ModificarEventoSolidarioDTO dto) {
+    public static EventoSolidario aEntidad(ModificarEventoSolidarioDTO dto) {
         if (dto == null) return null;
     	
-    	  EventoSolidario entidad = new EventoSolidario();
+    	EventoSolidario entidad = new EventoSolidario();
         
+    	entidad.setIdEventoSolidario(dto.getIdEventoSolidario());
         entidad.setNombre(dto.getNombre());
         entidad.setFechaHora(dto.getFechaHora());
         entidad.setMiembros(
@@ -81,6 +84,33 @@ public class EventoSolidarioMapper {
         );
       
         return entidad;
+    }
+    
+    // EventoSolidarioDTO <-> EventoSolidario
+    public static EventoSolidarioDTO aEventoSolidarioDTO(EventoSolidario entidad) {
+    	if (entidad == null) return null;
+    	
+    	EventoSolidarioDTO dto = new EventoSolidarioDTO();
+    	
+    	dto.setIdEventoSolidario(entidad.getIdEventoSolidario());
+    	dto.setNombre(entidad.getNombre());
+    	dto.setDescripcion(entidad.getDescripcion());
+    	dto.setFechaHora(entidad.getFechaHora());
+    	
+    	return dto;
+    }
+    
+    public static EventoSolidario aEntidad(EventoSolidarioDTO dto) {
+    	if (dto == null) return null;
+    	
+    	EventoSolidario entidad = new EventoSolidario();
+    	
+    	entidad.setIdEventoSolidario(dto.getIdEventoSolidario());
+    	entidad.setNombre(dto.getNombre());
+    	entidad.setDescripcion(dto.getDescripcion());
+    	entidad.setFechaHora(dto.getFechaHora());
+    	
+    	return entidad;
     }
 
     // =======================
@@ -92,6 +122,7 @@ public class EventoSolidarioMapper {
         if (proto == null) return null;
         
         CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
+        
         dto.setNombre(proto.getNombre());
         dto.setDescripcion(proto.getDescripcion());
         dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
@@ -147,5 +178,30 @@ public class EventoSolidarioMapper {
                            .toList()
                 )
                 .build();
+    }
+    
+    // EventoSolidarioDTO <-> EventoSolidarioProto
+    public static EventoSolidarioDTO toDTO(EventoSolidarioProto proto) {
+    	if (proto == null) return null;
+    	
+    	EventoSolidarioDTO dto = new EventoSolidarioDTO();
+    	
+    	dto.setIdEventoSolidario(proto.getIdEventoSolidario());
+    	dto.setNombre(proto.getNombre());
+    	dto.setDescripcion(proto.getDescripcion());
+    	dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
+    	
+    	return dto;
+    }
+    
+    public static EventoSolidarioProto toProto(EventoSolidarioDTO dto) {
+    	if (dto == null) return null;
+    	
+    	return EventoSolidarioProto.newBuilder()
+    			.setIdEventoSolidario(dto.getIdEventoSolidario())
+    			.setNombre(dto.getNombre())
+    			.setDescripcion(dto.getDescripcion())
+    			.setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
+    			.build();
     }
 }

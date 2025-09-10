@@ -5,22 +5,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ModificarEventoSolidarioDTO {
+public class EventoSolidarioDTO {
 	private Long idEventoSolidario;
     private String nombre;
+    private String descripcion;
     private LocalDateTime fechaHora;
-    private List<MiembroDTO> miembros;
 
     // Constructor con todos los campos
-    public ModificarEventoSolidarioDTO(Long idEventoSolidario, String nombre, LocalDateTime fechaHora, List<MiembroDTO> miembros) {
+    public EventoSolidarioDTO(Long idEventoSolidario, String nombre, String descripcion, LocalDateTime fechaHora) {
     	this.idEventoSolidario = idEventoSolidario;
         this.nombre = nombre;
+        this.descripcion = descripcion;
         this.fechaHora = fechaHora;
-        this.miembros = miembros;
     }
 }
