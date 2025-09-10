@@ -10,7 +10,7 @@ import proto.dtos.InventarioProto;
 
 public class InventarioMapper {
 
-	// =======================
+  // =======================
   // Entidad <-> DTOs
   // =======================
 
@@ -20,6 +20,7 @@ public class InventarioMapper {
 
      InventarioDTO dto = new InventarioDTO();
 
+     dto.setIdInventario(entidad.getIdInventario());
      dto.setCategoria(entidad.getCategoria());
      dto.setDescripcion(entidad.getDescripcion());
      dto.setCantidad(entidad.getCantidad());
@@ -33,6 +34,7 @@ public class InventarioMapper {
 
       Inventario entidad = new Inventario();
 
+      entidad.setIdInventario(dto.getIdInventario());
       entidad.setCategoria(dto.getCategoria());
       entidad.setDescripcion(dto.getDescripcion());
       entidad.setCantidad(dto.getCantidad());
@@ -72,6 +74,7 @@ public class InventarioMapper {
 
       ModificarInventarioDTO dto = new ModificarInventarioDTO();
 
+      dto.setIdInventario(entidad.getIdInventario());
       dto.setDescripcion(entidad.getDescripcion());
       dto.setCantidad(entidad.getCantidad());
 
@@ -79,14 +82,15 @@ public class InventarioMapper {
   }
 
   public static Inventario aEntidad(ModificarInventarioDTO dto) {
-      if (dto == null) return null;
-
-      Inventario entidad = new Inventario();
-
-      entidad.setDescripcion(dto.getDescripcion());
-      entidad.setCantidad(dto.getCantidad());
-
-      return entidad;
+	  if (dto == null) return null;
+	
+	  Inventario entidad = new Inventario();
+	
+	  entidad.setIdInventario(dto.getIdInventario());
+	  entidad.setDescripcion(dto.getDescripcion());
+	  entidad.setCantidad(dto.getCantidad());
+	
+	  return entidad;
   }
 
   // =======================
@@ -95,14 +99,15 @@ public class InventarioMapper {
 
   // InventarioDTO <-> InventarioDTO
   public static InventarioDTO aDTO(InventarioProto proto) {
-    if (proto == null) return null;
+	  if (proto == null) return null;
 
-    InventarioDTO dto = new InventarioDTO();
-    dto.setDescripcion(proto.getDescripcion());
-    dto.setCantidad(proto.getCantidad());
-    dto.setEliminado(proto.getEliminado());
-    dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
-
+	  InventarioDTO dto = new InventarioDTO();
+	  dto.setIdInventario(proto.getIdInventario());
+	  dto.setDescripcion(proto.getDescripcion());
+	  dto.setCantidad(proto.getCantidad());
+	  dto.setEliminado(proto.getEliminado());
+	  dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
+   
       return dto;
   }
 
@@ -110,6 +115,7 @@ public class InventarioMapper {
       if (dto == null) return null;
 
       return InventarioProto.newBuilder()
+    		  .setIdInventario(dto.getIdInventario())
               .setCategoria(CategoriaMapper.aProto(dto.getCategoria()))
               .setCantidad(dto.getCantidad())
               .setEliminado(dto.isEliminado())
@@ -121,6 +127,7 @@ public class InventarioMapper {
       if (proto == null) return null;
 
       CrearInventarioDTO dto = new CrearInventarioDTO();
+      
       dto.setDescripcion(proto.getDescripcion());
       dto.setCantidad(proto.getCantidad());
       dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
@@ -129,9 +136,9 @@ public class InventarioMapper {
   }
 
   public static CrearInventarioProto aCrearInventarioProto(CrearInventarioDTO dto) {
-    if (dto == null) return null;
+	  if (dto == null) return null;
 
-    return CrearInventarioProto.newBuilder()
+	  return CrearInventarioProto.newBuilder()
               .setCategoria(CategoriaMapper.aProto(dto.getCategoria()))
               .setDescripcion(dto.getDescripcion())
               .setCantidad(dto.getCantidad())
@@ -140,9 +147,11 @@ public class InventarioMapper {
 
   // ModificarInventarioDTO <-> ModificarInventarioProto
   public static ModificarInventarioDTO aModificarInventarioDTO(ModificarInventarioProto proto) {
-    if (proto == null) return null;
+	  if (proto == null) return null;
 
-    ModificarInventarioDTO dto = new ModificarInventarioDTO();
+	  ModificarInventarioDTO dto = new ModificarInventarioDTO();
+	  
+	  dto.setIdInventario(proto.getIdInventario());
       dto.setDescripcion(proto.getDescripcion());
       dto.setCantidad(proto.getCantidad());
 
@@ -150,9 +159,10 @@ public class InventarioMapper {
   }
 
   public static ModificarInventarioProto aModificarInventarioProto(ModificarInventarioDTO dto) {
-    if (dto == null) return null;
+	  if (dto == null) return null;
 
       return ModificarInventarioProto.newBuilder()
+    		  .setIdInventario(dto.getIdInventario())
               .setDescripcion(dto.getDescripcion())
               .setCantidad(dto.getCantidad())
               .build();

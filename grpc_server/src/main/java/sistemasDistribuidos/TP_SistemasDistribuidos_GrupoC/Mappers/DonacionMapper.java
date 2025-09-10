@@ -8,7 +8,7 @@ import proto.dtos.DonacionProto;
 
 public class DonacionMapper {
 
-	// =======================
+  // =======================
   // Entidad <-> DTOs
   // =======================
 
@@ -68,12 +68,13 @@ public class DonacionMapper {
 
   // DonacionDTO <-> DonacionDTO
   public static DonacionDTO aDTO(DonacionProto proto) {
-    if (proto == null) return null;
+      if (proto == null) return null;
 
-    DonacionDTO dto = new DonacionDTO();
-    dto.setDescripcion(proto.getDescripcion());
-    dto.setCantidad(proto.getCantidad());
-    dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
+      DonacionDTO dto = new DonacionDTO();
+      
+      dto.setDescripcion(proto.getDescripcion());
+      dto.setCantidad(proto.getCantidad());
+      dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
 
       return dto;
   }
@@ -92,6 +93,7 @@ public class DonacionMapper {
       if (proto == null) return null;
 
       CrearDonacionDTO dto = new CrearDonacionDTO();
+      
       dto.setIdEvento(proto.getIdEvento());
       dto.setDescripcion(proto.getDescripcion());
       dto.setCantidad(proto.getCantidad());dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));

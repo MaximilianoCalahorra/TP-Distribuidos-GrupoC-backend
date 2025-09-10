@@ -12,13 +12,15 @@ message CrearInventarioProto {
 }
 
 message ModificarInventarioProto {
-	string descripcion = 1;
-	int32 cantidad = 2;
+	int64 idInventario = 1;
+	string descripcion = 2;
+	int32 cantidad = 3;
 }
 
 message InventarioProto {
-	CategoriaProto categoria = 1;
-	string descripcion = 2;
-	int32 cantidad = 3;
-	bool eliminado = 4;
+	int64 idInventario = 1;
+	CategoriaProto categoria = 2;
+	string descripcion = 3;
+	int32 cantidad = 4;
+	bool eliminado = 5;
 }
