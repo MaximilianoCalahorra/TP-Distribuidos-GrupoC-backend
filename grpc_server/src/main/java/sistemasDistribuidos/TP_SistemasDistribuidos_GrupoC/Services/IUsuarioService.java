@@ -4,4 +4,5 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 
 public interface IUsuarioService {
     Usuario obtenerUsuarioPorId(Long idUsuario);
+    public Usuario getUsuarioLogueado(); //
 }

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface DonacionRepository extends JpaRepository<Donacion, Long> {
-    List<Donacion> findByEventoSolidarioIdEventoSolidario(Long idEvento);
+    List<Donacion> findByEventoSolidarioIdEvento(Long idEvento);
 }

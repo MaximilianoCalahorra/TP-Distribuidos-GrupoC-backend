@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.DonacionMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
@@ -26,10 +27,9 @@ public class DonacionService implements IDonacionService {
     private final IUsuarioService usuarioService;
 
     @Override
-    @Transactional
-    public void crearDonacion(CrearDonacionDTO crearDonacionDTO, Long idUsuario) {
+    public DonacionDTO crearDonacion(CrearDonacionDTO crearDonacionDTO) {
         EventoSolidario evento = eventoSolidarioService.obtenerEventoPorId(crearDonacionDTO.getIdEvento());
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
+        Usuario usuario = usuarioService.getUsuarioLogueado();
 
         Donacion donacion = Donacion.builder()
                 .fechaHoraModificacion(LocalDateTime.now())
@@ -40,24 +40,16 @@ public class DonacionService implements IDonacionService {
                 .usuario(usuario)
                 .build();
 
-        donacionRepository.save(donacion);
+        Donacion donacionGuardada = donacionRepository.save(donacion);
+        return DonacionMapper.aDTO(donacionGuardada);
     }
 
     @Override
     public List<DonacionDTO> traerDonacionesPorEvento(Long idEvento) {
-        eventoSolidarioService.obtenerEventoPorId(idEvento);
-        List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEventoSolidario(idEvento);
+        List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEvento(idEvento);
 
         return donaciones.stream()
-                .map(this::convertirADTO)
+                .map(DonacionMapper::aDTO)
                 .collect(Collectors.toList());
-    }
-
-    private DonacionDTO convertirADTO(Donacion donacion) {
-        return new DonacionDTO(
-                donacion.getCategoria(),
-                donacion.getCantidad(),
-                donacion.getDescripcion()
-        );
     }
 }

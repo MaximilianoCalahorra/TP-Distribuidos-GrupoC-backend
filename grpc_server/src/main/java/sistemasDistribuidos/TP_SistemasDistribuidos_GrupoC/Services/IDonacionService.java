@@ -6,6 +6,6 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
 import java.util.List;
 
 public interface IDonacionService {
-    void crearDonacion(CrearDonacionDTO crearDonacionDTO, Long idUsuario);
+    public DonacionDTO crearDonacion(CrearDonacionDTO crearDonacionDTO);
     List<DonacionDTO> traerDonacionesPorEvento(Long idEvento);
 }

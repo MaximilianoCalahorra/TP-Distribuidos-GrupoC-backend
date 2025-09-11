@@ -17,4 +17,17 @@ public class UsuarioService implements IUsuarioService {
         return usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
     }
+
+    @Override
+    public Usuario getUsuarioLogueado() {
+        // TODO: Implementar lógica real de autenticación
+        // Por ahora devolvemos un usuario mock para testing
+        return usuarioRepository.findById(1L) // ← Usuario mock con ID 1
+                .orElseThrow(() -> new RuntimeException("Usuario logueado no encontrado"));
+
+        // En producción esto debería ser:
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // String username = authentication.getName();
+        // return usuarioRepository.findByUsername(username);
+    }
 }
