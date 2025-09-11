@@ -9,7 +9,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.DonacionMappe
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.DonacionRepository;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IEventoSolidarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IUsuarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IDonacionService;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DonacionService implements IDonacionService {
 
-    private final DonacionRepository donacionRepository;
+    private final IDonacionRepository donacionRepository;
     private final IEventoSolidarioService eventoSolidarioService;
     private final IUsuarioService usuarioService;
 
