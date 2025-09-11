@@ -8,11 +8,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ModificarInventarioDTO {
+	private Long idInventario;
     private String descripcion;
     private int cantidad;
 
     // Constructor con todos los campos
-    public ModificarInventarioDTO(String descripcion, int cantidad) {
+    public ModificarInventarioDTO(Long idInventario, String descripcion, int cantidad) {
+    	this.idInventario = idInventario;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
     }
