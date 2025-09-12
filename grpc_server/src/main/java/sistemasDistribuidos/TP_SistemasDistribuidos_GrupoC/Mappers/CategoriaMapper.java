@@ -1,6 +1,6 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
-import proto.dtos.CategoriaProto;
+import proto.dtos.categoria.CategoriaProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
 
 public class CategoriaMapper {
