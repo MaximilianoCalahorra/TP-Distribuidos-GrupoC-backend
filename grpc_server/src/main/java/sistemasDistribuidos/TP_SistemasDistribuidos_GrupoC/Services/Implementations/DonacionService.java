@@ -12,7 +12,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IEventoSolidarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IUsuarioService;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IDonacionService;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IDonacionService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,8 +45,8 @@ public class DonacionService implements IDonacionService {
     }
 
     @Override
-    public List<DonacionDTO> traerDonacionesPorEvento(Long idEvento) {
-        List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEvento(idEvento);
+    public List<DonacionDTO> traerDonacionesPorEvento(Long idEventoSolidario) {
+        List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEventoSolidario(idEventoSolidario);
 
         return donaciones.stream()
                 .map(DonacionMapper::aDTO)
