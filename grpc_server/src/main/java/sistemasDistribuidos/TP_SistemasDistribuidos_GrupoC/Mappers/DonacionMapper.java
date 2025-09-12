@@ -3,8 +3,8 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
-import proto.dtos.CrearDonacionProto;
-import proto.dtos.DonacionProto;
+import proto.dtos.donacion.CrearDonacionProto;
+import proto.dtos.donacion.DonacionProto;
 
 public class DonacionMapper {
 

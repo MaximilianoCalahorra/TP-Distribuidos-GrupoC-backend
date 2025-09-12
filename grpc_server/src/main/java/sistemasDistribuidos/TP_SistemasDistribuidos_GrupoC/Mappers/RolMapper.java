@@ -1,7 +1,7 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Rol;
-import proto.dtos.RolProto;
+import proto.dtos.rol.RolProto;
 
 public class RolMapper {
 

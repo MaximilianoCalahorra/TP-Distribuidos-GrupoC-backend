@@ -1,9 +1,9 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
-import proto.dtos.UsuarioProto;
-import proto.dtos.CrearUsuarioProto;
-import proto.dtos.LoginUsuarioProto;
-import proto.dtos.MiembroProto;
+import proto.dtos.usuario.UsuarioProto;
+import proto.dtos.usuario.CrearUsuarioProto;
+import proto.dtos.usuario.LoginUsuarioProto;
+import proto.dtos.usuario.MiembroProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;

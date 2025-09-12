@@ -2,9 +2,9 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
 import java.util.stream.Collectors;
 
-import proto.dtos.CrearEventoSolidarioProto;
-import proto.dtos.EventoSolidarioProto;
-import proto.dtos.ModificarEventoSolidarioProto;
+import proto.dtos.evento_solidario.CrearEventoSolidarioProto;
+import proto.dtos.evento_solidario.EventoSolidarioProto;
+import proto.dtos.evento_solidario.ModificarEventoSolidarioProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;

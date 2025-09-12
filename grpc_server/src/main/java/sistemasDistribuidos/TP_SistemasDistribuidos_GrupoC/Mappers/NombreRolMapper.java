@@ -1,6 +1,6 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
-import proto.dtos.Nombre;
+import proto.dtos.rol.Nombre;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.NombreRol;
 
 public class NombreRolMapper {

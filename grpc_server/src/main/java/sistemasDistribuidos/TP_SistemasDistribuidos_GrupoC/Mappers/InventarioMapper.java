@@ -1,12 +1,12 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
-import proto.dtos.ModificarInventarioProto;
+import proto.dtos.inventario.ModificarInventarioProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearInventarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarInventarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.InventarioDTO;
-import proto.dtos.CrearInventarioProto;
-import proto.dtos.InventarioProto;
+import proto.dtos.inventario.CrearInventarioProto;
+import proto.dtos.inventario.InventarioProto;
 
 public class InventarioMapper {
 
