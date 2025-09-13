@@ -52,8 +52,31 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
         }
 	}
 	
+	///Obtener los inventarios activos:
 	@Override
-    ///Agregar un inventario:
+	public void listarInventariosActivos(Empty request, StreamObserver<ListarInventariosResponseProto> responseObserver) {
+	    try {
+	        List<InventarioDTO> inventariosActivos = inventarioService.inventariosActivos();
+
+	        ListarInventariosResponseProto.Builder responseBuilder = ListarInventariosResponseProto.newBuilder();
+	        for (InventarioDTO i : inventariosActivos) {
+	            InventarioProto inventarioProto = InventarioMapper.aProto(i);
+	            responseBuilder.addInventarios(inventarioProto);
+	        }
+
+	        responseObserver.onNext(responseBuilder.build());
+	        responseObserver.onCompleted();
+	    } catch (Exception e) {
+	        responseObserver.onError(
+	            io.grpc.Status.INTERNAL
+	                .withDescription("Error al listar inventarios activos: " + e.getMessage())
+	                .asRuntimeException()
+	        );
+	    }
+	}
+	
+	///Agregar un inventario:
+	@Override
 	public void crearInventario(CrearInventarioProto request, StreamObserver<InventarioProto> responseObserver) {
         try {
             CrearInventarioDTO dto = InventarioMapper.aCrearInventarioDTO(request);
@@ -71,8 +94,8 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
         }
     }
 
+	///Modificar un inventario:
     @Override
-    ///Modificar un inventario:
     public void modificarInventario(ModificarInventarioProto request, StreamObserver<InventarioProto> responseObserver) {
         try {
             ModificarInventarioDTO dto = InventarioMapper.aModificarInventarioDTO(request);
@@ -102,8 +125,8 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
         }
     }
 
-    @Override
     ///Eliminar lógicamente un inventario:
+    @Override
     public void eliminarLogicoInventario(IdInventarioRequestProto request, StreamObserver<BooleanResponseProto> responseObserver) {
         try {
             boolean resultado = inventarioService.eliminarLogico(request.getIdInventario());
@@ -120,5 +143,37 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
                         .asRuntimeException()
                 );
        }
+    }
+    
+    ///Habilitar un inventario:
+    @Override
+    public void habilitarInventario(IdInventarioRequestProto request, StreamObserver<BooleanResponseProto> responseObserver) {
+        try {
+        	inventarioService.habilitarInventario(request.getIdInventario());
+            BooleanResponseProto response = BooleanResponseProto.newBuilder()
+                    .setResultado(true)
+                    .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (EntityNotFoundException e) {
+            responseObserver.onError(
+                io.grpc.Status.NOT_FOUND
+                    .withDescription("Inventario no encontrado con id: " + request.getIdInventario())
+                    .asRuntimeException()
+            );
+        } catch (IllegalStateException e) {
+            responseObserver.onError(
+                io.grpc.Status.FAILED_PRECONDITION
+                    .withDescription(e.getMessage())
+                    .asRuntimeException()
+            );
+        } catch (Exception e) {
+            responseObserver.onError(
+                io.grpc.Status.INTERNAL
+                    .withDescription("Error al habilitar inventario: " + e.getMessage())
+                    .asRuntimeException()
+            );
+        }
     }
 }
