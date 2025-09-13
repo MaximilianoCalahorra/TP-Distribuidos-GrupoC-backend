@@ -5,7 +5,7 @@ option java_package = "proto.dtos.evento_solidario";
 package proto.dtos;
 
 import "google/protobuf/timestamp.proto";
-import "dtos/usuario.proto";
+import "dtos/usuario_dto.proto";
 
 message CrearEventoSolidarioProto {
 	string nombre = 1;

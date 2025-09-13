@@ -4,7 +4,7 @@ option java_package = "proto.dtos.usuario";
 
 package proto.dtos;
 
-import "dtos/rol.proto";
+import "dtos/rol_dto.proto";
 
 message CrearUsuarioProto {
 	string nombreUsuario = 1;
