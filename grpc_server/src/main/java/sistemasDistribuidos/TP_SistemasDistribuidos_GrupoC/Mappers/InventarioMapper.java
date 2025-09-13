@@ -97,7 +97,7 @@ public class InventarioMapper {
   // DTOs <-> Protos
   // =======================
 
-  // InventarioDTO <-> InventarioDTO
+  // InventarioDTO <-> InventarioProto
   public static InventarioDTO aDTO(InventarioProto proto) {
 	  if (proto == null) return null;
 
@@ -117,6 +117,7 @@ public class InventarioMapper {
       return InventarioProto.newBuilder()
     		  .setIdInventario(dto.getIdInventario())
               .setCategoria(CategoriaMapper.aProto(dto.getCategoria()))
+              .setDescripcion(dto.getDescripcion())
               .setCantidad(dto.getCantidad())
               .setEliminado(dto.isEliminado())
               .build();
