@@ -16,7 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "inventarios")
+@Table(
+	name = "inventarios",
+	uniqueConstraints = {
+	    @UniqueConstraint(columnNames = {"categoria", "descripcion"})
+	}
+)
 public class Inventario {
 
     @Id
