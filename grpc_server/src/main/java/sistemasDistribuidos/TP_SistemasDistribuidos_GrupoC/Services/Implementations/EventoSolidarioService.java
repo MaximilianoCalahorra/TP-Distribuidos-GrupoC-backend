@@ -42,7 +42,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
                 .map(miembro -> miembro.getEmail())
                 .collect(Collectors.toList());
 
-        List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, Estado.ACTIVO);
+        List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, true);
 
         if (usuariosEncontrados.size() != miembros.size()) {
             throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
@@ -76,7 +76,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
                 .map(miembro -> miembro.getEmail())
                 .collect(Collectors.toList());
 
-        List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, Estado.activo);
+        List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, true);
 
         if (usuariosEncontrados.size() != miembros.size()) {
             throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
