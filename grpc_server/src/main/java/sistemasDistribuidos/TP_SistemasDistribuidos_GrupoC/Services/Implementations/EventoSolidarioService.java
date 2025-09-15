@@ -42,6 +42,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
                 .map(miembro -> miembro.getEmail())
                 .collect(Collectors.toList());
 
+      
         List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, true);
 
         if (usuariosEncontrados.size() != miembros.size()) {
