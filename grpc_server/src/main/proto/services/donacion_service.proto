@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.donacion";
+
+import "google/protobuf/empty.proto";
+import "dtos/donacion_dto.proto";
+
+message IdEventoRequestProto {
+  int64 idEvento = 1;
+}
+
+message ListarDonacionesResponseProto {
+  repeated proto.dtos.DonacionProto donaciones = 1;
+}
+
+service DonacionService {
+  rpc ListarDonacionesPorEvento (IdEventoRequestProto) returns (ListarDonacionesResponseProto);
+  rpc CrearDonacion (proto.dtos.CrearDonacionProto) returns (proto.dtos.DonacionProto);
+}

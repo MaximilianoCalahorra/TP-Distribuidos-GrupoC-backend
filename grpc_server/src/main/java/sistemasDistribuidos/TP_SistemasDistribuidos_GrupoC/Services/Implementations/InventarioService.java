@@ -23,7 +23,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.I
 public class InventarioService implements IInventarioService {
 	///Atributos:
 	private final IInventarioRepository inventarioRepository;
-	private final UsuarioService usuarioService;
+	//private final UsuarioService usuarioService;
 	
 	///Obtener todos los inventarios:
 	@Override
@@ -54,8 +54,8 @@ public class InventarioService implements IInventarioService {
 		entidad.setEliminado(false);
 		entidad.setFechaHoraAlta(LocalDateTime.now());
 		entidad.setFechaHoraModificacion(LocalDateTime.now());
-		entidad.setUsuarioAlta(usuarioService.getUsuarioLogueado());
-		entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+		//entidad.setUsuarioAlta(usuarioService.getUsuarioLogueado());
+		//entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 		
 		return InventarioMapper.aDTO(inventarioRepository.save(entidad));
 	}
@@ -78,7 +78,7 @@ public class InventarioService implements IInventarioService {
 	    entidad.setDescripcion(inventario.getDescripcion());
 	    entidad.setCantidad(inventario.getCantidad());
 	    entidad.setFechaHoraModificacion(LocalDateTime.now());
-	    entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	   // entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 
 	    return InventarioMapper.aDTO(inventarioRepository.save(entidad));
 	}
@@ -92,9 +92,20 @@ public class InventarioService implements IInventarioService {
 
 	    entidad.setEliminado(true);
 	    entidad.setFechaHoraModificacion(LocalDateTime.now());
-	    entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	   // entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 
 	    inventarioRepository.save(entidad);
 	    return true;
 	}
+
+    @Override
+    public Inventario obtenerInventarioPorId(Long idInventario) {
+        return inventarioRepository.findById(idInventario)
+                .orElseThrow(() -> new RuntimeException("Inventario no encontrado con ID: " + idInventario));
+    }
+    @Override
+    public void actualizarInventario(Inventario inventario) {
+        // guardo la entidad inventario (ya viene seteado)
+        inventarioRepository.save(inventario);
+    }
 }

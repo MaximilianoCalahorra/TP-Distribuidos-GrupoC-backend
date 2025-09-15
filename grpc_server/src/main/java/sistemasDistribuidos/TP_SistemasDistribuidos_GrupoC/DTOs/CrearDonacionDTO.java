@@ -9,16 +9,14 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
 @Setter
 @NoArgsConstructor
 public class CrearDonacionDTO {
-    private Long idEvento;
-    private Categoria categoria;
+    private Long idEventoSolidario;
     private int cantidad;
-    private String descripcion;
+    private Long idInventario;
 
     // Constructor con todos los campos
-    public CrearDonacionDTO(Long idEvento, Categoria categoria, int cantidad, String descripcion) {
-        this.idEvento = idEvento;
-        this.categoria = categoria;
+    public CrearDonacionDTO(Long idEventoSolidario, Categoria categoria, int cantidad, String descripcion, Long idInventario) {
+        this.idEventoSolidario = idEventoSolidario;
         this.cantidad = cantidad;
-        this.descripcion = descripcion;
+        this.idInventario = idInventario;
     }
 }
