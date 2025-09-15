@@ -76,7 +76,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
                 .map(miembro -> miembro.getEmail())
                 .collect(Collectors.toList());
 
-        List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, Estado.ACTIVO);
+        List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, Estado.activo);
 
         if (usuariosEncontrados.size() != miembros.size()) {
             throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
@@ -105,6 +105,10 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         if (evento.getFechaHora().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Solo se pueden eliminar eventos a futuro.");
         }
+
+        /// elimino la relacion con los miembros
+        evento.getMiembros().clear();
+        eventoSolidarioRepository.save(evento);
 
         /// elimino el evento
         eventoSolidarioRepository.delete(evento);
