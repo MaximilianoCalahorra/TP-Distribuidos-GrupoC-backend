@@ -23,7 +23,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.I
 public class InventarioService implements IInventarioService {
 	///Atributos:
 	private final IInventarioRepository inventarioRepository;
-	//private final UsuarioService usuarioService;
+	private final UsuarioService usuarioService;
 	
 	///Obtener todos los inventarios:
 	@Override
@@ -54,8 +54,8 @@ public class InventarioService implements IInventarioService {
 		entidad.setEliminado(false);
 		entidad.setFechaHoraAlta(LocalDateTime.now());
 		entidad.setFechaHoraModificacion(LocalDateTime.now());
-		//entidad.setUsuarioAlta(usuarioService.getUsuarioLogueado());
-		//entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+		entidad.setUsuarioAlta(usuarioService.getUsuarioLogueado());
+		entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 		
 		return InventarioMapper.aDTO(inventarioRepository.save(entidad));
 	}
@@ -92,17 +92,19 @@ public class InventarioService implements IInventarioService {
 
 	    entidad.setEliminado(true);
 	    entidad.setFechaHoraModificacion(LocalDateTime.now());
-	   // entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	    entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 
 	    inventarioRepository.save(entidad);
 	    return true;
 	}
 
+    /// Obtengo un inventario por ID
     @Override
     public Inventario obtenerInventarioPorId(Long idInventario) {
         return inventarioRepository.findById(idInventario)
                 .orElseThrow(() -> new RuntimeException("Inventario no encontrado con ID: " + idInventario));
     }
+    /// Actualizo el registro existente en la base de datos
     @Override
     public void actualizarInventario(Inventario inventario) {
         // guardo la entidad inventario (ya viene seteado)

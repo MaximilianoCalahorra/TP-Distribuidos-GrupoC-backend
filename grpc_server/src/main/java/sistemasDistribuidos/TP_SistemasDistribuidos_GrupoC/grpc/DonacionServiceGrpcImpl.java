@@ -23,6 +23,7 @@ public class DonacionServiceGrpcImpl extends DonacionServiceGrpc.DonacionService
 
     private final DonacionService donacionService;
 
+    //enlisto las donaciones por evento
     @Override
     public void listarDonacionesPorEvento(IdEventoRequestProto request, StreamObserver<ListarDonacionesResponseProto> responseObserver) {
         try {
@@ -45,6 +46,7 @@ public class DonacionServiceGrpcImpl extends DonacionServiceGrpc.DonacionService
         }
     }
 
+    //creo las donaciones
     @Override
     public void crearDonacion(CrearDonacionProto request, StreamObserver<DonacionProto> responseObserver) {
         try {

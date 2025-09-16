@@ -12,8 +12,8 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
 //import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IEventoSolidarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
-//import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IUsuarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IDonacionService;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,44 +26,45 @@ public class DonacionService implements IDonacionService {
     private final IDonacionRepository donacionRepository;
     //private final IEventoSolidarioService eventoSolidarioService;
     private final IInventarioService inventarioService;
-    //private final IUsuarioService usuarioService;
+    private final IUsuarioService usuarioService;
 
     @Override
     public DonacionDTO crearDonacion(CrearDonacionDTO crearDonacionDTO) {
-        // 1. Validar que el evento exista
+        // Valid0 que el evento exista
        // EventoSolidario evento = eventoSolidarioService.obtenerEventoPorId(crearDonacionDTO.getIdEvento());
 
-        // 2. Obtener el inventario por ID
+        // Obtengo el inventario por ID
         Inventario inventario = inventarioService.obtenerInventarioPorId(crearDonacionDTO.getIdInventario());
 
-        // 3. Validar que haya stock suficiente
+        // Valido que haya stock suficiente
         if (inventario.getCantidad() < crearDonacionDTO.getCantidad()) {
             throw new RuntimeException("Stock insuficiente. Disponible: " + inventario.getCantidad() + ", Solicitado: " + crearDonacionDTO.getCantidad());
         }
 
-        // 4. Obtener usuario logueado para auditoría
-        //Usuario usuarioLogueado = usuarioService.getUsuarioLogueado();
+        //Obtengo usuario logueado para auditoría
+        Usuario usuarioLogueado = usuarioService.getUsuarioLogueado();
 
-        // 5. ACTUALIZAR EL INVENTARIO MANUALMENTE CON AUDITORÍA
-        inventario.setCantidad(inventario.getCantidad() - crearDonacionDTO.getCantidad()); // ← Descontar cantidad
-        inventario.setFechaHoraModificacion(LocalDateTime.now()); // ← Auditoría fecha
-        //inventario.setUsuarioModificacion(usuarioLogueado); // ← Auditoría usuario
+        // Actualizo el inventario
+        inventario.setCantidad(inventario.getCantidad() - crearDonacionDTO.getCantidad()); // Descuento la cantidad
+        inventario.setFechaHoraModificacion(LocalDateTime.now()); // fecha
+        inventario.setUsuarioModificacion(usuarioLogueado); // usuario
 
 
         inventarioService.actualizarInventario(inventario);
 
-        // 6. Crear y guardar la donación
+        //Creo y guardo la donación
         Donacion donacion = Donacion.builder()
                 .fechaHoraModificacion(LocalDateTime.now())
                 .cantidad(crearDonacionDTO.getCantidad())
                 //.eventoSolidario(evento)
-               // .usuario(usuarioLogueado)
+                .usuario(usuarioLogueado)
                 .build();
 
         Donacion donacionGuardada = donacionRepository.save(donacion);
         return DonacionMapper.aDTO(donacionGuardada);
     }
 
+    /// obtengo todas las donaciones asociadas a un evento solidario específico
     @Override
     public List<DonacionDTO> traerDonacionesPorEvento(Long idEventoSolidario) {
         List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEventoSolidario(idEventoSolidario);
