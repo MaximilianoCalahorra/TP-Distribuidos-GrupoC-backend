@@ -1,0 +1,13 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "proto.dtos.categoria";
+
+package proto.dtos;
+
+enum CategoriaProto {
+    DESCONOCIDA = 0;
+    ROPA = 1;
+    ALIMENTOS = 2;
+    JUGUETES = 3;
+    UTILES_ESCOLARES = 4;
+}
