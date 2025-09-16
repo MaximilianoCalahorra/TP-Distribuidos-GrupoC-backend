@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
 
 import java.time.LocalDateTime;
 
@@ -26,13 +25,6 @@ public class Donacion {
     @Column(name = "fecha_hora_modificacion", nullable = false)
     private LocalDateTime fechaHoraModificacion;
 
-    @Column(name = "categoria", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Categoria categoria;
-
-    @Column(name = "descripcion", nullable = false)
-    private String descripcion;
-
     @Column(name = "cantidad", nullable = false)
     @PositiveOrZero
     private int cantidad;
@@ -44,4 +36,8 @@ public class Donacion {
     @ManyToOne
     @JoinColumn(name = "id_evento_solidario", nullable = false)
     private EventoSolidario eventoSolidario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_inventario", nullable = false)
+    private Inventario inventario;
 }

@@ -146,8 +146,8 @@ public class InventarioService implements IInventarioService {
 	    inventarioRepository.save(entidad);
 	    return true;
 	}
-	
-	///Habilitar un inventario:
+  
+  ///Habilitar un inventario:
 	@Override
 	@Transactional
 	public boolean habilitarInventario(Long idInventario) {
@@ -165,4 +165,18 @@ public class InventarioService implements IInventarioService {
 	    inventarioRepository.save(inventario);
 	    return true;
 	}
+
+  /// Obtengo un inventario por ID
+  @Override
+  public Inventario obtenerInventarioPorId(Long idInventario) {
+      return inventarioRepository.findById(idInventario)
+              .orElseThrow(() -> new RuntimeException("Inventario no encontrado con ID: " + idInventario));
+  }
+  
+  /// Actualizo el registro existente en la base de datos
+  @Override
+  public void actualizarInventario(Inventario inventario) {
+      // guardo la entidad inventario (ya viene seteado)
+      inventarioRepository.save(inventario);
+  }
 }

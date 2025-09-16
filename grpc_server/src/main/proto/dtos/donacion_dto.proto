@@ -7,14 +7,13 @@ package proto.dtos;
 import "dtos/categoria.proto";
 
 message CrearDonacionProto {
-	int64 idEvento = 1;
-	CategoriaProto categoria = 2;
-	int32 cantidad = 3;
-	string descripcion = 4;
+  int64 idEventoSolidario = 1;
+  int32 cantidad = 2;
+  int64 idInventario = 3;
 }
 
 message DonacionProto {
-	CategoriaProto categoria = 1;
-	int32 cantidad = 2;
-	string descripcion = 3;
+  CategoriaProto categoria = 1;
+  int32 cantidad = 2;
+  string descripcion = 3;
 }
