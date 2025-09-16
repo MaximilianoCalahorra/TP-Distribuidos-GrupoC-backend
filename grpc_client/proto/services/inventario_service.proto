@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.inventario";
+
+import "google/protobuf/empty.proto";
+import "dtos/inventario_dto.proto";
+
+message IdInventarioRequestProto {
+  int64 idInventario = 1;
+}
+
+message BooleanResponseProto {
+  bool resultado = 1;
+}
+
+message ListarInventariosResponseProto {
+  repeated proto.dtos.InventarioProto inventarios = 1;
+}
+
+service InventarioService {
+  rpc ListarInventarios (google.protobuf.Empty) returns (ListarInventariosResponseProto);
+  rpc ListarInventariosActivos (google.protobuf.Empty) returns (ListarInventariosResponseProto);
+  rpc CrearInventario (proto.dtos.CrearInventarioProto) returns (proto.dtos.InventarioProto);
+  rpc ModificarInventario (proto.dtos.ModificarInventarioProto) returns (proto.dtos.InventarioProto);
+  rpc EliminarLogicoInventario (IdInventarioRequestProto) returns (BooleanResponseProto);
+  rpc HabilitarInventario (IdInventarioRequestProto) returns (BooleanResponseProto);
+}
