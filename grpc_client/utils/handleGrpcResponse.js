@@ -1,4 +1,4 @@
-import { mapGrpcErrorAHttp } from "./mapGrpcErrorAHttp.js";
+import { mapGrpcErrorToHttp } from "./mapGrpcErrorAHttp.js";
 
 //Manejador de respuesta gRPC:
 export const handleGrpcResponse = (res, error, response) => {
