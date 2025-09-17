@@ -10,7 +10,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidari
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
-//import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IEventoSolidarioService;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.IEventoSolidarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IDonacionService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
@@ -24,14 +24,14 @@ import java.util.stream.Collectors;
 public class DonacionService implements IDonacionService {
 
     private final IDonacionRepository donacionRepository;
-    //private final IEventoSolidarioService eventoSolidarioService;
+    private final IEventoSolidarioService eventoSolidarioService;
     private final IInventarioService inventarioService;
     private final IUsuarioService usuarioService;
 
     @Override
     public DonacionDTO crearDonacion(CrearDonacionDTO crearDonacionDTO) {
-        // Valid0 que el evento exista
-       // EventoSolidario evento = eventoSolidarioService.obtenerEventoPorId(crearDonacionDTO.getIdEvento());
+        // Valido que el evento exista
+        EventoSolidario evento = eventoSolidarioService.obtenerPorId(crearDonacionDTO.getIdEventoSolidario());
 
         // Obtengo el inventario por ID
         Inventario inventario = inventarioService.obtenerInventarioPorId(crearDonacionDTO.getIdInventario());
@@ -56,7 +56,7 @@ public class DonacionService implements IDonacionService {
         Donacion donacion = Donacion.builder()
                 .fechaHoraModificacion(LocalDateTime.now())
                 .cantidad(crearDonacionDTO.getCantidad())
-                //.eventoSolidario(evento)
+                .eventoSolidario(evento)
                 .usuario(usuarioLogueado)
                 .build();
 
