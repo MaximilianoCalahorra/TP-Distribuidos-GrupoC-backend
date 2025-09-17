@@ -19,13 +19,14 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IInventarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 
 @Service("inventarioService")
 @RequiredArgsConstructor
 public class InventarioService implements IInventarioService {
 	///Atributos:
 	private final IInventarioRepository inventarioRepository;
-	private final UsuarioService usuarioService;
+	private final IUsuarioService usuarioService;
 	
 	///Obtener todos los inventarios:
 	@Override
