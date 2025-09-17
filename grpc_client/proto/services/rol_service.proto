@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.rol";
+
+import "google/protobuf/empty.proto";
+import "dtos/rol_dto.proto";
+
+message ListarRolesResponseProto {
+  repeated proto.dtos.RolProto roles = 1;
+}
+
+service RolService {
+  rpc ListarRoles (google.protobuf.Empty) returns (ListarRolesResponseProto);
+}
