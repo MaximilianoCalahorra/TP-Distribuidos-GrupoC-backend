@@ -1,5 +1,6 @@
 import express from "express";
 import inventarioRoutes from './routes/inventarioRoutes.js';
+import rolRoutes from './routes/rolRoutes.js';
 
 const app = express();
 
@@ -8,6 +9,9 @@ app.use(express.json());
 
 //Inventarios:
 app.use('/inventarios', inventarioRoutes);
+
+//Roles:
+app.use('/roles', rolRoutes);
 
 //Configuración del puerto:
 const PORT = 3000;
