@@ -1,5 +1,6 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import proto.dtos.usuario.UsuarioProto;
 import proto.dtos.usuario.CrearUsuarioProto;
 import proto.dtos.usuario.LoginUsuarioProto;
@@ -9,6 +10,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IRolRepository;
 
 public class UsuarioMapper {
 
@@ -27,7 +29,6 @@ public class UsuarioMapper {
 	    dto.setApellido(entidad.getApellido());
 	    dto.setTelefono(entidad.getTelefono());
 	    dto.setEmail(entidad.getEmail());
-	    dto.setRol(entidad.getRol());
 	    dto.setActivo(entidad.isActivo());
 	      
 	    return dto;
@@ -75,8 +76,7 @@ public class UsuarioMapper {
     	entidad.setApellido(dto.getApellido());
     	entidad.setTelefono(dto.getTelefono());
     	entidad.setEmail(dto.getEmail());
-    	entidad.setRol(dto.getRol());
-    	entidad.setRol(dto.getRol());
+        entidad.setActivo(true);
       
     	return entidad;
     }
