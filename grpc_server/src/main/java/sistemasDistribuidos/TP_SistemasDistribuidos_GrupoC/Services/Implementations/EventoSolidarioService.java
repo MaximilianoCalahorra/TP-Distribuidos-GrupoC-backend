@@ -10,6 +10,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoSolidarioRepository;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IEventoSolidarioService;
 
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class EventoSolidarioService implements IEventoSolidarioService {
 
     private final IEventoSolidarioRepository eventoSolidarioRepository;
-    private final IUsuarioService usuarioService;
+    private final IUsuarioRepository usuarioRepository;
 
     @Override
     @Transactional
@@ -47,13 +48,9 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
         List<Usuario> miembros = dto.getMiembros().stream().map(UsuarioMapper::aEntidad).collect(Collectors.toList());
 
-        if (usuariosEncontrados.size() != miembros.size()) {
-            throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
-        }
-
         /// mapeo del DTO a Entidad y guardo en la base de datos
         EventoSolidario evento = EventoSolidarioMapper.aEntidad(dto);
-        evento.setMiembros(usuariosEncontrados);
+        evento.setMiembros(miembros);
         return EventoSolidarioMapper.aEventoSolidarioDTO(eventoSolidarioRepository.save(evento));
     }
 
@@ -84,14 +81,14 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
         List<Usuario> miembros = dto.getMiembros().stream().map(UsuarioMapper::aEntidad).collect(Collectors.toList());
 
-        if (usuariosEncontrados.size() != miembros.size()) {
+        if (miembros.size() != miembros.size()) {
             throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
         }
 
 
         evento.setNombre(dto.getNombre());
         evento.setFechaHora(dto.getFechaHora());
-        evento.setMiembros(usuariosEncontrados);
+        evento.setMiembros(miembros);
         /// guardo los nuevos cambios
         return EventoSolidarioMapper.aEventoSolidarioDTO(eventoSolidarioRepository.save(evento));
     }
