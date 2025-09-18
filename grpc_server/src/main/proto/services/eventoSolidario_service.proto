@@ -1,32 +1,29 @@
 syntax = "proto3";
 
-package proto.services.evento_solidario;
+package proto.services;
 
 option java_multiple_files = true;
-option java_package = "proto.services.evento_solidario";
+option java_package = "proto.services.eventoSolidario";
 
-import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
-import "dtos/evento_solidario_dto.proto";
-import "dtos/crear_evento_dto.proto";
-import "dtos/modificar_evento_dto.proto";
+import "dtos/evento_solidatio_dto.proto";
 
 message IdEventoSolidarioRequestProto {
-  int64 idEventoSolidario = 1;
+    int64 idEventoSolidario = 1;
 }
 
 message ListarEventosSolidariosResponseProto {
-  repeated proto.dtos.EventoSolidarioDTOProto eventos = 1;
+    repeated proto.dtos.EventoSolidarioProto eventos = 1;
 }
 
 message BooleanResponseProto {
-  bool resultado = 1;
+    bool resultado = 1;
 }
 
 service EventoSolidarioService {
-  rpc ListarEventosSolidarios (google.protobuf.Empty) returns (ListarEventosSolidariosResponseProto);
-  rpc CrearEventoSolidario (proto.dtos.CrearEventoSolidarioProto) returns (proto.dtos.EventoSolidarioDTOProto);
-  rpc ModificarEventoSolidario (proto.dtos.ModificarEventoSolidarioProto) returns (proto.dtos.EventoSolidarioDTOProto);
-  rpc EliminarEventoSolidario (IdEventoSolidarioRequestProto) returns (BooleanResponseProto);
-  rpc ObtenerEventoSolidarioPorId (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioDTOProto);
+    rpc ListarEventosSolidarios (google.protobuf.Empty) returns (ListarEventosSolidariosResponseProto);
+    rpc CrearEventoSolidario (proto.dtos.CrearEventoSolidarioProto) returns (proto.dtos.EventoSolidarioDTOProto);
+    rpc ModificarEventoSolidario (proto.dtos.ModificarEventoSolidarioProto) returns (proto.dtos.EventoSolidarioDTOProto);
+    rpc EliminarEventoSolidario (IdEventoSolidarioRequestProto) returns (BooleanResponseProto);
 }
+
