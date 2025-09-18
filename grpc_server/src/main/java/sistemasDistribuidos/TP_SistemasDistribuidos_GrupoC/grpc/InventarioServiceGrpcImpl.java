@@ -14,7 +14,7 @@ import proto.dtos.inventario.CrearInventarioProto;
 import proto.dtos.inventario.InventarioProto;
 import proto.dtos.inventario.ModificarInventarioProto;
 import proto.services.inventario.ListarInventariosResponseProto;
-import proto.services.inventario.BooleanResponseProto;
+import proto.services.inventario.BooleanInventarioResponseProto;
 import proto.services.inventario.IdInventarioRequestProto;
 import proto.services.inventario.InventarioServiceGrpc;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations.InventarioService;
@@ -127,10 +127,10 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
 
     ///Eliminar lógicamente un inventario:
     @Override
-    public void eliminarLogicoInventario(IdInventarioRequestProto request, StreamObserver<BooleanResponseProto> responseObserver) {
+    public void eliminarLogicoInventario(IdInventarioRequestProto request, StreamObserver<BooleanInventarioResponseProto> responseObserver) {
         try {
             boolean resultado = inventarioService.eliminarLogico(request.getIdInventario());
-            BooleanResponseProto response = BooleanResponseProto.newBuilder()
+            BooleanInventarioResponseProto response = BooleanInventarioResponseProto.newBuilder()
                     .setResultado(resultado)
                     .build();
 
@@ -147,10 +147,10 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
     
     ///Habilitar un inventario:
     @Override
-    public void habilitarInventario(IdInventarioRequestProto request, StreamObserver<BooleanResponseProto> responseObserver) {
+    public void habilitarInventario(IdInventarioRequestProto request, StreamObserver<BooleanInventarioResponseProto> responseObserver) {
         try {
         	inventarioService.habilitarInventario(request.getIdInventario());
-            BooleanResponseProto response = BooleanResponseProto.newBuilder()
+        	BooleanInventarioResponseProto response = BooleanInventarioResponseProto.newBuilder()
                     .setResultado(true)
                     .build();
 
