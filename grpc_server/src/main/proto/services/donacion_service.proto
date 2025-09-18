@@ -5,7 +5,6 @@ package proto.services;
 option java_multiple_files = true;
 option java_package = "proto.services.donacion";
 
-import "google/protobuf/empty.proto";
 import "dtos/donacion_dto.proto";
 
 message IdEventoRequestProto {
