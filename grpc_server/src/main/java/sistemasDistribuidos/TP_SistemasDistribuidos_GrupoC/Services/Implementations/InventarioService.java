@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,15 +22,17 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.InventarioMap
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IInventarioRepository;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 
 @Service("inventarioService")
+@PreAuthorize("hasRole('PRESIDENTE') or hasRole('VOLUNTARIO')")
 @RequiredArgsConstructor
 public class InventarioService implements IInventarioService {
 	///Atributos:
 	private final IInventarioRepository inventarioRepository;
-	private final IUsuarioService usuarioService;
+	private final IUsuarioRepository usuarioRepository;
 	
 	///Obtener todos los inventarios:
 	@Override
@@ -67,7 +73,12 @@ public class InventarioService implements IInventarioService {
 	        throw new IllegalArgumentException("La cantidad no puede ser negativa.");
 	    }
 
-	    Usuario usuarioActual = usuarioService.getUsuarioLogueado();
+		//Obtenemos el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userData = (UserDetails) auth.getPrincipal();
+		Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
+
 	    LocalDateTime ahora = LocalDateTime.now();
 	    
 	    //Buscar inventario existente:
@@ -80,7 +91,7 @@ public class InventarioService implements IInventarioService {
 	        inventarioFinal = existenteOpt.get();
 	        inventarioFinal.setCantidad(inventarioFinal.getCantidad() + dto.getCantidad());
 	        inventarioFinal.setFechaHoraModificacion(ahora);
-	        inventarioFinal.setUsuarioModificacion(usuarioActual);
+	        inventarioFinal.setUsuarioModificacion(usuarioAutenticado.get());
 
 	    } else {
 	        //No existe: creamos nuevo registro.
@@ -88,8 +99,8 @@ public class InventarioService implements IInventarioService {
 	        inventarioFinal.setEliminado(false);
 	        inventarioFinal.setFechaHoraAlta(ahora);
 	        inventarioFinal.setFechaHoraModificacion(ahora);
-	        inventarioFinal.setUsuarioAlta(usuarioActual);
-	        inventarioFinal.setUsuarioModificacion(usuarioActual);
+	        inventarioFinal.setUsuarioAlta(usuarioAutenticado.get());
+	        inventarioFinal.setUsuarioModificacion(usuarioAutenticado.get());
 	    }
 
 	    inventarioFinal = inventarioRepository.save(inventarioFinal);
@@ -124,11 +135,16 @@ public class InventarioService implements IInventarioService {
 	        }
 	    }
 
+		//Obtenemos el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userData = (UserDetails) auth.getPrincipal();
+		Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
 	    //Actualizar campos:
 	    inventario.setDescripcion(dto.getDescripcion());
 	    inventario.setCantidad(dto.getCantidad());
 	    inventario.setFechaHoraModificacion(LocalDateTime.now());
-	    inventario.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	    inventario.setUsuarioModificacion(usuarioAutenticado.get());
 
 	    return InventarioMapper.aDTO(inventarioRepository.save(inventario));
 	}
@@ -140,9 +156,14 @@ public class InventarioService implements IInventarioService {
 	    Inventario entidad = inventarioRepository.findById(idInventario)
 	            .orElseThrow(() -> new EntityNotFoundException("Inventario no encontrado"));
 
+		//Obtenemos el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userData = (UserDetails) auth.getPrincipal();
+		Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
 	    entidad.setEliminado(true);
 	    entidad.setFechaHoraModificacion(LocalDateTime.now());
-	    entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	    entidad.setUsuarioModificacion(usuarioAutenticado.get());
 
 	    inventarioRepository.save(entidad);
 	    return true;
@@ -159,9 +180,14 @@ public class InventarioService implements IInventarioService {
 	        throw new IllegalStateException("El inventario ya está habilitado");
 	    }
 
+		//Obtenemos el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userData = (UserDetails) auth.getPrincipal();
+		Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
 	    inventario.setEliminado(false);
 	    inventario.setFechaHoraModificacion(LocalDateTime.now());
-	    inventario.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	    inventario.setUsuarioModificacion(usuarioAutenticado.get());
 
 	    inventarioRepository.save(inventario);
 	    return true;

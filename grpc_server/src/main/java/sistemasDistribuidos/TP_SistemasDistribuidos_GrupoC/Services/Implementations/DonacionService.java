@@ -1,24 +1,25 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.DonacionMapper;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IEventoSolidarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IDonacionService;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +29,7 @@ public class DonacionService implements IDonacionService {
     private final IDonacionRepository donacionRepository;
     private final IEventoSolidarioService eventoSolidarioService;
     private final IInventarioService inventarioService;
-    private final IUsuarioService usuarioService;
+    private final IUsuarioRepository usuarioRepository;
 
     @Override
     public DonacionDTO crearDonacion(CrearDonacionDTO crearDonacionDTO) {
@@ -43,13 +44,15 @@ public class DonacionService implements IDonacionService {
             throw new RuntimeException("Stock insuficiente. Disponible: " + inventario.getCantidad() + ", Solicitado: " + crearDonacionDTO.getCantidad());
         }
 
-        //Obtengo usuario logueado para auditoría
-        Usuario usuarioLogueado = usuarioService.getUsuarioLogueado();
+        //Obtenemos el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userData = (UserDetails) auth.getPrincipal();
+        Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
 
         // Actualizo el inventario
         inventario.setCantidad(inventario.getCantidad() - crearDonacionDTO.getCantidad()); // Descuento la cantidad
         inventario.setFechaHoraModificacion(LocalDateTime.now()); // fecha
-        inventario.setUsuarioModificacion(usuarioLogueado); // usuario
+        inventario.setUsuarioModificacion(usuarioAutenticado.get()); // usuario
 
 
         inventarioService.actualizarInventario(inventario);
@@ -59,7 +62,7 @@ public class DonacionService implements IDonacionService {
                 .fechaHoraModificacion(LocalDateTime.now())
                 .cantidad(crearDonacionDTO.getCantidad())
                 .eventoSolidario(evento)
-                .usuario(usuarioLogueado)
+                .usuario(usuarioAutenticado.get())
                 .build();
 
         Donacion donacionGuardada = donacionRepository.save(donacion);
