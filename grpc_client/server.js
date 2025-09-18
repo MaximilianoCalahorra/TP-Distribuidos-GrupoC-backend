@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import inventarioRoutes from './routes/inventarioRoutes.js';
 import rolRoutes from './routes/rolRoutes.js';
 
@@ -6,6 +7,12 @@ const app = express();
 
 //Middleware para parsear JSON en requests:
 app.use(express.json());
+
+//Habilitar CORS con el frontend:
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+}));
 
 //Inventarios:
 app.use('/inventarios', inventarioRoutes);
