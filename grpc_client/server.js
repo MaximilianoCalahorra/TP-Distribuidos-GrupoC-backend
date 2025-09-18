@@ -11,7 +11,7 @@ app.use(express.json());
 //Habilitar CORS con el frontend:
 app.use(cors({
   origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PATCH", "DELETE"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 }));
 
 //Inventarios:
