@@ -4,10 +4,11 @@ import org.springframework.stereotype.Service;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarEventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
-
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoSolidarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IEventoSolidarioService;
@@ -37,12 +38,14 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         }
 
         /// valido que los miembros no esten deshabilitados
-        List<String> miembros = dto.getMiembros().stream()
-                .map(miembro -> miembro.getEmail())
-                .collect(Collectors.toList());
+        for (MiembroDTO miembro : dto.getMiembros()) {
+            Optional<Usuario> usuario = usuarioRepository.findByEmailAndEstado(miembro.getEmail(), false);
+            if (usuario.isPresent()) {
+                throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
+            }
+        }
 
-
-        List<Usuario> usuariosEncontrados = usuarioService.findByEmailInAndEstado(miembros, true);
+        List<Usuario> miembros = dto.getMiembros().stream().map(UsuarioMapper::aEntidad).collect(Collectors.toList());
 
         if (usuariosEncontrados.size() != miembros.size()) {
             throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
@@ -72,11 +75,14 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         }
 
         /// valido que los miembros no esten inactivos
-        List<String> miembros = dto.getMiembros().stream()
-                .map(miembro -> miembro.getEmail())
-                .collect(Collectors.toList());
+        for (MiembroDTO miembro : dto.getMiembros()) {
+            Optional<Usuario> usuario = usuarioRepository.findByEmailAndEstado(miembro.getEmail(), false);
+            if (usuario.isPresent()) {
+                throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
+            }
+        }
 
-        List<Usuario> usuariosEncontrados = usuarioService.findByEmailInAndEstado(miembros, true);
+        List<Usuario> miembros = dto.getMiembros().stream().map(UsuarioMapper::aEntidad).collect(Collectors.toList());
 
         if (usuariosEncontrados.size() != miembros.size()) {
             throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
