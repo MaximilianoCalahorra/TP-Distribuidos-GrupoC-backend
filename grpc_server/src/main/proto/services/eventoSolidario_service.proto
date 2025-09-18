@@ -27,4 +27,3 @@ service EventoSolidarioService {
     rpc EliminarEventoSolidario (IdEventoSolidarioRequestProto) returns (BooleanResponseProto);
 }
 
-
