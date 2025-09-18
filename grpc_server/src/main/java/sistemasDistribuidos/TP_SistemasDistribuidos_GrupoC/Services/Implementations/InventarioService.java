@@ -17,14 +17,14 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.InventarioMap
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IInventarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
+//import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 
 @Service("inventarioService")
 @RequiredArgsConstructor
 public class InventarioService implements IInventarioService {
 	///Atributos:
 	private final IInventarioRepository inventarioRepository;
-	private final IUsuarioService usuarioService;
+	//private final IUsuarioService usuarioService;
 	
 	///Obtener todos los inventarios:
 	@Override
@@ -55,8 +55,8 @@ public class InventarioService implements IInventarioService {
 		entidad.setEliminado(false);
 		entidad.setFechaHoraAlta(LocalDateTime.now());
 		entidad.setFechaHoraModificacion(LocalDateTime.now());
-		entidad.setUsuarioAlta(usuarioService.getUsuarioLogueado());
-		entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+		//entidad.setUsuarioAlta(usuarioService.getUsuarioLogueado());
+		//entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 		
 		return InventarioMapper.aDTO(inventarioRepository.save(entidad));
 	}
@@ -93,7 +93,7 @@ public class InventarioService implements IInventarioService {
 
 	    entidad.setEliminado(true);
 	    entidad.setFechaHoraModificacion(LocalDateTime.now());
-	    entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
+	    //entidad.setUsuarioModificacion(usuarioService.getUsuarioLogueado());
 
 	    inventarioRepository.save(entidad);
 	    return true;
