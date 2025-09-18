@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.evento_solidario";
+
+import "google/protobuf/empty.proto";
+import "dtos/evento_solidario_dto.proto";
+
+message IdEventoSolidarioRequestProto {
+    int64 idEventoSolidario = 1;
+}
+
+message ListarEventosSolidariosResponseProto {
+    repeated proto.dtos.EventoSolidarioProto eventos = 1;
+}
+
+message BooleanEventoSolidarioResponseProto {
+    bool resultado = 1;
+}
+
+service EventoSolidarioService {
+    rpc ListarEventosSolidarios (google.protobuf.Empty) returns (ListarEventosSolidariosResponseProto);
+    rpc CrearEventoSolidario (proto.dtos.CrearEventoSolidarioProto) returns (proto.dtos.EventoSolidarioProto);
+    rpc ModificarEventoSolidario (proto.dtos.ModificarEventoSolidarioProto) returns (proto.dtos.EventoSolidarioProto);
+    rpc EliminarEventoSolidario (IdEventoSolidarioRequestProto) returns (BooleanEventoSolidarioResponseProto);
+}
