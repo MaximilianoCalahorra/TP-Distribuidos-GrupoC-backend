@@ -1,6 +1,5 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import proto.dtos.usuario.UsuarioProto;
 import proto.dtos.usuario.CrearUsuarioProto;
 import proto.dtos.usuario.LoginUsuarioProto;
@@ -10,7 +9,6 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IRolRepository;
 
 public class UsuarioMapper {
 
