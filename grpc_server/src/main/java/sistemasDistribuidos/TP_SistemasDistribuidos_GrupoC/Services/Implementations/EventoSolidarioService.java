@@ -42,7 +42,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
                 .map(miembro -> miembro.getEmail())
                 .collect(Collectors.toList());
 
-      
+
         List<Usuario> usuariosEncontrados = usuarioRepository.findByEmailInAndEstado(miembros, true);
 
         if (usuariosEncontrados.size() != miembros.size()) {
@@ -59,7 +59,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     @Transactional
     /// modifico un evento solidario
     public void modificarEventoSolidario(ModificarEventoSolidarioDTO dto) {
-        Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(dto.getIdEventoSolidario;
+        Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(dto.getIdEventoSolidario);
         /// valido si encontro o no el evento
         if (!eventoOpt.isPresent()) {
             throw new IllegalArgumentException("Evento solidario no encontrado.");

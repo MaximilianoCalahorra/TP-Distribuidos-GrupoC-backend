@@ -8,14 +8,14 @@ import java.util.List;
 public interface IEventoSolidarioService {
 
     /// Agregar un evento solidario
-    void crearEvento(CrearEventoSolidarioDTO dto);
+    public void crearEvento(CrearEventoSolidarioDTO dto);
     /// Modificar un evento solidario
-    void modificarEvento(ModificarEventoSolidarioDTO dto);
+    public void modificarEvento(ModificarEventoSolidarioDTO dto);
     /// eliminar fisicamente un evento solidario
-    void eliminarEvento(Long idEventoSolidario);
+    public void eliminarEvento(Long idEventoSolidario);
     ///  obtengo todos los eventos solidarios
-    List<EventoSolidarioDTO> obtenerTodos();
+    public List<EventoSolidarioDTO> obtenerTodos();
     ///  obtengo un evento solidario por ID
-    EventoSolidarioDTO obtenerPorId(Long idEventoSolidario);
+    public EventoSolidarioDTO obtenerPorId(Long idEventoSolidario);
 
 }
