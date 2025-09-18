@@ -6,9 +6,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
-
 import java.time.LocalDateTime;
-
 import proto.dtos.donacion.CrearDonacionProto;
 import proto.dtos.donacion.DonacionProto;
 

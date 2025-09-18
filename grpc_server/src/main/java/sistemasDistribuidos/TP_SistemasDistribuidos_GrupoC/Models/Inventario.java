@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
-
 import java.time.LocalDateTime;
 
 @Builder
