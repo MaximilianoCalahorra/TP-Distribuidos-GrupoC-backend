@@ -1,14 +1,8 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
-import proto.dtos.usuario.UsuarioProto;
-import proto.dtos.usuario.CrearUsuarioProto;
-import proto.dtos.usuario.LoginUsuarioProto;
-import proto.dtos.usuario.MiembroProto;
+import proto.dtos.usuario.*;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 
 public class UsuarioMapper {
 
@@ -27,7 +21,6 @@ public class UsuarioMapper {
 	    dto.setApellido(entidad.getApellido());
 	    dto.setTelefono(entidad.getTelefono());
 	    dto.setEmail(entidad.getEmail());
-	    dto.setRol(entidad.getRol());
 	    dto.setActivo(entidad.isActivo());
 	      
 	    return dto;
@@ -75,8 +68,7 @@ public class UsuarioMapper {
     	entidad.setApellido(dto.getApellido());
     	entidad.setTelefono(dto.getTelefono());
     	entidad.setEmail(dto.getEmail());
-    	entidad.setRol(dto.getRol());
-    	entidad.setRol(dto.getRol());
+        entidad.setActivo(true);
       
     	return entidad;
     }
@@ -129,6 +121,37 @@ public class UsuarioMapper {
     	entidad.setRol(dto.getRol());
        
     	return entidad;
+    }
+
+    // ModificarUsuarioDTO <-> Usuario
+    public static ModificarUsuarioDTO aModificarUsuarioDTO(Usuario entidad) {
+        if (entidad == null) return null;
+
+        ModificarUsuarioDTO dto = new ModificarUsuarioDTO();
+
+        dto.setIdUsuario(entidad.getIdUsuario());
+        dto.setNombreUsuario(entidad.getNombreUsuario());
+        dto.setNombre(entidad.getNombre());
+        dto.setApellido(entidad.getApellido());
+        dto.setTelefono(entidad.getTelefono());
+        dto.setEmail(entidad.getEmail());
+        dto.setRol(entidad.getRol());
+
+        return dto;
+    }
+
+    public static Usuario aEntidad(ModificarUsuarioDTO dto) {
+        if (dto == null) return null;
+
+        Usuario entidad = new Usuario();
+        entidad.setIdUsuario(dto.getIdUsuario());
+        entidad.setNombreUsuario(dto.getNombreUsuario());
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
+        entidad.setTelefono(dto.getTelefono());
+        entidad.setEmail(dto.getEmail());
+
+        return entidad;
     }
 
     // =======================
@@ -237,6 +260,37 @@ public class UsuarioMapper {
                 .setNombre(dto.getNombre())
                 .setApellido(dto.getApellido())
                 .setEmail(dto.getEmail())
+                .setRol(RolMapper.aProto(dto.getRol()))
+                .build();
+    }
+
+    // ModificarUsuarioDTO <-> ModificarUsuarioProto
+    public static ModificarUsuarioDTO aModificarUsuarioDTO(ModificarUsuarioProto proto) {
+        if (proto == null) return null;
+
+        ModificarUsuarioDTO dto = new ModificarUsuarioDTO();
+
+        dto.setIdUsuario(proto.getIdUsuario());
+        dto.setNombreUsuario(proto.getNombreUsuario());
+        dto.setNombre(proto.getNombre());
+        dto.setApellido(proto.getApellido());
+        dto.setTelefono(proto.getTelefono());
+        dto.setEmail(proto.getEmail());
+        dto.setRol(RolMapper.aEntidad(proto.getRol()));
+
+        return dto;
+    }
+
+    public static ModificarUsuarioProto aModificarUsuarioProto(ModificarUsuarioDTO dto) {
+        if (dto == null) return null;
+
+        return ModificarUsuarioProto.newBuilder()
+                .setIdUsuario(dto.getIdUsuario())
+                .setNombreUsuario(dto.getNombreUsuario())
+                .setNombre(dto.getNombre())
+                .setApellido(dto.getApellido())
+                .setEmail(dto.getEmail())
+                .setTelefono(dto.getTelefono())
                 .setRol(RolMapper.aProto(dto.getRol()))
                 .build();
     }
