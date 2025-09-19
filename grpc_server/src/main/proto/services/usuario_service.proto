@@ -8,7 +8,17 @@ option java_package = "proto.services.usuario";
 import "google/protobuf/empty.proto";
 import "dtos/usuario_dto.proto";
 
+message IdUsuarioRequestProto {
+  int64 idUsuario = 1;
+}
+
+message StringResponseProto {
+  string mensaje = 1;
+}
+
 service UsuarioService {
   rpc CrearUsuario (proto.dtos.CrearUsuarioProto) returns (proto.dtos.CrearUsuarioProto);
   rpc Login (proto.dtos.LoginUsuarioProto) returns (proto.dtos.LoginUsuarioProto);
+  rpc DesactivarUsuario (IdUsuarioRequestProto) returns (StringResponseProto);
+  rpc ModificarUsuario (proto.dtos.ModificarUsuarioProto) returns (proto.dtos.ModificarUsuarioProto);
 }
