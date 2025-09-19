@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.usuario";
+
+import "google/protobuf/empty.proto";
+import "dtos/usuario_dto.proto";
+
+service UsuarioService {
+  rpc CrearUsuario (proto.dtos.CrearUsuarioProto) returns (proto.dtos.CrearUsuarioProto);
+  rpc Login (proto.dtos.LoginUsuarioProto) returns (proto.dtos.LoginUsuarioProto);
+}

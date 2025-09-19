@@ -4,7 +4,6 @@ import io.grpc.stub.StreamObserver;
 import java.util.List;
 import net.devh.boot.grpc.server.service.GrpcService;
 import lombok.RequiredArgsConstructor;
-
 import com.google.protobuf.Empty;
 import proto.dtos.rol.RolProto;
 import proto.services.rol.ListarRolesResponseProto;

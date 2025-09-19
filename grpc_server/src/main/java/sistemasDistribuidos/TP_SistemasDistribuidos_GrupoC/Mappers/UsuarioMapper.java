@@ -27,7 +27,6 @@ public class UsuarioMapper {
 	    dto.setApellido(entidad.getApellido());
 	    dto.setTelefono(entidad.getTelefono());
 	    dto.setEmail(entidad.getEmail());
-	    dto.setRol(entidad.getRol());
 	    dto.setActivo(entidad.isActivo());
 	      
 	    return dto;
@@ -75,8 +74,7 @@ public class UsuarioMapper {
     	entidad.setApellido(dto.getApellido());
     	entidad.setTelefono(dto.getTelefono());
     	entidad.setEmail(dto.getEmail());
-    	entidad.setRol(dto.getRol());
-    	entidad.setRol(dto.getRol());
+        entidad.setActivo(true);
       
     	return entidad;
     }
