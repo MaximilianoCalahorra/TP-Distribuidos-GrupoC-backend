@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarUsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IRolRepository;
@@ -31,6 +35,11 @@ public class UsuarioService implements IUsuarioService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    EmailService emailService;
+
+    private final AuthenticationManager authenticationManager;
 
     @PreAuthorize("hasRole('PRESIDENTE')")
     @Override
@@ -68,11 +77,6 @@ public class UsuarioService implements IUsuarioService {
         }
     }
 
-    @Autowired
-    EmailService emailService;
-
-    private final AuthenticationManager authenticationManager;
-
     @Override
     public LoginUsuarioDTO login(LoginUsuarioDTO loginUsuarioDTO) {
         try {
@@ -91,5 +95,74 @@ public class UsuarioService implements IUsuarioService {
         } catch (Exception e) {
             throw new BadCredentialsException("Las credenciales ingresadas no son validas: " + e);
         }
+    }
+
+    @PreAuthorize("hasRole('PRESIDENTE')")
+    @Override
+    public String desactivarUsuario(Long idUsuario) {
+
+        //Obtenemos el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userData = (UserDetails) auth.getPrincipal();
+        Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
+        //Validamos que el id ingresado no sea el mismo que el del usuario autenticado
+        if (usuarioAutenticado.get().getIdUsuario() == idUsuario) {
+            throw new IllegalArgumentException("No es posible desactivarse a si mismo.");
+        }
+
+        //Validamos que el usuario que se desea desactivar esta activo o existe
+        Optional<Usuario> usuario = usuarioRepository.findByIdAndEstado(idUsuario, true);
+
+        if (usuario.isPresent()) {
+            //Si el usuario existe y esta activo
+            usuario.get().setActivo(false);
+            usuarioRepository.save(usuario.get());
+        } else {
+            throw new IllegalArgumentException("El usuario que se desea desactivar ya esta inactivo o no existe.");
+        }
+
+        return "El usuario con id: " + idUsuario + " fue desactivado con exito!";
+    }
+
+    @PreAuthorize("hasRole('PRESIDENTE')")
+    @Override
+    public ModificarUsuarioDTO modificarUsuario(ModificarUsuarioDTO modificarUsuarioDTO) {
+
+        //Obtenemos el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userData = (UserDetails) auth.getPrincipal();
+        Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
+        //Validamos que el id del usuario a modificar no sea el mismo que el del usuario autenticado
+        if (usuarioAutenticado.get().getIdUsuario() == modificarUsuarioDTO.getIdUsuario()) {
+            throw new IllegalArgumentException("No es posible modificarse a si mismo.");
+        }
+
+        //Validamos que el usuario que se desea modificar esta activo o existe
+        Optional<Usuario> usuario = usuarioRepository.findByIdAndEstado(modificarUsuarioDTO.getIdUsuario(), true);
+
+        if (usuario.isPresent()) {
+            //Si el usuario existe y esta activo
+            Usuario usuarioModificado = UsuarioMapper.aEntidad(modificarUsuarioDTO);
+            //Seteamos el rol
+            usuarioModificado.setRol(rolRepository.findByNombreRol(modificarUsuarioDTO.getRol().getNombreRol()));
+            //Mantenemos la clave
+            usuarioModificado.setClave(usuario.get().getClave());
+            //Mantenemos el estado
+            usuarioModificado.setActivo(usuario.get().isActivo());
+
+            //Validamos que el nombre de usuario y mail no existan
+            if (usuarioRepository.findByNombreUsuarioOrEmail(modificarUsuarioDTO.getNombreUsuario(),
+                    modificarUsuarioDTO.getEmail()).isPresent()) {
+                throw new IllegalArgumentException("Ya existe un usuario con ese nombre de usuario o mail en la BD.");
+            }
+
+            usuarioRepository.save(usuarioModificado);
+        } else {
+            throw new IllegalArgumentException("El usuario que se desea modificar no existe o esta desactivado.");
+        }
+
+        return modificarUsuarioDTO;
     }
 }
