@@ -2,10 +2,8 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Categoria;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Inventario;
 
