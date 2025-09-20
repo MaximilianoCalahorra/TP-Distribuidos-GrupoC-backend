@@ -3,7 +3,10 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface IUsuarioRepository extends JpaRepository <Usuario, Long> {
@@ -16,4 +19,6 @@ public interface IUsuarioRepository extends JpaRepository <Usuario, Long> {
     Optional <Usuario> findByEmailAndEstado (@Param("email") String email, @Param("estado") boolean estado);
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.idUsuario = :idUsuario AND u.activo = :estado")
     Optional <Usuario> findByIdAndEstado (@Param("idUsuario") Long idUsuario, @Param("estado") boolean estado);
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.rol")
+    List<Usuario> listAllUsers ();
 }
