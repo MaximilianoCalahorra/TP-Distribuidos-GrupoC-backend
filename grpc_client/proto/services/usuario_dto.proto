@@ -1,0 +1,38 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "proto.dtos.usuario";
+
+package proto.dtos;
+
+import "dtos/rol_dto.proto";
+
+message CrearUsuarioProto {
+	string nombreUsuario = 1;
+	string nombre = 2;
+	string apellido = 3;
+	string telefono = 4;
+	string email = 5;
+	RolProto rol = 6;
+}
+
+message UsuarioProto {
+	string nombreUsuario = 1;
+	string nombre = 2;
+	string apellido = 3;
+	string telefono = 4;
+	string email = 5;
+	RolProto rol = 6;
+	bool activo = 7;
+}
+
+message MiembroProto {
+	string nombre = 1;
+	string apellido = 2;
+	string email = 3;
+	RolProto rol = 4;
+}
+
+message LoginUsuarioProto {
+	string nombreUsuario = 1;
+	string clave = 2;
+}
