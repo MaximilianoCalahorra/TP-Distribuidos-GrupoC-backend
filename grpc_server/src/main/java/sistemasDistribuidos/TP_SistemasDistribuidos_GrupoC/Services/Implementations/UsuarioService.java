@@ -11,9 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarUsuarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IRolRepository;
@@ -21,7 +19,11 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuario
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.apache.commons.lang3.RandomStringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,7 +80,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public LoginUsuarioDTO login(LoginUsuarioDTO loginUsuarioDTO) {
+    public MiembroDTO login(LoginUsuarioDTO loginUsuarioDTO) {
         try {
 
             //Armamos las credenciales de ingreso. 2 posibles combinaciones:
@@ -89,8 +91,12 @@ public class UsuarioService implements IUsuarioService {
             //Se validan las credenciales del usuario y si el mismo esta activo
             authenticationManager.authenticate(authToken);
 
-            //Si los datos de ingreso son validos, devolvemos los datos
-            return loginUsuarioDTO;
+            //Si los datos de ingreso son validos, buscamos al usuario en la BD.
+            Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(authToken.getName());
+
+            MiembroDTO miembroDTO = UsuarioMapper.aMiembroDTO(usuarioAutenticado.get());
+
+            return miembroDTO;
 
         } catch (Exception e) {
             throw new BadCredentialsException("Las credenciales ingresadas no son validas: " + e);
@@ -164,5 +170,18 @@ public class UsuarioService implements IUsuarioService {
         }
 
         return modificarUsuarioDTO;
+    }
+
+    @Override
+    public List<UsuarioDTO> listarUsuarios() {
+        List<Usuario> listaUsuarios = usuarioRepository.listAllUsers();
+        List <UsuarioDTO> listaUsuariosDTO =new ArrayList<UsuarioDTO>();
+        //Cargamos la lista
+        for (Usuario usuario : listaUsuarios) {
+            UsuarioDTO usuarioDTO = UsuarioMapper.aDTO(usuario);;
+            usuarioDTO.setRol(rolRepository.findByNombreRol(usuario.getRol().getNombreRol()));
+            listaUsuariosDTO.add(usuarioDTO);
+        }
+        return listaUsuariosDTO;
     }
 }
