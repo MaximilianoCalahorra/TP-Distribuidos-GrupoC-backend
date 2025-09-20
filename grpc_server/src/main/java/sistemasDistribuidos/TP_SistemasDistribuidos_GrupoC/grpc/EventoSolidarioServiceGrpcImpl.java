@@ -55,7 +55,7 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
     public void crearEventoSolidario(CrearEventoSolidarioProto request, StreamObserver<EventoSolidarioProto> responseObserver) {
         
         try {
-            CrearEventoSolidarioDTO dto = EventoSolidarioMapper.toCrearDTO(request);
+            CrearEventoSolidarioDTO dto = EventoSolidarioMapper.aCrearDTO(request);
             EventoSolidarioDTO creado = eventoSolidarioService.crearEventoSolidario(dto);
             EventoSolidarioProto response = EventoSolidarioMapper.toProto(creado);
 
@@ -76,7 +76,7 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
     public void modificarEventoSolidario(ModificarEventoSolidarioProto request, StreamObserver<EventoSolidarioProto> responseObserver) {
         
         try {
-            ModificarEventoSolidarioDTO dto = EventoSolidarioMapper.toModificarDTO(request);
+            ModificarEventoSolidarioDTO dto = EventoSolidarioMapper.aModificarDTO(request);
             EventoSolidarioDTO modificado = eventoSolidarioService.modificarEventoSolidario(dto);
             EventoSolidarioProto response = EventoSolidarioMapper.toProto(modificado);
 
@@ -122,7 +122,12 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
                         .withDescription("Evento solidario no encontrado con id: " + request.getIdEventoSolidario())
                         .asRuntimeException()
             );
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                        .withDescription(e.getMessage())
+                        .asRuntimeException()
+            );
         }
     }
-
 }

@@ -117,7 +117,7 @@ public class EventoSolidarioMapper {
     // =======================
 
     // CrearEventoSolidarioDTO <-> CrearEventoSolidarioProto
-    public static CrearEventoSolidarioDTO toCrearDTO(CrearEventoSolidarioProto proto) {
+    public static CrearEventoSolidarioDTO aCrearDTO(CrearEventoSolidarioProto proto) {
         if (proto == null) return null;
         
         CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
@@ -134,7 +134,7 @@ public class EventoSolidarioMapper {
         return dto;
     }
 
-    public static CrearEventoSolidarioProto toCrearProto(CrearEventoSolidarioDTO dto) {
+    public static CrearEventoSolidarioProto aCrearProto(CrearEventoSolidarioDTO dto) {
         if (dto == null) return null;
         
         return CrearEventoSolidarioProto.newBuilder()
@@ -150,10 +150,11 @@ public class EventoSolidarioMapper {
     }
 
     // ModificarEventoSolidarioDTO <-> ModificarEventoSolidarioProto
-    public static ModificarEventoSolidarioDTO toModificarDTO(ModificarEventoSolidarioProto proto) {
+    public static ModificarEventoSolidarioDTO aModificarDTO(ModificarEventoSolidarioProto proto) {
         if (proto == null) return null;
         
         ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
+        dto.setIdEventoSolidario(proto.getIdEventoSolidario());
         dto.setNombre(proto.getNombre());
         dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
         dto.setMiembros(
@@ -165,10 +166,11 @@ public class EventoSolidarioMapper {
         return dto;
     }
 
-    public static ModificarEventoSolidarioProto toModificarProto(ModificarEventoSolidarioDTO dto) {
+    public static ModificarEventoSolidarioProto aModificarProto(ModificarEventoSolidarioDTO dto) {
         if (dto == null) return null;
         
         return ModificarEventoSolidarioProto.newBuilder()
+        		.setIdEventoSolidario(dto.getIdEventoSolidario())
                 .setNombre(dto.getNombre())
                 .setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
                 .addAllMiembros(
