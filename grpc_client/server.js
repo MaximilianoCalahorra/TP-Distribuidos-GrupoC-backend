@@ -4,6 +4,7 @@ import inventarioRoutes from './routes/inventarioRoutes.js';
 import rolRoutes from './routes/rolRoutes.js';
 import eventoSolidarioRoutes from './routes/eventoSolidarioRoutes.js';
 import donacionRoutes from './routes/donacionRoutes.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
 
 const app = express();
 
@@ -28,7 +29,10 @@ app.use('/eventos-solidarios', eventoSolidarioRoutes);
 //Donaciones:
 app.use('/donaciones', donacionRoutes);
 
-//ConfiguraciÃ³n del puerto:
+//Usuarios:
+app.use('/usuarios', usuarioRoutes);
+
+//Configuración del puerto:
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
