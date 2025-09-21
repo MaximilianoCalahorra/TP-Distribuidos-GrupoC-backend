@@ -11,24 +11,23 @@ Está compuesto por dos módulos principales que trabajan de forma integrada:
 
 ### 🏗️ **Arquitectura General**
 
-```bash
-flowchart LR
-    subgraph Frontend
-        UI[Interfaz Web]
+```mermaid
+flowchart TD
+    subgraph frontend [Frontend]
+        UI[React.js]
     end
 
-    subgraph Cliente gRPC (Node.js + Express)
-        Routes[Routes HTTP]
-        Controllers[Controllers]
-        gRPCClients[Clientes gRPC]
+    subgraph client [Cliente gRPC]
+        API[Node.js + Express]
     end
 
-    subgraph Servidor gRPC (Spring Boot + MySQL)
-        Services[Servicios gRPC]
-        DB[(Base de Datos MySQL)]
+    subgraph server [Servidor gRPC]
+        Srv[Spring Boot]
+        DB[MySQL]
     end
 
-    UI -->|HTTP| Routes --> Controllers --> gRPCClients -->|gRPC| Services --> DB
+    UI -->|HTTP| API -->|gRPC| Srv -->|SQL| DB
+
 ```
 
 - El **frontend** consume endpoints HTTP.
