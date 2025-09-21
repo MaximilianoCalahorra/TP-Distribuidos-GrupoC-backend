@@ -82,15 +82,19 @@ El cliente expone rutas HTTP organizadas por entidad, que luego traducen las lla
 
 #### 👤 **Usuarios (```/usuarios```)**
 
-- ```GET /usuarios``` → Listar usuarios.
+- ```GET /usuarios/list``` → Listar usuarios.
 
-- ```POST /usuarios``` → Crear usuario.
+- ```GET /usuarios/traer/:id``` → Traer usuario por id.
+
+- ```POST /usuarios/crear``` → Crear usuario.
 
 - ```POST /usuarios/login``` → Login por email o nombre de usuario + contraseña.
 
-- ```PUT /usuarios/:id``` → Modificar usuario.
+- ```POST /usuarios/modificar/:id``` → Modificar usuario.
 
-- ```DELETE /usuarios/:id``` → Desactivar usuario (baja lógica).
+- ```POST /usuarios/desactivar/:id``` → Desactivar usuario (baja lógica).
+
+- ```POST /usuarios/reactivar/:id``` → Reactivar usuario.
 
 ---
 
