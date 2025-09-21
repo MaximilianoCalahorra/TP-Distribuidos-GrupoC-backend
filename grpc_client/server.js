@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import inventarioRoutes from './routes/inventarioRoutes.js';
 import rolRoutes from './routes/rolRoutes.js';
+import eventoSolidarioRoutes from './routes/eventoSolidarioRoutes.js';
+import donacionRoutes from './routes/donacionRoutes.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
 
 const app = express();
@@ -20,6 +22,12 @@ app.use('/inventarios', inventarioRoutes);
 
 //Roles:
 app.use('/roles', rolRoutes);
+
+//Eventos solidarios:
+app.use('/eventos-solidarios', eventoSolidarioRoutes);
+
+//Donaciones:
+app.use('/donaciones', donacionRoutes);
 
 //Usuarios:
 app.use('/usuarios', usuarioRoutes);
