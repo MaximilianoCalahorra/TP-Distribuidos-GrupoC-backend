@@ -24,7 +24,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuario
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
 
 @Service("inventarioService")
-@PreAuthorize("hasRole('PRESIDENTE') or hasRole('VOLUNTARIO')")
+@PreAuthorize("hasRole('PRESIDENTE') or hasRole('VOCAL')")
 @RequiredArgsConstructor
 public class InventarioService implements IInventarioService {
 	///Atributos:
@@ -203,4 +203,13 @@ public class InventarioService implements IInventarioService {
       // guardo la entidad inventario (ya viene seteado)
       return inventarioRepository.save(inventario);
   }
+
+  //Traer inventario
+	@Override
+	public ModificarInventarioDTO traerInventario(Long idInventario) {
+		Inventario inventario = inventarioRepository.findById(idInventario)
+				.orElseThrow(() -> new RuntimeException("Inventario no encontrado con ID: " + idInventario));
+		ModificarInventarioDTO modificarInventarioDTO = InventarioMapper.aModificarInventarioDTO(inventario);
+		return modificarInventarioDTO;
+  	}
 }
