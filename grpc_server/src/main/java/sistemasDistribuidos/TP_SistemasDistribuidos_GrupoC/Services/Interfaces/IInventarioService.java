@@ -27,12 +27,12 @@ public interface IInventarioService {
 	///Eliminar lógicamente un inventario:
 	public boolean eliminarLogico(Long idInventario);
   
-  ///Habilitar un inventario:
+	///Habilitar un inventario:
 	public boolean habilitarInventario(Long idInventario);
   
-  /// obtengo inventario por ID
-  public Inventario obtenerInventarioPorId(Long idInventario);
+	/// obtengo inventario por ID
+	public Inventario obtenerInventarioPorId(Long idInventario);
   
-  /// Actualizo el registro existente en la base de datos
-  public void actualizarInventario(Inventario inventario);
+	/// Actualizo el registro existente en la base de datos
+	public Inventario actualizarInventario(Inventario inventario);
 }

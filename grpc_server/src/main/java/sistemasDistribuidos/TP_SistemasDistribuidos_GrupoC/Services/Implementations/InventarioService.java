@@ -199,8 +199,8 @@ public class InventarioService implements IInventarioService {
   
   /// Actualizo el registro existente en la base de datos
   @Override
-  public void actualizarInventario(Inventario inventario) {
+  public Inventario actualizarInventario(Inventario inventario) {
       // guardo la entidad inventario (ya viene seteado)
-      inventarioRepository.save(inventario);
+      return inventarioRepository.save(inventario);
   }
 }
