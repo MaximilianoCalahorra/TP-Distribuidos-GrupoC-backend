@@ -3,6 +3,7 @@ import cors from "cors";
 import inventarioRoutes from './routes/inventarioRoutes.js';
 import rolRoutes from './routes/rolRoutes.js';
 import eventoSolidarioRoutes from './routes/eventoSolidarioRoutes.js';
+import donacionRoutes from './routes/donacionRoutes.js';
 
 const app = express();
 
@@ -24,7 +25,10 @@ app.use('/roles', rolRoutes);
 //Eventos solidarios:
 app.use('/eventos-solidarios', eventoSolidarioRoutes);
 
-//Configuración del puerto:
+//Donaciones:
+app.use('/donaciones', donacionRoutes);
+
+//ConfiguraciÃ³n del puerto:
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
