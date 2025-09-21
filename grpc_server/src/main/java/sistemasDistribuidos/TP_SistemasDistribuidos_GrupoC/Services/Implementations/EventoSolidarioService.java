@@ -8,15 +8,18 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoSolidarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IEventoSolidarioService;
+
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service("eventoSolidarioService")
@@ -25,29 +28,22 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     private final IEventoSolidarioRepository eventoSolidarioRepository;
     private final IUsuarioRepository usuarioRepository;
+    private static final ZoneId ZONE_ARG = ZoneId.of("America/Argentina/Buenos_Aires");
 
     @Override
     @Transactional
     /// creo un evento solidario
     public EventoSolidarioDTO crearEventoSolidario(CrearEventoSolidarioDTO dto) {
         /// valido que la fecha sea posterior a la actual
-        if (dto.getFechaHora().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("La fecha del evento debe ser posterior a la fecha actual.");
-        }
+    	validarFechaEvento(dto.getFechaHora());
 
-        /// valido que los miembros no esten deshabilitados
-        for (MiembroDTO miembro : dto.getMiembros()) {
-            Optional<Usuario> usuario = usuarioRepository.findByEmailAndEstado(miembro.getEmail(), false);
-            if (usuario.isPresent()) {
-                throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
-            }
-        }
-
-        List<Usuario> miembros = dto.getMiembros().stream().map(UsuarioMapper::aEntidad).collect(Collectors.toList());
+        /// valido y obtengo usuarios activos comparando con el listado del evento
+        List<Usuario> miembros = validarYObtenerUsuariosActivos(dto.getMiembros());
 
         /// mapeo del DTO a Entidad y guardo en la base de datos
         EventoSolidario evento = EventoSolidarioMapper.aEntidad(dto);
         evento.setMiembros(miembros);
+
         return EventoSolidarioMapper.aEventoSolidarioDTO(eventoSolidarioRepository.save(evento));
     }
 
@@ -58,30 +54,16 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(dto.getIdEventoSolidario());
         /// valido si encontro o no el evento
         if (!eventoOpt.isPresent()) {
-            throw new IllegalArgumentException("Evento solidario no encontrado.");
+            throw new EntityNotFoundException("Evento solidario no encontrado.");
         }
 
         EventoSolidario evento = eventoOpt.get();
 
         /// valido que la fecha sea posterior a la actual
-        if (dto.getFechaHora().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("La fecha del evento debe ser posterior a la fecha actual.");
-        }
+        validarFechaEvento(dto.getFechaHora());
 
-        /// valido que los miembros no esten inactivos
-        for (MiembroDTO miembro : dto.getMiembros()) {
-            Optional<Usuario> usuario = usuarioRepository.findByEmailAndEstado(miembro.getEmail(), false);
-            if (usuario.isPresent()) {
-                throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
-            }
-        }
-
-        List<Usuario> miembros = dto.getMiembros().stream().map(UsuarioMapper::aEntidad).collect(Collectors.toList());
-
-        if (miembros.size() != miembros.size()) {
-            throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
-        }
-
+        /// valido y obtengo usuarios activos comparando con el listado del evento
+        List<Usuario> miembros = validarYObtenerUsuariosActivos(dto.getMiembros());
 
         evento.setNombre(dto.getNombre());
         evento.setFechaHora(dto.getFechaHora());
@@ -96,7 +78,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     public boolean eliminarEventoSolidario(Long idEventoSolidario) {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(idEventoSolidario);
         if (!eventoOpt.isPresent()) {
-            throw new IllegalArgumentException("Evento solidario no encontrado.");
+            throw new EntityNotFoundException("Evento solidario no encontrado.");
         }
 
         EventoSolidario evento = eventoOpt.get();
@@ -139,5 +121,27 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         return eventoSolidarioRepository.findById(idEventoSolidario)
                 .orElseThrow(() -> new IllegalArgumentException("Evento solidario no encontrado."));
     }
+    
+    /// valido y obtengo usuarios activos comparando con un listado
+    private List<Usuario> validarYObtenerUsuariosActivos(List<MiembroDTO> miembrosDto) {
+        List<String> emails = miembrosDto.stream().map(MiembroDTO::getEmail).toList();
+        List<Usuario> usuarios = usuarioRepository.findAllByEmailIn(emails);
 
+        if (usuarios.size() != emails.size()) {
+            throw new IllegalArgumentException("Uno o más miembros no existen en el sistema.");
+        }
+        if (usuarios.stream().anyMatch(u -> !u.isActivo())) {
+            throw new IllegalArgumentException("Uno o más miembros no están activos en el sistema.");
+        }
+        return usuarios;
+    }
+    
+    /// valido la fecha del evento
+    private void validarFechaEvento(LocalDateTime fechaEvento) {
+        LocalDateTime ahora = LocalDateTime.now(ZONE_ARG);
+        
+        if (fechaEvento.isBefore(ahora)) {
+            throw new IllegalArgumentException("La fecha del evento debe ser posterior a la fecha actual.");
+        }
+    }
 }

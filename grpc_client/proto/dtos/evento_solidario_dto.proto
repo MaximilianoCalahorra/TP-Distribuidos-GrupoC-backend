@@ -1,0 +1,29 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "proto.dtos.evento_solidario";
+
+package proto.dtos;
+
+import "google/protobuf/timestamp.proto";
+import "dtos/usuario_dto.proto";
+
+message CrearEventoSolidarioProto {
+	string nombre = 1;
+	string descripcion = 2;
+	google.protobuf.Timestamp fechaHora = 3;
+	repeated MiembroProto miembros = 4;
+}
+
+message ModificarEventoSolidarioProto {
+	int64 idEventoSolidario = 1;
+	string nombre = 2;
+	google.protobuf.Timestamp fechaHora = 3;
+	repeated MiembroProto miembros = 4;
+}
+
+message EventoSolidarioProto {
+	int64 idEventoSolidario = 1;
+	string nombre = 2;
+	string descripcion = 3;
+	google.protobuf.Timestamp fechaHora = 4;
+}

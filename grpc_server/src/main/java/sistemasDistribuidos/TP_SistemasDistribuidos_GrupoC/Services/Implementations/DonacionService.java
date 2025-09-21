@@ -5,6 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.DonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.DonacionMapper;
@@ -32,6 +34,7 @@ public class DonacionService implements IDonacionService {
     private final IUsuarioRepository usuarioRepository;
 
     @Override
+    @Transactional
     public DonacionDTO crearDonacion(CrearDonacionDTO crearDonacionDTO) {
         // Valido que el evento exista
     	EventoSolidario evento = eventoSolidarioService.obtenerEntidadPorId(crearDonacionDTO.getIdEventoSolidario());
@@ -54,8 +57,7 @@ public class DonacionService implements IDonacionService {
         inventario.setFechaHoraModificacion(LocalDateTime.now()); // fecha
         inventario.setUsuarioModificacion(usuarioAutenticado.get()); // usuario
 
-
-        inventarioService.actualizarInventario(inventario);
+        inventario = inventarioService.actualizarInventario(inventario);
 
         //Creo y guardo la donación
         Donacion donacion = Donacion.builder()
@@ -63,6 +65,7 @@ public class DonacionService implements IDonacionService {
                 .cantidad(crearDonacionDTO.getCantidad())
                 .eventoSolidario(evento)
                 .usuario(usuarioAutenticado.get())
+                .inventario(inventario)
                 .build();
 
         Donacion donacionGuardada = donacionRepository.save(donacion);
@@ -71,8 +74,9 @@ public class DonacionService implements IDonacionService {
 
     /// obtengo todas las donaciones asociadas a un evento solidario específico
     @Override
+    @Transactional
     public List<DonacionDTO> traerDonacionesPorEvento(Long idEventoSolidario) {
-        List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEventoSolidario(idEventoSolidario);
+        List<Donacion> donaciones = donacionRepository.findByEventoSolidarioIdEventoSolidarioConInventario(idEventoSolidario);
         return donaciones.stream()
                 .map(DonacionMapper::aDTO)
                 .collect(Collectors.toList());
