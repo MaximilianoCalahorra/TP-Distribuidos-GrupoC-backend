@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import inventarioRoutes from './routes/inventarioRoutes.js';
 import rolRoutes from './routes/rolRoutes.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.use('/inventarios', inventarioRoutes);
 
 //Roles:
 app.use('/roles', rolRoutes);
+
+//Usuarios:
+app.use('/usuarios', usuarioRoutes);
 
 //Configuración del puerto:
 const PORT = 3000;
