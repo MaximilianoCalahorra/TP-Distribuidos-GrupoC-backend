@@ -129,6 +129,13 @@ spring.datasource.password=${DATABASE_PASSWORD}
 
 4. El servidor gRPC quedará disponible en el puerto configurado (por defecto ```9090```).
 
+5. Cargar el siguiente script en la base de datos para tener los roles y un presidente: [cargar_datos_iniciales.sql](https://github.com/MaximilianoCalahorra/TP-Distribuidos-GrupoC-backend/blob/master/cargar_datos_iniciales.sql)
+
+Las credenciales del presidente son:
+- nombreUsuario: j.perez
+- email: j.perez@empuje-comunitario.com
+- clave: IzsDXBLFqwPi
+
 ---
 
 ### 👥 **Roles y permisos**
