@@ -27,4 +27,5 @@ service InventarioService {
   rpc ModificarInventario (proto.dtos.ModificarInventarioProto) returns (proto.dtos.InventarioProto);
   rpc EliminarLogicoInventario (IdInventarioRequestProto) returns (BooleanInventarioResponseProto);
   rpc HabilitarInventario (IdInventarioRequestProto) returns (BooleanInventarioResponseProto);
+  rpc TraerInventario(IdInventarioRequestProto) returns (proto.dtos.ModificarInventarioProto);
 }

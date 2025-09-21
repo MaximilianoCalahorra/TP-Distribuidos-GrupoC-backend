@@ -22,8 +22,10 @@ message ListarUsuariosResponseProto {
 
 service UsuarioService {
   rpc CrearUsuario (proto.dtos.CrearUsuarioProto) returns (proto.dtos.CrearUsuarioProto);
-  rpc Login (proto.dtos.LoginUsuarioProto) returns (proto.dtos.MiembroProto);
+  rpc Login (proto.dtos.LoginUsuarioProto) returns (proto.dtos.LoginUsuarioResponseProto);
   rpc DesactivarUsuario (IdUsuarioRequestProto) returns (StringResponseProto);
   rpc ModificarUsuario (proto.dtos.ModificarUsuarioProto) returns (proto.dtos.ModificarUsuarioProto);
   rpc ListarUsuarios (google.protobuf.Empty) returns (ListarUsuariosResponseProto);
+  rpc TraerUsuario (IdUsuarioRequestProto) returns (proto.dtos.CrearUsuarioProto);
+  rpc ReactivarUsuario (IdUsuarioRequestProto) returns (StringResponseProto);
 }

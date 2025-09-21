@@ -40,10 +40,10 @@ public class UsuarioServiceGrpcImpl extends UsuarioServiceGrpc.UsuarioServiceImp
     }
 
     @Override
-    public void login (LoginUsuarioProto request, StreamObserver<MiembroProto> responseObserver) {
+    public void login (LoginUsuarioProto request, StreamObserver<LoginUsuarioResponseProto> responseObserver) {
         try {
             LoginUsuarioDTO loginUsuarioDTO = UsuarioMapper.aLoginUsuarioDTO(request);
-            MiembroProto response = UsuarioMapper.aMiembroProto(usuarioService.login(loginUsuarioDTO));
+            LoginUsuarioResponseProto response = UsuarioMapper.aLoginUsuarioResponseProto(usuarioService.login(loginUsuarioDTO));
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -104,6 +104,38 @@ public class UsuarioServiceGrpcImpl extends UsuarioServiceGrpc.UsuarioServiceImp
             responseObserver.onError(
                     io.grpc.Status.INVALID_ARGUMENT
                             .withDescription("Error al listar los usuarios: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    @Override
+    public void traerUsuario(IdUsuarioRequestProto request, StreamObserver<CrearUsuarioProto> responseObserver) {
+        try {
+            CrearUsuarioDTO crearUsuarioDTO = usuarioService.traerUsuario(request.getIdUsuario());
+            CrearUsuarioProto responseProto = UsuarioMapper.aCrearUsuarioProto(crearUsuarioDTO);
+            responseObserver.onNext(responseProto);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al traer al usuario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    @Override
+    public void reactivarUsuario(IdUsuarioRequestProto request, StreamObserver<StringResponseProto> responseObserver) {
+        try {
+            String mensaje = usuarioService.reactivarUsuario(request.getIdUsuario());
+            StringResponseProto responseProto = StringResponseProto.newBuilder().setMensaje(mensaje).build();
+            responseObserver.onNext(responseProto);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al reactivar al usuario: " + e.getMessage())
                             .asRuntimeException()
             );
         }
