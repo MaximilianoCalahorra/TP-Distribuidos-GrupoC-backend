@@ -15,7 +15,8 @@ public class UsuarioMapper {
     	if (entidad == null) return null;
     	
     	UsuarioDTO dto = new UsuarioDTO();
-        
+
+        dto.setIdUsuario(entidad.getIdUsuario());
     	dto.setNombreUsuario(entidad.getNombreUsuario());
 	    dto.setNombre(entidad.getNombre());
 	    dto.setApellido(entidad.getApellido());
@@ -154,6 +155,36 @@ public class UsuarioMapper {
         return entidad;
     }
 
+    // LoginUsuarioResponseDTO <-> Usuario
+    public static LoginUsuarioResponseDTO aLoginUsuarioResponseDTO(Usuario entidad) {
+        if (entidad == null) return null;
+
+        LoginUsuarioResponseDTO dto = new LoginUsuarioResponseDTO();
+
+        dto.setNombre(entidad.getNombre());
+        dto.setNombreUsuario(entidad.getNombreUsuario());
+        dto.setApellido(entidad.getApellido());
+        dto.setEmail(entidad.getEmail());
+        dto.setRol(entidad.getRol());
+
+        return dto;
+    }
+
+    public static Usuario aEntidad(LoginUsuarioResponseDTO dto) {
+        if (dto == null) return null;
+
+        Usuario entidad = new Usuario();
+
+        entidad.setNombreUsuario(dto.getNombreUsuario());
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
+        entidad.setTelefono(dto.getClave());
+        entidad.setEmail(dto.getEmail());
+        entidad.setRol(dto.getRol());
+
+        return entidad;
+    }
+
     // =======================
     // DTOs <-> Protos
     // =======================
@@ -179,6 +210,7 @@ public class UsuarioMapper {
         if (dto == null) return null;
         
         return UsuarioProto.newBuilder()
+                .setIdUsuario(dto.getIdUsuario())
                 .setNombreUsuario(dto.getNombreUsuario())
                 .setNombre(dto.getNombre())
                 .setApellido(dto.getApellido())
@@ -291,6 +323,35 @@ public class UsuarioMapper {
                 .setApellido(dto.getApellido())
                 .setEmail(dto.getEmail())
                 .setTelefono(dto.getTelefono())
+                .setRol(RolMapper.aProto(dto.getRol()))
+                .build();
+    }
+
+    // LoginUsuarioResponseDTO <-> LoginUsuarioResponseProto
+    public static LoginUsuarioResponseDTO aLoginUsuarioResponseDTO(LoginUsuarioResponseProto proto) {
+        if (proto == null) return null;
+
+        LoginUsuarioResponseDTO dto = new LoginUsuarioResponseDTO();
+
+        dto.setNombreUsuario(proto.getNombreUsuario());
+        dto.setNombre(proto.getNombre());
+        dto.setApellido(proto.getApellido());
+        dto.setEmail(proto.getEmail());
+        dto.setRol(RolMapper.aEntidad(proto.getRol()));
+        dto.setClave(proto.getClave());
+
+        return dto;
+    }
+
+    public static LoginUsuarioResponseProto aLoginUsuarioResponseProto(LoginUsuarioResponseDTO dto) {
+        if (dto == null) return null;
+
+        return LoginUsuarioResponseProto.newBuilder()
+                .setNombreUsuario(dto.getNombreUsuario())
+                .setNombre(dto.getNombre())
+                .setApellido(dto.getApellido())
+                .setEmail(dto.getEmail())
+                .setClave(dto.getClave())
                 .setRol(RolMapper.aProto(dto.getRol()))
                 .build();
     }

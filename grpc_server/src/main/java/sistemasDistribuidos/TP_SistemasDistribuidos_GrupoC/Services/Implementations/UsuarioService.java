@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
@@ -80,7 +81,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public MiembroDTO login(LoginUsuarioDTO loginUsuarioDTO) {
+    public LoginUsuarioResponseDTO login(LoginUsuarioDTO loginUsuarioDTO) {
         try {
 
             //Armamos las credenciales de ingreso. 2 posibles combinaciones:
@@ -94,9 +95,10 @@ public class UsuarioService implements IUsuarioService {
             //Si los datos de ingreso son validos, buscamos al usuario en la BD.
             Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(authToken.getName());
 
-            MiembroDTO miembroDTO = UsuarioMapper.aMiembroDTO(usuarioAutenticado.get());
+            LoginUsuarioResponseDTO loginUsuarioResponseDTO = UsuarioMapper.aLoginUsuarioResponseDTO(usuarioAutenticado.get());
+            loginUsuarioResponseDTO.setClave(loginUsuarioDTO.getClave());
 
-            return miembroDTO;
+            return loginUsuarioResponseDTO;
 
         } catch (Exception e) {
             throw new BadCredentialsException("Las credenciales ingresadas no son validas: " + e);
@@ -145,8 +147,8 @@ public class UsuarioService implements IUsuarioService {
             throw new IllegalArgumentException("No es posible modificarse a si mismo.");
         }
 
-        //Validamos que el usuario que se desea modificar esta activo o existe
-        Optional<Usuario> usuario = usuarioRepository.findByIdAndEstado(modificarUsuarioDTO.getIdUsuario(), true);
+        //Validamos que el usuario que se desea modificar exista
+        Optional<Usuario> usuario = usuarioRepository.findByIdUsuario(modificarUsuarioDTO.getIdUsuario());
 
         if (usuario.isPresent()) {
             //Si el usuario existe y esta activo
@@ -158,9 +160,10 @@ public class UsuarioService implements IUsuarioService {
             //Mantenemos el estado
             usuarioModificado.setActivo(usuario.get().isActivo());
 
-            //Validamos que el nombre de usuario y mail no existan
-            if (usuarioRepository.findByNombreUsuarioOrEmail(modificarUsuarioDTO.getNombreUsuario(),
-                    modificarUsuarioDTO.getEmail()).isPresent()) {
+            //Validamos que el nombre de usuario y mail no existan y que no sean pertenecientes al usuario a modificar
+            Optional<Usuario> usuarioBuscado = usuarioRepository.findByNombreUsuarioOrEmail(modificarUsuarioDTO.getNombreUsuario(),
+                    modificarUsuarioDTO.getEmail());
+            if (usuarioBuscado.isPresent() && usuarioBuscado.get().getIdUsuario() != modificarUsuarioDTO.getIdUsuario()) {
                 throw new IllegalArgumentException("Ya existe un usuario con ese nombre de usuario o mail en la BD.");
             }
 
@@ -172,6 +175,7 @@ public class UsuarioService implements IUsuarioService {
         return modificarUsuarioDTO;
     }
 
+    @PreAuthorize("hasRole('PRESIDENTE')")
     @Override
     public List<UsuarioDTO> listarUsuarios() {
         List<Usuario> listaUsuarios = usuarioRepository.listAllUsers();
@@ -183,5 +187,42 @@ public class UsuarioService implements IUsuarioService {
             listaUsuariosDTO.add(usuarioDTO);
         }
         return listaUsuariosDTO;
+    }
+
+    @Override
+    public CrearUsuarioDTO traerUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario).
+                orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado!"));
+        CrearUsuarioDTO crearUsuarioDTO = UsuarioMapper.aCrearUsuarioDTO(usuario);
+        crearUsuarioDTO.setRol(rolRepository.findByNombreRol(usuario.getRol().getNombreRol()));
+        return crearUsuarioDTO;
+    }
+
+    @PreAuthorize("hasRole('PRESIDENTE')")
+    @Override
+    public String reactivarUsuario(Long idUsuario) {
+
+        //Obtenemos el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userData = (UserDetails) auth.getPrincipal();
+        Optional<Usuario> usuarioAutenticado = usuarioRepository.findByNombreUsuario(userData.getUsername());
+
+        //Validamos que el id ingresado no sea el mismo que el del usuario autenticado
+        if (usuarioAutenticado.get().getIdUsuario() == idUsuario) {
+            throw new IllegalArgumentException("No es posible reactivarse a si mismo.");
+        }
+
+        //Validamos que el usuario que se desea reactivar esta inactivo o existe
+        Optional<Usuario> usuario = usuarioRepository.findByIdAndEstado(idUsuario, false);
+
+        if (usuario.isPresent()) {
+            //Si el usuario existe y esta inactivo
+            usuario.get().setActivo(true);
+            usuarioRepository.save(usuario.get());
+        } else {
+            throw new IllegalArgumentException("El usuario que se desea reactivar ya esta activo o no existe.");
+        }
+
+        return "El usuario con id: " + idUsuario + " fue reactivado con exito!";
     }
 }

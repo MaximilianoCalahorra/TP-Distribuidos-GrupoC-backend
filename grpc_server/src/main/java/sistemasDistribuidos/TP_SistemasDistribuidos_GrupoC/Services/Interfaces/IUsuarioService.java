@@ -8,7 +8,9 @@ import java.util.List;
 public interface IUsuarioService {
     public List<UsuarioDTO> listarUsuarios ();
     public CrearUsuarioDTO crearUsuario (CrearUsuarioDTO crearUsuarioDTO) throws MessagingException;
-    public MiembroDTO login (LoginUsuarioDTO loginUsuarioDTO);
+    public LoginUsuarioResponseDTO login (LoginUsuarioDTO loginUsuarioDTO);
     public String desactivarUsuario (Long idUsuario);
     public ModificarUsuarioDTO modificarUsuario (ModificarUsuarioDTO modificarUsuarioDTO);
+    public CrearUsuarioDTO traerUsuario (Long idUsuario);
+    public String reactivarUsuario (Long idUsuario);
 }

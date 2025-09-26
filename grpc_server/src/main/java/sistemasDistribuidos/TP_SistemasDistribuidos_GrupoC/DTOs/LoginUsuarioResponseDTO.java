@@ -8,26 +8,21 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Rol;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UsuarioDTO {
-    private Long idUsuario;
-    private String nombreUsuario;
+public class LoginUsuarioResponseDTO     {
     private String nombre;
+    private String nombreUsuario;
     private String apellido;
-    private String telefono;
     private String email;
+    private String clave;
     private Rol rol;
-    private boolean activo;
 
     // Constructor con todos los campos
-    public UsuarioDTO(Long idUsuario, String nombreUsuario, String nombre, String apellido,
-                      String telefono, String email, Rol rol, boolean activo) {
-        this.idUsuario = idUsuario;
-        this.nombreUsuario = nombreUsuario;
+    public LoginUsuarioResponseDTO(String nombre, String nombreUsuario, String apellido, String email, String clave, Rol rol) {
         this.nombre = nombre;
+        this.nombreUsuario = nombreUsuario;
         this.apellido = apellido;
-        this.telefono = telefono;
         this.email = email;
+        this.clave = clave;
         this.rol = rol;
-        this.activo = activo;
     }
 }

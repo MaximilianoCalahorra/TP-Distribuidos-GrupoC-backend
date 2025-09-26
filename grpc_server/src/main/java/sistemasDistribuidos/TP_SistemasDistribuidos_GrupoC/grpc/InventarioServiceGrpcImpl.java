@@ -173,4 +173,20 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
             );
         }
     }
+
+    @Override
+    public void traerInventario(IdInventarioRequestProto request, StreamObserver<ModificarInventarioProto> responseObserver) {
+        try {
+            ModificarInventarioDTO modificarInventarioDTO = inventarioService.traerInventario(request.getIdInventario());
+            ModificarInventarioProto responseProto = InventarioMapper.aModificarInventarioProto(modificarInventarioDTO);
+            responseObserver.onNext(responseProto);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al traer el inventario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
 }

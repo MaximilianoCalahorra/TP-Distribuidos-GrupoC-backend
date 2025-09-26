@@ -8,6 +8,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Rol;
 @Setter
 @NoArgsConstructor
 public class CrearUsuarioDTO {
+    private Long idUsuario;
     private String nombreUsuario;
     private String nombre;
     private String apellido;
@@ -16,8 +17,9 @@ public class CrearUsuarioDTO {
     private Rol rol;
 
     // Constructor con todos los campos
-    public CrearUsuarioDTO(String nombreUsuario, String nombre, String apellido,
+    public CrearUsuarioDTO(Long idUsuario, String nombreUsuario, String nombre, String apellido,
                            String telefono, String email, Rol rol) {
+        this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
         this.apellido = apellido;

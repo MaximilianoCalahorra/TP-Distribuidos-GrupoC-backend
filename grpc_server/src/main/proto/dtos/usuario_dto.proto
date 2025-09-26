@@ -16,13 +16,14 @@ message CrearUsuarioProto {
 }
 
 message UsuarioProto {
-	string nombreUsuario = 1;
-	string nombre = 2;
-	string apellido = 3;
-	string telefono = 4;
-	string email = 5;
-	RolProto rol = 6;
-	bool activo = 7;
+    int64 idUsuario = 1;
+	string nombreUsuario = 2;
+	string nombre = 3;
+	string apellido = 4;
+	string telefono = 5;
+	string email = 6;
+	RolProto rol = 7;
+	bool activo = 8;
 }
 
 message MiembroProto {
@@ -45,4 +46,13 @@ message ModificarUsuarioProto {
     string telefono = 5;
     string email = 6;
     RolProto rol = 7;
+}
+
+message LoginUsuarioResponseProto {
+    string nombre = 1;
+    string nombreUsuario = 2;
+    string apellido = 3;
+    string email = 4;
+    string clave = 5;
+    RolProto rol = 6;
 }
