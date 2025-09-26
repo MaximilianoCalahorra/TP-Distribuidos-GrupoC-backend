@@ -34,7 +34,7 @@ public interface IInventarioService {
 	public Inventario obtenerInventarioPorId(Long idInventario);
   
   /// Actualizo el registro existente en la base de datos
-  public void actualizarInventario(Inventario inventario);
+  public Inventario actualizarInventario(Inventario inventario);
 
   /// obtengo inventario por ID
   public ModificarInventarioDTO traerInventario(Long idInventario);

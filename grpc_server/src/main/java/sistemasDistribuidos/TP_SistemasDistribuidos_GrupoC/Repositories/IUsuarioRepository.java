@@ -22,4 +22,6 @@ public interface IUsuarioRepository extends JpaRepository <Usuario, Long> {
     List<Usuario> findAllByEmailIn(@Param("emails") List<String> emails);
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.idUsuario = :idUsuario")
     Optional<Usuario> findByIdUsuario (@Param("idUsuario") Long idUsuario);
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.activo = :estado")
+    Optional<List<Usuario>> listAllByEstado (@Param("estado") boolean estado);
 }

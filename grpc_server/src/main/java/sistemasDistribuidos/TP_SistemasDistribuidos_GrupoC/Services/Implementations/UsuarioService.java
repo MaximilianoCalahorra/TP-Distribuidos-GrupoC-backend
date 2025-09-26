@@ -20,11 +20,9 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuario
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IUsuarioService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -224,5 +222,18 @@ public class UsuarioService implements IUsuarioService {
         }
 
         return "El usuario con id: " + idUsuario + " fue reactivado con exito!";
+    }
+
+    @Override
+    public List<MiembroDTO> traerUsuariosActivos() {
+        Optional<List<Usuario>> usuariosActivos = usuarioRepository.listAllByEstado(true);
+        List <MiembroDTO> miembrosActivos = new ArrayList<MiembroDTO>();
+        if (usuariosActivos.isPresent()) {
+            miembrosActivos = usuariosActivos.get()
+                    .stream()
+                    .map(usuario -> UsuarioMapper.aMiembroDTO(usuario))
+                    .toList();
+        }
+        return miembrosActivos;
     }
 }

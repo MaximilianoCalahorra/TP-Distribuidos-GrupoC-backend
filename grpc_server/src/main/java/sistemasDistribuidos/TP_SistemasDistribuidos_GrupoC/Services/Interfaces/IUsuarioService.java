@@ -13,4 +13,5 @@ public interface IUsuarioService {
     public ModificarUsuarioDTO modificarUsuario (ModificarUsuarioDTO modificarUsuarioDTO);
     public CrearUsuarioDTO traerUsuario (Long idUsuario);
     public String reactivarUsuario (Long idUsuario);
+    public List<MiembroDTO> traerUsuariosActivos ();
 }
