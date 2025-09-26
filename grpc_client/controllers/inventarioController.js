@@ -1,10 +1,16 @@
+import * as grpc from '@grpc/grpc-js';
 import inventarioClient from '../client/inventarioClient.js';
 import { handleGrpcResponse } from '../utils/handleGrpcResponse.js';
 
 //Listar inventarios:
 export const listarInventarios = (req, res) => {
+
+   const md = new grpc.Metadata();
+   const auth = req.get('Authorization');
+   if (auth) md.add('Authorization', auth);
+
   //El cliente gRPC llama al método correspondiente en el servidor:
-  inventarioClient.ListarInventarios({}, (error, response) => handleGrpcResponse(res, error, response));
+  inventarioClient.ListarInventarios({}, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Listar inventarios activos:
@@ -31,7 +37,11 @@ export const crearInventario = (req, res) => {
     cantidad
   };
 
-  inventarioClient.CrearInventario(crearInventarioProto, (error, response) => handleGrpcResponse(res, error, response));
+   const md = new grpc.Metadata();
+   const auth = req.get('Authorization');
+   if (auth) md.add('Authorization', auth);
+
+  inventarioClient.CrearInventario(crearInventarioProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Modificar un inventario:
@@ -45,7 +55,11 @@ export const modificarInventario = (req, res) => {
     cantidad
   }
 
-  inventarioClient.ModificarInventario(modificarInventarioProto, (error, response) => handleGrpcResponse(res, error, response));
+  const md = new grpc.Metadata();
+  const auth = req.get('Authorization');
+  if (auth) md.add('Authorization', auth);
+
+  inventarioClient.ModificarInventario(modificarInventarioProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Eliminar lógicamente un inventario:
@@ -56,7 +70,11 @@ export const eliminarLogicoInventario = (req, res) => {
     idInventario
   }
 
-  inventarioClient.EliminarLogicoInventario(IdInventarioRequestProto, (error, response) => handleGrpcResponse(res, error, response));
+  const md = new grpc.Metadata();
+  const auth = req.get('Authorization');
+  if (auth) md.add('Authorization', auth);
+
+  inventarioClient.EliminarLogicoInventario(IdInventarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Habilitar un inventario:
@@ -67,5 +85,26 @@ export const habilitarInventario = (req, res) => {
     idInventario
   }
 
-  inventarioClient.HabilitarInventario(IdInventarioRequestProto, (error, response) => handleGrpcResponse(res, error, response));
+  const md = new grpc.Metadata();
+  const auth = req.get('Authorization');
+  if (auth) md.add('Authorization', auth);
+
+  inventarioClient.HabilitarInventario(IdInventarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
+};
+
+//Traer un inventario:
+export const traerInventario = (req, res) => {
+
+  const idInventario = req.params.id;
+
+   const IdInventarioRequestProto = {
+      idInventario
+   }
+
+   const md = new grpc.Metadata();
+   const auth = req.get('Authorization');
+   if (auth) md.add('Authorization', auth);
+
+  //El cliente gRPC llama al método correspondiente en el servidor:
+  inventarioClient.traerInventario(IdInventarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
