@@ -118,3 +118,10 @@ export const  reactivarUsuario = (req, res) => {
   usuarioClient.reactivarUsuario(IdUsuarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
+//Listar usuarios activos:
+export const listarUsuariosActivos = (req, res) => {
+
+  //El cliente gRPC llama al método correspondiente en el servidor:
+  usuarioClient.traerUsuariosActivos({}, (error, response) => handleGrpcResponse(res, error, response));
+};
+

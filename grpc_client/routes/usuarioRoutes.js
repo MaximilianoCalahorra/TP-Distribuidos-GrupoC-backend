@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { crearUsuario, login, desactivarUsuario, modificarUsuario, listarUsuarios, traerUsuario, reactivarUsuario } from '../controllers/usuarioController.js';
+import { crearUsuario, login, desactivarUsuario, modificarUsuario, listarUsuarios, traerUsuario, reactivarUsuario, listarUsuariosActivos } from '../controllers/usuarioController.js';
+
 
 const router = Router();
 
@@ -10,5 +11,6 @@ router.post('/desactivar/:id', desactivarUsuario); //Desactivar usuario.
 router.get('/list', listarUsuarios); //Listar usuarios.
 router.get('/traer/:id', traerUsuario); //Traer usuarios.
 router.post('/reactivar/:id', reactivarUsuario); //Reactivar usuario.
+router.get('/list/activos', listarUsuariosActivos); //Listar usuarios activos.
 
 export default router;
