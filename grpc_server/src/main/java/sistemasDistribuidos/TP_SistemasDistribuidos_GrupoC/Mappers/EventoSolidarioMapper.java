@@ -18,9 +18,9 @@ public class EventoSolidarioMapper {
     // CrearEventoSolidarioDTO <-> EventoSolidario
     public static CrearEventoSolidarioDTO aDTO(EventoSolidario entidad) {
         if (entidad == null) return null;
-    	
-    	CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
-      
+
+        CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
+
         dto.setNombre(entidad.getNombre());
         dto.setDescripcion(entidad.getDescripcion());
         dto.setFechaHora(entidad.getFechaHora());
@@ -29,15 +29,15 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aMiembroDTO)
                         .collect(Collectors.toList())
         );
-      
+
         return dto;
     }
-    
+
     public static EventoSolidario aEntidad(CrearEventoSolidarioDTO dto) {
         if (dto == null) return null;
-    	
-    	EventoSolidario entidad = new EventoSolidario();
-      
+
+        EventoSolidario entidad = new EventoSolidario();
+
         entidad.setNombre(dto.getNombre());
         entidad.setDescripcion(dto.getDescripcion());
         entidad.setFechaHora(dto.getFechaHora());
@@ -46,17 +46,17 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aEntidad)
                         .collect(Collectors.toList())
         );
-      
+
         return entidad;
     }
 
     // ModificarEventoSolidarioDTO <-> EventoSolidario
     public static ModificarEventoSolidarioDTO aModificarEventoSolidarioDTO(EventoSolidario entidad) {
         if (entidad == null) return null;
-    	
-    	ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
-        
-    	dto.setIdEventoSolidario(entidad.getIdEventoSolidario());
+
+        ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
+
+        dto.setIdEventoSolidario(entidad.getIdEventoSolidario());
         dto.setNombre(entidad.getNombre());
         dto.setFechaHora(entidad.getFechaHora());
         dto.setMiembros(
@@ -64,16 +64,16 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aMiembroDTO)
                         .collect(Collectors.toList())
         );
-      
+
         return dto;
     }
-    
+
     public static EventoSolidario aEntidad(ModificarEventoSolidarioDTO dto) {
         if (dto == null) return null;
-    	
-    	EventoSolidario entidad = new EventoSolidario();
-        
-    	entidad.setIdEventoSolidario(dto.getIdEventoSolidario());
+
+        EventoSolidario entidad = new EventoSolidario();
+
+        entidad.setIdEventoSolidario(dto.getIdEventoSolidario());
         entidad.setNombre(dto.getNombre());
         entidad.setFechaHora(dto.getFechaHora());
         entidad.setMiembros(
@@ -81,35 +81,38 @@ public class EventoSolidarioMapper {
                         .map(UsuarioMapper::aEntidad)
                         .collect(Collectors.toList())
         );
-      
+
         return entidad;
     }
-    
+
     // EventoSolidarioDTO <-> EventoSolidario
     public static EventoSolidarioDTO aEventoSolidarioDTO(EventoSolidario entidad) {
-    	if (entidad == null) return null;
-    	
-    	EventoSolidarioDTO dto = new EventoSolidarioDTO();
-    	
-    	dto.setIdEventoSolidario(entidad.getIdEventoSolidario());
-    	dto.setNombre(entidad.getNombre());
-    	dto.setDescripcion(entidad.getDescripcion());
-    	dto.setFechaHora(entidad.getFechaHora());
-    	
-    	return dto;
+        if (entidad == null) return null;
+
+        EventoSolidarioDTO dto = new EventoSolidarioDTO();
+
+        dto.setIdEventoSolidario(entidad.getIdEventoSolidario());
+        dto.setNombre(entidad.getNombre());
+        dto.setDescripcion(entidad.getDescripcion());
+        dto.setFechaHora(entidad.getFechaHora());
+        dto.setMiembros(
+                entidad.getMiembros().stream()
+                        .map(UsuarioMapper::aMiembroDTO)
+                        .collect(Collectors.toList()));
+        return dto;
     }
-    
+
     public static EventoSolidario aEntidad(EventoSolidarioDTO dto) {
-    	if (dto == null) return null;
-    	
-    	EventoSolidario entidad = new EventoSolidario();
-    	
-    	entidad.setIdEventoSolidario(dto.getIdEventoSolidario());
-    	entidad.setNombre(dto.getNombre());
-    	entidad.setDescripcion(dto.getDescripcion());
-    	entidad.setFechaHora(dto.getFechaHora());
-    	
-    	return entidad;
+        if (dto == null) return null;
+
+        EventoSolidario entidad = new EventoSolidario();
+
+        entidad.setIdEventoSolidario(dto.getIdEventoSolidario());
+        entidad.setNombre(dto.getNombre());
+        entidad.setDescripcion(dto.getDescripcion());
+        entidad.setFechaHora(dto.getFechaHora());
+
+        return entidad;
     }
 
     // =======================
@@ -119,32 +122,32 @@ public class EventoSolidarioMapper {
     // CrearEventoSolidarioDTO <-> CrearEventoSolidarioProto
     public static CrearEventoSolidarioDTO aCrearDTO(CrearEventoSolidarioProto proto) {
         if (proto == null) return null;
-        
+
         CrearEventoSolidarioDTO dto = new CrearEventoSolidarioDTO();
-        
+
         dto.setNombre(proto.getNombre());
         dto.setDescripcion(proto.getDescripcion());
         dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
         dto.setMiembros(
                 proto.getMiembrosList().stream()
-                     .map(UsuarioMapper::aMiembroDTO)
-                     .toList()
+                        .map(UsuarioMapper::aMiembroDTO)
+                        .toList()
         );
-        
+
         return dto;
     }
 
     public static CrearEventoSolidarioProto aCrearProto(CrearEventoSolidarioDTO dto) {
         if (dto == null) return null;
-        
+
         return CrearEventoSolidarioProto.newBuilder()
                 .setNombre(dto.getNombre())
                 .setDescripcion(dto.getDescripcion())
                 .setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
                 .addAllMiembros(
                         dto.getMiembros().stream()
-                           .map(UsuarioMapper::aMiembroProto)
-                           .toList()
+                                .map(UsuarioMapper::aMiembroProto)
+                                .toList()
                 )
                 .build();
     }
@@ -152,57 +155,68 @@ public class EventoSolidarioMapper {
     // ModificarEventoSolidarioDTO <-> ModificarEventoSolidarioProto
     public static ModificarEventoSolidarioDTO aModificarDTO(ModificarEventoSolidarioProto proto) {
         if (proto == null) return null;
-        
+
         ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
         dto.setIdEventoSolidario(proto.getIdEventoSolidario());
         dto.setNombre(proto.getNombre());
         dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
         dto.setMiembros(
                 proto.getMiembrosList().stream()
-                     .map(UsuarioMapper::aMiembroDTO)
-                     .toList()
+                        .map(UsuarioMapper::aMiembroDTO)
+                        .toList()
         );
-        
+
         return dto;
     }
 
     public static ModificarEventoSolidarioProto aModificarProto(ModificarEventoSolidarioDTO dto) {
         if (dto == null) return null;
-        
+
         return ModificarEventoSolidarioProto.newBuilder()
-        		.setIdEventoSolidario(dto.getIdEventoSolidario())
+                .setIdEventoSolidario(dto.getIdEventoSolidario())
                 .setNombre(dto.getNombre())
                 .setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
                 .addAllMiembros(
                         dto.getMiembros().stream()
-                           .map(UsuarioMapper::aMiembroProto)
-                           .toList()
+                                .map(UsuarioMapper::aMiembroProto)
+                                .toList()
                 )
                 .build();
     }
-    
+
     // EventoSolidarioDTO <-> EventoSolidarioProto
     public static EventoSolidarioDTO toDTO(EventoSolidarioProto proto) {
-    	if (proto == null) return null;
-    	
-    	EventoSolidarioDTO dto = new EventoSolidarioDTO();
-    	
-    	dto.setIdEventoSolidario(proto.getIdEventoSolidario());
-    	dto.setNombre(proto.getNombre());
-    	dto.setDescripcion(proto.getDescripcion());
-    	dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
-    	
-    	return dto;
+        if (proto == null) return null;
+
+        EventoSolidarioDTO dto = new EventoSolidarioDTO();
+
+        dto.setIdEventoSolidario(proto.getIdEventoSolidario());
+        dto.setNombre(proto.getNombre());
+        dto.setDescripcion(proto.getDescripcion());
+        dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
+        dto.setMiembros(proto.getMiembrosList()
+                .stream()
+                .map(UsuarioMapper::aMiembroDTO)
+                .toList()
+        );
+
+        return dto;
     }
-    
+
     public static EventoSolidarioProto toProto(EventoSolidarioDTO dto) {
-    	if (dto == null) return null;
-    	
-    	return EventoSolidarioProto.newBuilder()
-    			.setIdEventoSolidario(dto.getIdEventoSolidario())
-    			.setNombre(dto.getNombre())
-    			.setDescripcion(dto.getDescripcion())
-    			.setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
-    			.build();
+        if (dto == null) return null;
+
+        return EventoSolidarioProto.newBuilder()
+                .setIdEventoSolidario(dto.getIdEventoSolidario())
+                .setNombre(dto.getNombre())
+                .setDescripcion(dto.getDescripcion())
+                .setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
+                .addAllMiembros(
+                        dto.getMiembros()
+                                .stream()
+                                .map(UsuarioMapper::aMiembroProto)
+                                .toList()
+                )
+                .build();
     }
 }
