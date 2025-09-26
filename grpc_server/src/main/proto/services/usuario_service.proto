@@ -20,6 +20,10 @@ message ListarUsuariosResponseProto {
   repeated proto.dtos.UsuarioProto usuarios = 1;
 }
 
+message ListarUsuariosActivosResponseProto {
+  repeated proto.dtos.MiembroProto usuariosActivos = 1;
+}
+
 service UsuarioService {
   rpc CrearUsuario (proto.dtos.CrearUsuarioProto) returns (proto.dtos.CrearUsuarioProto);
   rpc Login (proto.dtos.LoginUsuarioProto) returns (proto.dtos.LoginUsuarioResponseProto);
@@ -28,4 +32,5 @@ service UsuarioService {
   rpc ListarUsuarios (google.protobuf.Empty) returns (ListarUsuariosResponseProto);
   rpc TraerUsuario (IdUsuarioRequestProto) returns (proto.dtos.CrearUsuarioProto);
   rpc ReactivarUsuario (IdUsuarioRequestProto) returns (StringResponseProto);
+  rpc TraerUsuariosActivos (google.protobuf.Empty) returns (ListarUsuariosActivosResponseProto);
 }

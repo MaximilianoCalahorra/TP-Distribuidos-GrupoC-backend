@@ -5,14 +5,8 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import lombok.RequiredArgsConstructor;
 import proto.dtos.usuario.*;
-import proto.services.usuario.IdUsuarioRequestProto;
-import proto.services.usuario.ListarUsuariosResponseProto;
-import proto.services.usuario.StringResponseProto;
-import proto.services.usuario.UsuarioServiceGrpc;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.LoginUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarUsuarioDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.UsuarioDTO;
+import proto.services.usuario.*;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations.UsuarioService;
 import java.util.List;
@@ -136,6 +130,28 @@ public class UsuarioServiceGrpcImpl extends UsuarioServiceGrpc.UsuarioServiceImp
             responseObserver.onError(
                     io.grpc.Status.INVALID_ARGUMENT
                             .withDescription("Error al reactivar al usuario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    @Override
+    public void traerUsuariosActivos(Empty request, StreamObserver<ListarUsuariosActivosResponseProto> responseObserver) {
+        try {
+            List<MiembroDTO> usuariosActivos = usuarioService.traerUsuariosActivos();
+
+            ListarUsuariosActivosResponseProto.Builder responseBuilder = ListarUsuariosActivosResponseProto.newBuilder();
+            for (MiembroDTO miembroDTO : usuariosActivos) {
+                MiembroProto miembroProto = UsuarioMapper.aMiembroProto(miembroDTO);
+                responseBuilder.addUsuariosActivos(miembroProto);
+            }
+
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al listar los usuarios activos: " + e.getMessage())
                             .asRuntimeException()
             );
         }
