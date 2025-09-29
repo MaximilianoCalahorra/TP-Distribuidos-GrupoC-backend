@@ -1,6 +1,8 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.config;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,9 +64,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource(@Value("${cors.allowed.origin}") String allowedOrigin) {
         CorsConfiguration cc = new CorsConfiguration();
-        cc.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        cc.setAllowedOrigins(Arrays.asList(allowedOrigin));
         cc.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH","OPTIONS"));
         cc.setAllowedHeaders(List.of("Authorization", "Content-Type", "email", "password", "roles"));
         cc.setAllowCredentials(true);

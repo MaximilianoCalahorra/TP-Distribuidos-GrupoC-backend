@@ -5,8 +5,12 @@ import rolRoutes from './routes/rolRoutes.js';
 import eventoSolidarioRoutes from './routes/eventoSolidarioRoutes.js';
 import donacionRoutes from './routes/donacionRoutes.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
+import dotenv from 'dotenv';
 
 const app = express();
+
+//Cargar las variables de entorno:
+dotenv.config();
 
 //Middleware para parsear JSON en requests:
 app.use(express.json());
