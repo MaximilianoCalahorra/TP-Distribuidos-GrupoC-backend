@@ -1,7 +1,9 @@
 import grpc from '@grpc/grpc-js';
 import protoLoader from '@grpc/proto-loader';
 import path from 'path';
-import { fileURLToPath } from 'url'; 
+import { fileURLToPath } from 'url';
+
+const grpcServerURL = process.env.GRPC_SERVER_URL || 'localhost:9090';
 
 const __filename = fileURLToPath(import.meta.url); //Convierte la URL del módulo actual en un path del sistema de archivos.
 const __dirname = path.dirname(__filename); //Obtiene solo el directorio donde está este archivo (sin el nombre del archivo).
@@ -25,7 +27,7 @@ export const createGrpcClient = (serviceProtoPath, serviceName) => {
 
   //Crear una instancia del cliente gRPC:
   const client = new proto[serviceName](
-    'localhost:9090',                     //Dirección del servidor gRPC
+    `${grpcServerURL}`,  //Dirección del servidor gRPC
     grpc.credentials.createInsecure()
   );
 
