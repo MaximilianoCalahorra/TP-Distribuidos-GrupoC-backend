@@ -79,3 +79,5 @@ flowchart TD
 
 - [Servidor gRPC](./grpc_server/README.md)
 - [Cliente gRPC](./grpc_client/README.md)
+
+⚙️ **Nota**: Para pruebas locales, el servidor gRPC puede interactuar con servicios auxiliares como MailHog, Kafka y Kafbat UI, los cuales se levantan vía Docker (ver [README Servidor gRPC](./grpc_server/README.md) para más detalles).
