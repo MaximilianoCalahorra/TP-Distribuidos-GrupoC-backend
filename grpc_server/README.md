@@ -113,17 +113,18 @@ Forma parte de la primera entrega del trabajo práctico de la materia Desarrollo
 
 1. Clonar el repositorio
 
-```bash
-git clone https://github.com/MaximilianoCalahorra/TP-Distribuidos-GrupoC-backend
-cd TP-Distribuidos-GrupoC-backend/grpc_server
-```
+    ```bash
+    git clone https://github.com/MaximilianoCalahorra/TP-Distribuidos-GrupoC-backend
+    cd TP-Distribuidos-GrupoC-backend/grpc_server
+    ```
 
 2. Cargar las variables de entorno para la base de datos MySQL en ```application.properties```:
-```bash
-spring.datasource.url=jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?createDatabaseIfNotExist=true
-spring.datasource.username=${DATABASE_USERNAME}
-spring.datasource.password=${DATABASE_PASSWORD}
-```
+
+    ```bash
+    spring.datasource.url=jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?createDatabaseIfNotExist=true
+    spring.datasource.username=${DATABASE_USERNAME}
+    spring.datasource.password=${DATABASE_PASSWORD}
+    ```
 
 3. Correr la clase ```TpSistemasDistribuidosGrupoCApplication.java``` para levantar el proyecto.
 
@@ -131,10 +132,33 @@ spring.datasource.password=${DATABASE_PASSWORD}
 
 5. Cargar el siguiente script en la base de datos para tener los roles y un presidente: [cargar_datos_iniciales.sql](https://github.com/MaximilianoCalahorra/TP-Distribuidos-GrupoC-backend/blob/master/cargar_datos_iniciales.sql)
 
-Las credenciales del presidente son:
+Las **credenciales del presidente** son:
 - nombreUsuario: j.perez
 - email: j.perez@empuje-comunitario.com
 - clave: IzsDXBLFqwPi
+
+---
+
+### 💻 **Servicios auxiliares (Docker)**
+
+Para ejecutar el servidor localmente y contar con los servicios de **MailHog, Kafka y Kafbat UI**:
+
+1. Asegurarse de tener Docker y Docker Compose instalados.
+
+2. Desde la carpeta ```grpc_server```, levantar los servicios:
+
+    ```bash
+    docker compose -p tp-sd-grupo-c-local up -d
+    ```
+
+    Esto levantará:
+    - ```MailHog```: SMTP + web (http://localhost:8025)
+    - ```Kafka Broker```: puerto 29092 para conectarse desde la app local
+    - ```Kafbat UI```: interfaz web para crear/consultar topics (http://localhost:9000)
+
+3. Con esto, el servidor gRPC puede conectarse a Kafka y enviar/recibir mensajes aunque se levante localmente, y los desarrolladores pueden usar Kafbat UI para simular mensajes desde otras ONGs.
+
+⚠️ **Nota**: MailHog, Kafka y Kafbat UI deben ejecutarse en Docker; el resto del servidor Spring Boot puede correr localmente sin problemas.
 
 ---
 

@@ -1,0 +1,51 @@
+services:
+  # ==========================================
+  # Kafka Broker (modo KRaft, sin Zookeeper)
+  # ==========================================
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: kafka-broker-local
+    restart: unless-stopped
+    ports:
+      - "9092:9092"     # puerto del broker para otros contenedores
+      - "29092:29092"   # puerto para conectarse desde host/local
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka-data-local:/var/lib/kafka/data
+
+  # ==========================================
+  # Kafbat UI para administrar Kafka
+  # ==========================================
+  kafbat-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafbat-local
+    restart: unless-stopped
+    ports:
+      - "9000:8080" # puerto local para acceder a UI
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    depends_on:
+      - kafka
+
+  # ==========================================
+  # MailHog
+  # ==========================================
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog-local
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # puerto SMTP
+      - "8025:8025"  # interfaz web
+
+volumes:
+  kafka-data-local:
