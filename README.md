@@ -1,11 +1,13 @@
 # TP Sistemas Distribuidos - Grupo C - Backend
 
 Este backend implementa la lógica de negocio y la comunicación distribuida para el sistema de la **ONG Empuje Comunitario**.
-Está compuesto por dos módulos principales que trabajan de forma integrada:
+Está compuesto por tres módulos principales que trabajan de forma integrada:
 
 - **Servidor gRPC**: desarrollado en **Spring Boot + MySQL**, expone los servicios de negocio vía gRPC.
 
 - **Cliente gRPC**: desarrollado en **Node.js + Express**, funciona como **gateway HTTP** entre el frontend y el servidor gRPC.
+
+- **Service Kakfa**: desarrollado en **Spring Boot** para manejar la mensajería interna entre organizaciones (topics fijos y dinámicos).
 
 ---
 
@@ -26,8 +28,14 @@ flowchart TD
         DB[MySQL]
     end
 
-    UI -->|HTTP| API -->|gRPC| Srv -->|SQL| DB
+    subgraph kafkaSrv [Kafka Service]
+        Kafka[Kakfa Service]
+    end
 
+    UI <-->|HTTP| API
+    API <-->|gRPC| Srv
+    Srv <-->|SQL| DB
+    Srv <-->|Kafka Messages| Kafka
 ```
 
 - El **frontend** consume endpoints HTTP.
@@ -35,6 +43,8 @@ flowchart TD
 - El **cliente gRPC** traduce esas peticiones en llamadas gRPC.
 
 - El **servidor gRPC** resuelve la lógica de negocio y persiste en MySQL.
+
+- El **Kakfa Service** administra la mensajería mediante topics fijos (`eventos-solidarios`, `solicitud-donaciones`, etc.) y dinámicos (`adhesion-evento-<idOrganizador>`, `transferencia-donaciones-<idOrganizacion>`).
 
 ---
 
@@ -47,6 +57,10 @@ flowchart TD
 - [Cliente gRPC](./grpc_client/README.md)
 
   Expone endpoints HTTP que traducen las peticiones hacia el servidor gRPC y devuelven respuestas JSON al frontend.
+
+- [Kafka Service](./kakfa_service/README.md)
+
+  Microservicio independiente que colabora con gRPC para manejar mensajería, con topics fijos y dinámicos, y que luego la información puede reflejarse en la base de datos.
 
 ---
 
@@ -79,5 +93,6 @@ flowchart TD
 
 - [Servidor gRPC](./grpc_server/README.md)
 - [Cliente gRPC](./grpc_client/README.md)
+- [Kafka Service](./kakfa_service/README.md)
 
 ⚙️ **Nota**: Para pruebas locales, el servidor gRPC puede interactuar con servicios auxiliares como MailHog, Kafka y Kafbat UI, los cuales se levantan vía Docker (ver [README Servidor gRPC](./grpc_server/README.md) para más detalles).
