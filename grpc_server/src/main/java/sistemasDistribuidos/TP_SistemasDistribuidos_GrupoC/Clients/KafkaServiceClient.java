@@ -6,6 +6,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import proto.services.kafka.KafkaServiceGrpc;
 import proto.services.kafka.KafkaServiceGrpc.KafkaServiceBlockingStub;
+//import proto.services.evento_solidario.AdhesionVoluntarioExternoRequestProto;
 import proto.services.kafka.*;
 
 @Component
@@ -29,5 +30,10 @@ public class KafkaServiceClient {
     //Publicar baja de un evento:
     public void publicarBajaEvento(BajaEventoKafkaProto proto) {
         blockingStub.publicarBajaEvento(proto);
+    }
+    
+    //Publicar la adhesión de un participante interno a un evento externo:
+    public void publicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto proto) {
+        blockingStub.publicarAdhesionParticipanteInterno(proto);
     }
 }
