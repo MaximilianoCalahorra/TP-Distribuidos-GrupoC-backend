@@ -1,0 +1,41 @@
+package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
+@Entity
+@Table(name = "voluntarios_externos")
+public class VoluntarioExterno {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idVoluntarioExterno;
+
+    @Column(name="nombre", nullable = false)
+    private String nombre;
+
+    @Column(name="apellido", nullable = false)
+    private String apellido;
+
+    @Column(name="telefono", nullable = false)
+    private String telefono;
+
+    @Column(name="email", nullable = false)
+    private String email;
+
+    @Column(name="id_organizacion", nullable = false)
+    private String idOrganizacion;
+}

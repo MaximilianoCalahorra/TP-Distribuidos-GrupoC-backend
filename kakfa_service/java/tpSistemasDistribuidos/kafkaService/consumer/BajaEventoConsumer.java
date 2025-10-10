@@ -1,4 +1,4 @@
-package tpSistemasDistribuidos.kakfaService.consumer;
+package tpSistemasDistribuidos.kafkaService.consumer;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import com.google.protobuf.util.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import proto.services.kafka.BajaEventoKafkaProto;
 import proto.services.kafka.BajaEventoKafkaProto.Builder;
-import tpSistemasDistribuidos.kakfaService.clients.EventoExternoServiceGrpcClient;
+import tpSistemasDistribuidos.kafkaService.clients.EventoExternoServiceGrpcClient;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package tpSistemasDistribuidos.kakfaService.clients;
+package tpSistemasDistribuidos.kafkaService.clients;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

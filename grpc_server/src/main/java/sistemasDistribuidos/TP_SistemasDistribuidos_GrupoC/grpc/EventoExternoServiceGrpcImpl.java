@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import proto.services.evento_externo.EventoExternoServiceGrpc;
 import proto.services.evento_externo.IdEventoExternoRequestProto;
+import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.VoluntarioExternoMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations.EventoExternoService;
 
 @GrpcService
@@ -27,6 +30,30 @@ public class EventoExternoServiceGrpcImpl extends EventoExternoServiceGrpc.Event
             responseObserver.onError(
                     io.grpc.Status.NOT_FOUND
                             .withDescription("Evento externo no encontrado con id: " + request.getIdEventoExterno())
+                            .asRuntimeException()
+            );
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription(e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+    
+    ///Adherir participante interno:
+    @Override
+    public void adherirParticipanteInterno(AdhesionVoluntarioExternoRequestProto request, StreamObserver<Empty> responseObserver) {
+    	try {
+    		MiembroDTO participanteInternoDTO = VoluntarioExternoMapper.aMiembroDTO(request.getVoluntarioExterno());
+            eventoExternoService.adherirParticipanteInterno(request.getIdEventoSolidario(), request.getIdOrganizador(), participanteInternoDTO);
+            
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (EntityNotFoundException e) {
+            responseObserver.onError(
+                    io.grpc.Status.NOT_FOUND
+                            .withDescription(e.getMessage())
                             .asRuntimeException()
             );
         } catch (IllegalArgumentException e) {

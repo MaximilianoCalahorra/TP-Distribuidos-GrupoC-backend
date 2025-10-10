@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @Repository("eventoSolidarioRepository")
 public interface IEventoSolidarioRepository extends JpaRepository<EventoSolidario, Long> {
-    @Query("SELECT DISTINCT e FROM EventoSolidario e LEFT JOIN FETCH e.miembros m LEFT JOIN FETCH m.rol")
+    @Query("SELECT DISTINCT e FROM EventoSolidario e LEFT JOIN FETCH e.miembros m LEFT JOIN FETCH m.rol LEFT JOIN FETCH e.voluntariosExternos v")
     List<EventoSolidario> listAllEvents ();
-    @Query("SELECT DISTINCT e FROM EventoSolidario e LEFT JOIN FETCH e.miembros m LEFT JOIN FETCH m.rol WHERE e.fechaHora >= :fechaActual")
+    @Query("SELECT DISTINCT e FROM EventoSolidario e LEFT JOIN FETCH e.miembros m LEFT JOIN FETCH m.rol LEFT JOIN FETCH e.voluntariosExternos v WHERE e.fechaHora >= :fechaActual")
     List<EventoSolidario> listAllFutureEvents (@Param("fechaActual") LocalDateTime fechaActual);
-    @Query("SELECT DISTINCT e FROM EventoSolidario e JOIN FETCH e.miembros m JOIN FETCH m.rol WHERE m.nombreUsuario = :nombreUsuario")
+    @Query("SELECT DISTINCT e FROM EventoSolidario e JOIN FETCH e.miembros m JOIN FETCH m.rol LEFT JOIN FETCH e.voluntariosExternos v WHERE m.nombreUsuario = :nombreUsuario")
     List<EventoSolidario> getEventsByNombreUsuario (@Param("nombreUsuario") String nombreUsuario);
-    @Query("SELECT DISTINCT e FROM EventoSolidario e LEFT JOIN FETCH e.miembros m LEFT JOIN FETCH m.rol WHERE e.idEventoSolidario = :idEventoSolidario")
+    @Query("SELECT DISTINCT e FROM EventoSolidario e LEFT JOIN FETCH e.miembros m LEFT JOIN FETCH m.rol LEFT JOIN FETCH e.voluntariosExternos v WHERE e.idEventoSolidario = :idEventoSolidario")
     Optional<EventoSolidario> getByIdEvento (@Param("idEventoSolidario") Long idEventoSolidario);
 }
