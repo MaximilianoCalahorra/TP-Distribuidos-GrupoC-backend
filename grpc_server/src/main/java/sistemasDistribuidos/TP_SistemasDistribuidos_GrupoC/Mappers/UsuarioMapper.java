@@ -102,7 +102,8 @@ public class UsuarioMapper {
     	if (entidad == null) return null;
     	
     	MiembroDTO dto = new MiembroDTO();
-        
+
+        dto.setNombreUsuario(entidad.getNombreUsuario());
     	dto.setNombre(entidad.getNombre());
     	dto.setApellido(entidad.getApellido());
       	dto.setEmail(entidad.getEmail());
@@ -115,7 +116,8 @@ public class UsuarioMapper {
     	if (dto == null) return null;
     	
     	Usuario entidad = new Usuario();
-        
+
+        entidad.setNombreUsuario((dto.getNombreUsuario()));
     	entidad.setNombre(dto.getNombre());
     	entidad.setApellido(dto.getApellido());
     	entidad.setEmail(dto.getEmail());
@@ -276,7 +278,8 @@ public class UsuarioMapper {
         if (proto == null) return null;
         
         MiembroDTO dto = new MiembroDTO();
-        
+
+        dto.setNombreUsuario(proto.getNombreUsuario());
         dto.setNombre(proto.getNombre());
         dto.setApellido(proto.getApellido());
         dto.setEmail(proto.getEmail());
@@ -289,6 +292,7 @@ public class UsuarioMapper {
         if (dto == null) return null;
         
         return MiembroProto.newBuilder()
+                .setNombreUsuario(dto.getNombreUsuario())
                 .setNombre(dto.getNombre())
                 .setApellido(dto.getApellido())
                 .setEmail(dto.getEmail())

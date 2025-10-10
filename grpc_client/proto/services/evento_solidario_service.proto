@@ -25,4 +25,7 @@ service EventoSolidarioService {
     rpc CrearEventoSolidario (proto.dtos.CrearEventoSolidarioProto) returns (proto.dtos.EventoSolidarioProto);
     rpc ModificarEventoSolidario (proto.dtos.ModificarEventoSolidarioProto) returns (proto.dtos.EventoSolidarioProto);
     rpc EliminarEventoSolidario (IdEventoSolidarioRequestProto) returns (BooleanEventoSolidarioResponseProto);
+    rpc ParticiparDeEventoSolidario (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
+    rpc DarseDeBajaDeEventoSolidario (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
+    rpc TraerEventoSolidarioPorId (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
 }

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
@@ -39,6 +40,9 @@ public class UsuarioService implements IUsuarioService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    EventoSolidarioService eventoSolidarioService;
 
     private final AuthenticationManager authenticationManager;
 
@@ -118,10 +122,11 @@ public class UsuarioService implements IUsuarioService {
         }
 
         //Validamos que el usuario que se desea desactivar esta activo o existe
-        Optional<Usuario> usuario = usuarioRepository.findByIdAndEstado(idUsuario, true);
+        Optional<Usuario> usuario = usuarioRepository.findByIdAndActivo(idUsuario, true);
 
         if (usuario.isPresent()) {
-            //Si el usuario existe y esta activo
+            //Si el usuario existe y esta activo...
+            eventoSolidarioService.eliminarUsuarioDeEventosSolidarios(usuario.get().getNombreUsuario());
             usuario.get().setActivo(false);
             usuarioRepository.save(usuario.get());
         } else {
@@ -211,7 +216,7 @@ public class UsuarioService implements IUsuarioService {
         }
 
         //Validamos que el usuario que se desea reactivar esta inactivo o existe
-        Optional<Usuario> usuario = usuarioRepository.findByIdAndEstado(idUsuario, false);
+        Optional<Usuario> usuario = usuarioRepository.findByIdAndActivo(idUsuario, false);
 
         if (usuario.isPresent()) {
             //Si el usuario existe y esta inactivo
