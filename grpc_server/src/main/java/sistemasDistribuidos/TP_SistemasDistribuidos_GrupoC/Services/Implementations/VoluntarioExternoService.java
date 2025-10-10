@@ -19,8 +19,8 @@ public class VoluntarioExternoService  implements IVoluntarioExternoService {
 
     ///Crear voluntario externo:
     @Override
-    public VoluntarioExternoDTO crearVoluntarioExterno(VoluntarioExternoDTO voluntario) {
-    	return VoluntarioExternoMapper.aDTO(voluntarioExternoRepository.save(VoluntarioExternoMapper.aEntidad(voluntario)));
+    public VoluntarioExterno crearVoluntarioExterno(VoluntarioExternoDTO voluntario) {
+    	return voluntarioExternoRepository.save(VoluntarioExternoMapper.aEntidad(voluntario));
     }
     
     ///Obtener voluntario externo por id:
@@ -35,8 +35,7 @@ public class VoluntarioExternoService  implements IVoluntarioExternoService {
     
     ///Obtener entidad de voluntario externo por id:
     @Override
-    public VoluntarioExterno obtenerEntidadPorId(Long idVoluntarioExterno) {
-    	return voluntarioExternoRepository.findById(idVoluntarioExterno)
-                .orElseThrow(() -> new IllegalArgumentException("Voluntario externo no encontrado."));
+    public Optional<VoluntarioExterno> obtenerEntidadPorEmail(String email) {
+    	return voluntarioExternoRepository.findByEmail(email);
     }
 }
