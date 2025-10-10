@@ -14,8 +14,8 @@ public interface IUsuarioRepository extends JpaRepository <Usuario, Long> {
     Optional<Usuario> findByNombreUsuario(@Param("username") String username);
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.nombreUsuario = :username OR u.email = :email")
     Optional<Usuario> findByNombreUsuarioOrEmail(@Param("username") String username, @Param("email") String email);
-    @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.idUsuario = :idUsuario AND u.activo = :estado")
-    Optional <Usuario> findByIdAndEstado (@Param("idUsuario") Long idUsuario, @Param("estado") boolean estado);
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.idUsuario = :idUsuario AND u.activo = :activo")
+    Optional <Usuario> findByIdAndActivo (@Param("idUsuario") Long idUsuario, @Param("activo") boolean estado);
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol")
     List<Usuario> listAllUsers ();
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.email IN :emails")

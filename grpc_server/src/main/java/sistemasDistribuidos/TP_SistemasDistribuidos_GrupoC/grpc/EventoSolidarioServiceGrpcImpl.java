@@ -130,4 +130,55 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
             );
         }
     }
+
+    /// Participar de un evento solidario
+    @Override
+    public void participarDeEventoSolidario(IdEventoSolidarioRequestProto request, StreamObserver<EventoSolidarioProto> responseObserver) {
+        try {
+            EventoSolidarioDTO creado = eventoSolidarioService.participarDeEventoSolidario(request.getIdEventoSolidario());
+            EventoSolidarioProto response = EventoSolidarioMapper.toProto(creado);
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al querer participar del evento solidario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    /// Darse de baja de un evento solidario
+    @Override
+    public void darseDeBajaDeEventoSolidario(IdEventoSolidarioRequestProto request, StreamObserver<EventoSolidarioProto> responseObserver) {
+        try {
+            EventoSolidarioDTO creado = eventoSolidarioService.darseDeBajaDeEventoSolidario(request.getIdEventoSolidario());
+            EventoSolidarioProto response = EventoSolidarioMapper.toProto(creado);
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al querer darse de baja del evento solidario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    /// Traer evento solidario por ID
+    @Override
+    public void traerEventoSolidarioPorId(IdEventoSolidarioRequestProto request, StreamObserver<EventoSolidarioProto> responseObserver) {
+        try {
+            EventoSolidarioDTO creado = eventoSolidarioService.obtenerPorId(request.getIdEventoSolidario());
+            EventoSolidarioProto response = EventoSolidarioMapper.toProto(creado);
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al querer obtener el evento solidario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
 }
