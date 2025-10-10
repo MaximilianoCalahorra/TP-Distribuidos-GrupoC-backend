@@ -30,4 +30,9 @@ public class KafkaServiceClient {
     public void publicarBajaEvento(BajaEventoKafkaProto proto) {
         blockingStub.publicarBajaEvento(proto);
     }
+    
+    //Publicar la adhesión de un participante interno a un evento externo:
+    public void publicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto proto) {
+        blockingStub.publicarAdhesionParticipanteInterno(proto);
+    }
 }

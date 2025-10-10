@@ -10,6 +10,7 @@ import proto.dtos.evento_solidario.CrearEventoSolidarioProto;
 import proto.dtos.evento_solidario.EventoSolidarioProto;
 import proto.dtos.evento_solidario.ModificarEventoSolidarioProto;
 import proto.services.evento_solidario.ListarEventosSolidariosResponseProto;
+import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
 import proto.services.evento_solidario.BooleanEventoSolidarioResponseProto;
 import proto.services.evento_solidario.IdEventoSolidarioRequestProto;
 import proto.services.evento_solidario.EventoSolidarioServiceGrpc;
@@ -17,7 +18,9 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.I
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarEventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.VoluntarioExternoDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.VoluntarioExternoMapper;
 
 @GrpcService
 @RequiredArgsConstructor
@@ -173,6 +176,30 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
             EventoSolidarioProto response = EventoSolidarioMapper.toProto(creado);
             responseObserver.onNext(response);
             responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al querer obtener el evento solidario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+    
+    ///Adherir voluntario externo:
+    @Override
+    public void adherirVoluntarioExterno(AdhesionVoluntarioExternoRequestProto request, StreamObserver<Empty> responseObserver) {
+    	try {
+    		VoluntarioExternoDTO voluntarioExternoDTO = VoluntarioExternoMapper.aDTO(request.getVoluntarioExterno());
+            eventoSolidarioService.adherirVoluntarioExterno(request.getIdEventoSolidario(), voluntarioExternoDTO);
+            
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (EntityNotFoundException e) {
+            responseObserver.onError(
+                    io.grpc.Status.NOT_FOUND
+                            .withDescription("Evento solidario no encontrado con id: " + request.getIdEventoSolidario())
+                            .asRuntimeException()
+            );
         } catch (IllegalArgumentException e) {
             responseObserver.onError(
                     io.grpc.Status.INVALID_ARGUMENT

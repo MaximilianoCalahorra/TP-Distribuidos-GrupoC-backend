@@ -99,6 +99,11 @@ public class EventoSolidarioMapper {
                 entidad.getMiembros().stream()
                         .map(UsuarioMapper::aMiembroDTO)
                         .collect(Collectors.toList()));
+        dto.setVoluntariosExternos(
+                entidad.getVoluntariosExternos().stream()
+                        .map(VoluntarioExternoMapper::aDTO)
+                        .collect(Collectors.toList()));
+        
         return dto;
     }
 
@@ -200,6 +205,11 @@ public class EventoSolidarioMapper {
                 .map(UsuarioMapper::aMiembroDTO)
                 .toList()
         );
+        dto.setVoluntariosExternos(proto.getVoluntariosExternosList()
+                .stream()
+                .map(VoluntarioExternoMapper::aDTO)
+                .toList()
+        );
 
         return dto;
     }
@@ -216,6 +226,12 @@ public class EventoSolidarioMapper {
                         dto.getMiembros()
                                 .stream()
                                 .map(UsuarioMapper::aMiembroProto)
+                                .toList()
+                )
+                .addAllVoluntariosExternos(
+                        dto.getVoluntariosExternos()
+                                .stream()
+                                .map(VoluntarioExternoMapper::aProto)
                                 .toList()
                 )
                 .build();

@@ -1,4 +1,4 @@
-package tpSistemasDistribuidos.kakfaService.config;
+package tpSistemasDistribuidos.kafkaService.config;
 
 import java.util.HashMap;
 import java.util.Map;
