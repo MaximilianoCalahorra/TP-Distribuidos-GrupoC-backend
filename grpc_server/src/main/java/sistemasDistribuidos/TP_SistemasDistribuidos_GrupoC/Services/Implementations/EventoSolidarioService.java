@@ -15,7 +15,6 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.VoluntarioExtern
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.VoluntarioExternoMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
@@ -25,6 +24,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacio
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoSolidarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuarioRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IEventoSolidarioService;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IVoluntarioExternoService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -45,6 +45,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     private final IUsuarioRepository usuarioRepository;
     private final KafkaServiceClient kafkaServiceClient;
     private final IDonacionRepository donacionRepository;
+    private final IVoluntarioExternoService voluntarioExternoService;
     private static final ZoneId ZONE_ARG = ZoneId.of("America/Argentina/Buenos_Aires");
     @Value("${ong.id}")
     private String ongEmpujeComunitarioId;
@@ -94,7 +95,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
+    //@PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// elimino un evento soldiario
     public boolean eliminarEventoSolidario(Long idEventoSolidario) {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(idEventoSolidario);
@@ -109,8 +110,9 @@ public class EventoSolidarioService implements IEventoSolidarioService {
             throw new IllegalArgumentException("Solo se pueden eliminar eventos a futuro.");
         }
 
-        /// elimino la relacion con los miembros
+        /// elimino la relacion con los miembros y con los voluntarios externos
         evento.getMiembros().clear();
+        evento.getVoluntariosExternos().clear();
         eventoSolidarioRepository.save(evento);
 
         // elimino las donaciones que tenga asociadas dicho evento
@@ -302,10 +304,20 @@ public class EventoSolidarioService implements IEventoSolidarioService {
             throw new IllegalArgumentException("El voluntario externo ya pertenece al evento."); //Mensaje informativo.
         }
         
-    	//Si no pertenece, convertir a entidad:
-        VoluntarioExterno voluntarioExternoEntidad = VoluntarioExternoMapper.aEntidad(voluntarioExterno);
+    	//Acá vamos a guardar al voluntario externo para asociarlo al evento:
+    	VoluntarioExterno voluntarioExternoEntidad;
+    	
+    	//Buscar en la base de datos al voluntario:
+    	Optional<VoluntarioExterno> voluntarioOpt = voluntarioExternoService.obtenerEntidadPorEmail(voluntarioExterno.getEmail());
+    	
+    	//Si no existe...
+        if (!voluntarioOpt.isPresent()) {
+            voluntarioExternoEntidad = voluntarioExternoService.crearVoluntarioExterno(voluntarioExterno); //Crear voluntario.
+        } else { //Si existe...
+        	voluntarioExternoEntidad = voluntarioOpt.get(); //Obtenerlo.
+        }
         
-        //Agregar al listado de voluntarios externos:
+        //Agregar voluntario al listado de voluntarios externos:
         voluntariosExternos.add(voluntarioExternoEntidad);
         
         //Reemplazar el listado de voluntarios externos del evento con el nuevo:

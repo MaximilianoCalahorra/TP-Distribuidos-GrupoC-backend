@@ -34,9 +34,9 @@ public class VoluntarioExternoMapper {
 
         VoluntarioExterno entidad = new VoluntarioExterno();
 
-        if (dto.getIdVoluntarioExterno() != null && dto.getIdVoluntarioExterno() > 0) {
+        /*if (dto.getIdVoluntarioExterno() != null && dto.getIdVoluntarioExterno() > 0) {
             entidad.setIdVoluntarioExterno(dto.getIdVoluntarioExterno());
-        }
+        }*/
         
         entidad.setNombre(dto.getNombre());
         entidad.setApellido(dto.getApellido());
