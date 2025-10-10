@@ -107,6 +107,7 @@ public class UsuarioMapper {
     	dto.setNombre(entidad.getNombre());
     	dto.setApellido(entidad.getApellido());
       	dto.setEmail(entidad.getEmail());
+      	dto.setTelefono(entidad.getTelefono());
      	dto.setRol(entidad.getRol());
       
      	return dto;
@@ -121,6 +122,7 @@ public class UsuarioMapper {
     	entidad.setNombre(dto.getNombre());
     	entidad.setApellido(dto.getApellido());
     	entidad.setEmail(dto.getEmail());
+    	dto.setTelefono(entidad.getTelefono());
     	entidad.setRol(dto.getRol());
        
     	return entidad;
@@ -283,6 +285,7 @@ public class UsuarioMapper {
         dto.setNombre(proto.getNombre());
         dto.setApellido(proto.getApellido());
         dto.setEmail(proto.getEmail());
+        dto.setTelefono(proto.getTelefono());
         dto.setRol(RolMapper.aEntidad(proto.getRol()));
         
         return dto;
@@ -296,6 +299,7 @@ public class UsuarioMapper {
                 .setNombre(dto.getNombre())
                 .setApellido(dto.getApellido())
                 .setEmail(dto.getEmail())
+                .setTelefono(dto.getTelefono())
                 .setRol(RolMapper.aProto(dto.getRol()))
                 .build();
     }

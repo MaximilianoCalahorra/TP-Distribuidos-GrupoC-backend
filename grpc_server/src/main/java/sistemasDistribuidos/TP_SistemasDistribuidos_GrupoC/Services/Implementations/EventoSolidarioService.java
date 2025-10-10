@@ -1,11 +1,19 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Clients.KafkaServiceClient;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarEventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.DonacionMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
@@ -23,21 +31,25 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import proto.services.kafka.BajaEventoKafkaProto;
 
 @Service("eventoSolidarioService")
 @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
 @RequiredArgsConstructor
 public class EventoSolidarioService implements IEventoSolidarioService {
-
+	///Atributos:
     private final IEventoSolidarioRepository eventoSolidarioRepository;
     private final IUsuarioRepository usuarioRepository;
+    private final KafkaServiceClient kafkaServiceClient;
     private final IDonacionRepository donacionRepository;
+
     private static final ZoneId ZONE_ARG = ZoneId.of("America/Argentina/Buenos_Aires");
+    @Value("${ong.id}")
+    private String ongEmpujeComunitarioId;
 
     @Override
     @Transactional
@@ -107,6 +119,20 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         }
         /// elimino el evento
         eventoSolidarioRepository.delete(evento);
+        
+        //Intentar publicar en Kafka la baja del evento:
+        try {
+        	//Armar mensaje:
+            BajaEventoKafkaProto proto = BajaEventoKafkaProto.newBuilder()
+                    .setIdEvento(idEventoSolidario)
+                    .setIdOrganizacion(ongEmpujeComunitarioId)
+                    .build();
+
+            kafkaServiceClient.publicarBajaEvento(proto); //Llamar al cliente gRPC del servidor gRPC del servicio de Kafka.
+        } catch (Exception e) {
+            System.out.println("Error publicando baja de evento en Kafka " + e);
+        }
+        
         return true;
     }
 
