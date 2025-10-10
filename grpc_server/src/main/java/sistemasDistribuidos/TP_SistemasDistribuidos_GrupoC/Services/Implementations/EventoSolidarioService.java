@@ -38,7 +38,6 @@ import lombok.RequiredArgsConstructor;
 import proto.services.kafka.BajaEventoKafkaProto;
 
 @Service("eventoSolidarioService")
-@PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
 @RequiredArgsConstructor
 public class EventoSolidarioService implements IEventoSolidarioService {
 	///Atributos:
@@ -52,6 +51,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// creo un evento solidario
     public EventoSolidarioDTO crearEventoSolidario(CrearEventoSolidarioDTO dto) {
         /// valido que la fecha sea posterior a la actual
@@ -69,6 +69,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// modifico un evento solidario
     public EventoSolidarioDTO modificarEventoSolidario(ModificarEventoSolidarioDTO dto) {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.getByIdEvento(dto.getIdEventoSolidario());
@@ -93,6 +94,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// elimino un evento soldiario
     public boolean eliminarEventoSolidario(Long idEventoSolidario) {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(idEventoSolidario);
@@ -136,6 +138,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     }
 
     @Override
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// Obtengo todos los eventos solidarios
     public List<EventoSolidarioDTO> obtenerTodos() {
         List<EventoSolidario> listaEventosSolidarios = eventoSolidarioRepository.listAllEvents();
@@ -150,6 +153,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     }
 
     @Override
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// obtengo un evento solidario por ID
     public EventoSolidarioDTO obtenerPorId(Long idEventoSolidario) {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.getByIdEvento(idEventoSolidario);
@@ -160,6 +164,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     }
 
     @Override
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     ///  obtengo una entidad evento solidario por ID
     public EventoSolidario obtenerEntidadPorId(Long idEventoSolidario) {
         return eventoSolidarioRepository.findById(idEventoSolidario)
@@ -191,6 +196,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     /// Participar de evento solidario
     @Override
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     public EventoSolidarioDTO participarDeEventoSolidario(Long idEventoSolidario) {
         EventoSolidarioDTO eventoSolidarioDTO;
 
@@ -226,6 +232,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     // Eliminar a un usuario de los eventos solidarios FUTUROS en los que este presente
     @Override
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     public void eliminarUsuarioDeEventosSolidarios(String nombreUsuario) {
         List <EventoSolidario> listaEventos = eventoSolidarioRepository.listAllFutureEvents(LocalDateTime.now());
         for (EventoSolidario eventoSolidario : listaEventos) {
@@ -239,6 +246,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     /// Darse de baja de evento solidario
     @Override
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     public EventoSolidarioDTO darseDeBajaDeEventoSolidario(Long idEventoSolidario) {
         EventoSolidarioDTO eventoSolidarioDTO;
 
