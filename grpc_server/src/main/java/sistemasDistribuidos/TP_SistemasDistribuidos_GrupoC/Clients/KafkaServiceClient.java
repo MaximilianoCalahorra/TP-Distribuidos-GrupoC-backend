@@ -6,7 +6,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import proto.services.kafka.KafkaServiceGrpc;
 import proto.services.kafka.KafkaServiceGrpc.KafkaServiceBlockingStub;
-//import proto.services.evento_solidario.AdhesionVoluntarioExternoRequestProto;
 import proto.services.kafka.*;
 
 @Component
