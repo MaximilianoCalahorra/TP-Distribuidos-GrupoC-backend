@@ -29,8 +29,6 @@ export const crearEventoSolidario = (req, res) => {
     const auth = req.get('authorization');
     if (auth) md.add('authorization', auth);
 
-    console.log(crearEventoSolidarioProto.fechaHora);
-
     eventoSolidarioClient.CrearEventoSolidario(crearEventoSolidarioProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
