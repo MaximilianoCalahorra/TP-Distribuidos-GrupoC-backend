@@ -159,6 +159,7 @@ public class EventoSolidarioMapper {
         ModificarEventoSolidarioDTO dto = new ModificarEventoSolidarioDTO();
         dto.setIdEventoSolidario(proto.getIdEventoSolidario());
         dto.setNombre(proto.getNombre());
+        dto.setDescripcion(proto.getDescripcion());
         dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
         dto.setMiembros(
                 proto.getMiembrosList().stream()

@@ -27,10 +27,12 @@ message UsuarioProto {
 }
 
 message MiembroProto {
-	string nombre = 1;
-	string apellido = 2;
-	string email = 3;
-	RolProto rol = 4;
+  string nombreUsuario = 1;
+	string nombre = 2;
+	string apellido = 3;
+	string email = 4;
+  string telefono = 5;
+	RolProto rol = 6;
 }
 
 message LoginUsuarioProto {

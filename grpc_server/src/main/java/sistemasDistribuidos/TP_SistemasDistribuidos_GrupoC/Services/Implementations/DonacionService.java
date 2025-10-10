@@ -1,6 +1,7 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')")
 @RequiredArgsConstructor
 public class DonacionService implements IDonacionService {
 

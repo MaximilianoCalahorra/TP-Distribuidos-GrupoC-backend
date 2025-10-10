@@ -10,7 +10,7 @@ export const listarEventosSolidarios = (req, res) => {
     const auth = req.get('authorization');
     if (auth) md.add('authorization', auth);
 
-    //El cliente gRPC llama al mÃ©todo correspondiente en el servidor:
+    //El cliente gRPC llama al metodo correspondiente en el servidor:
     eventoSolidarioClient.ListarEventosSolidarios({}, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
@@ -29,24 +29,27 @@ export const crearEventoSolidario = (req, res) => {
     const auth = req.get('authorization');
     if (auth) md.add('authorization', auth);
 
-    console.log(crearEventoSolidarioProto.fechaHora);
-
     eventoSolidarioClient.CrearEventoSolidario(crearEventoSolidarioProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Modificar un evento solidario:
 export const modificarEventoSolidario = (req, res) => {
-    const { nombre, fechaHora, miembros } = req.body;
+    const { nombre, descripcion, fechaHora, miembros } = req.body;
     const idEventoSolidario = req.params.id;
 
     const modificarEventoSolidarioProto =  {
         idEventoSolidario,
         nombre,
-        fechaHora: parseDatetimeToProto(fechaHora),
+        descripcion,
+        fechaHora,
         miembros
     }
 
-    eventoSolidarioClient.ModificarEventoSolidario(modificarEventoSolidarioProto, (error, response) => handleGrpcResponse(res, error, response));
+    const md = new grpc.Metadata();
+    const auth = req.get('authorization');
+    if (auth) md.add('authorization', auth);
+
+    eventoSolidarioClient.ModificarEventoSolidario(modificarEventoSolidarioProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Eliminar un evento solidario:
@@ -57,5 +60,54 @@ export const eliminarEventoSolidario = (req, res) => {
         idEventoSolidario
     }
 
-    eventoSolidarioClient.EliminarEventoSolidario(IdEventoSolidarioRequestProto, (error, response) => handleGrpcResponse(res, error, response));
+    const md = new grpc.Metadata();
+    const auth = req.get('authorization');
+    if (auth) md.add('authorization', auth);
+
+    eventoSolidarioClient.EliminarEventoSolidario(IdEventoSolidarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
+};
+
+//Participar de un evento solidario:
+export const participarDeEventoSolidario = (req, res) => {
+    const idEventoSolidario = req.params.id;
+
+    const IdEventoSolidarioRequestProto = {
+        idEventoSolidario
+    }
+
+    const md = new grpc.Metadata();
+    const auth = req.get('authorization');
+    if (auth) md.add('authorization', auth);
+
+    eventoSolidarioClient.ParticiparDeEventoSolidario(IdEventoSolidarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
+};
+
+//Darse de baja de un evento solidario:
+export const darseDeBajaDeEventoSolidario = (req, res) => {
+    const idEventoSolidario = req.params.id;
+
+    const IdEventoSolidarioRequestProto = {
+        idEventoSolidario
+    }
+
+    const md = new grpc.Metadata();
+    const auth = req.get('authorization');
+    if (auth) md.add('authorization', auth);
+
+    eventoSolidarioClient.DarseDeBajaDeEventoSolidario(IdEventoSolidarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
+};
+
+//Obtener un evento solidario por ID:
+export const traerEventoSolidarioPorId = (req, res) => {
+    const idEventoSolidario = req.params.id;
+
+    const IdEventoSolidarioRequestProto = {
+        idEventoSolidario
+    }
+
+     const md = new grpc.Metadata();
+     const auth = req.get('authorization');
+     if (auth) md.add('authorization', auth);
+
+    eventoSolidarioClient.traerEventoSolidarioPorId(IdEventoSolidarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };

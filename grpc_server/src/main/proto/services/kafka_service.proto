@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "proto.services.kafka";
+package proto.services.kafka;
+
+import "google/protobuf/empty.proto";
+
+message BajaEventoKafkaProto {
+    string idOrganizacion = 1;
+    int64 idEvento = 2;
+}
+
+service KafkaService {
+    rpc PublicarBajaEvento(BajaEventoKafkaProto) returns (google.protobuf.Empty);
+}

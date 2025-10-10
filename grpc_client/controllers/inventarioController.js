@@ -15,8 +15,13 @@ export const listarInventarios = (req, res) => {
 
 //Listar inventarios activos:
 export const listarInventariosActivos = (req, res) => {
+
+  const md = new grpc.Metadata();
+  const auth = req.get('Authorization');
+  if (auth) md.add('Authorization', auth);
+
   //El cliente gRPC llama al método correspondiente en el servidor:
-  inventarioClient.ListarInventariosActivos({}, (error, response) => handleGrpcResponse(res, error, response));
+  inventarioClient.ListarInventariosActivos({}, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 //Crear un inventario:
