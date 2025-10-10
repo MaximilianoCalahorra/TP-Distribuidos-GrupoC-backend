@@ -20,5 +20,10 @@ public interface IEventoSolidarioService {
     public EventoSolidarioDTO obtenerPorId(Long idEventoSolidario);
     ///  obtengo una entidad evento solidario por ID
     public EventoSolidario obtenerEntidadPorId(Long idEventoSolidario);
-
+    /// Participar de un evento solidario
+    public EventoSolidarioDTO participarDeEventoSolidario (Long idEventoSolidario);
+    /// Eliminar a un usuario de los eventos solidarios en los que este presente
+    public void eliminarUsuarioDeEventosSolidarios (String nombreUsuario);
+    /// Darse de baja de un evento solidario
+    public EventoSolidarioDTO darseDeBajaDeEventoSolidario (Long idEventoSolidario);
 }

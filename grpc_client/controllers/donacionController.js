@@ -1,3 +1,4 @@
+import * as grpc from '@grpc/grpc-js';
 import donacionClient from '../client/donacionClient.js';
 import { handleGrpcResponse } from '../utils/handleGrpcResponse.js';
 
@@ -9,7 +10,11 @@ export const listarDonacionesPorEvento = (req, res) => {
     idEvento
   };
 
-  donacionClient.ListarDonacionesPorEvento(IdEventoRequestProto, (error, response) => handleGrpcResponse(res, error, response));
+  const md = new grpc.Metadata();
+  const auth = req.get('authorization');
+  if (auth) md.add('authorization', auth);
+
+  donacionClient.ListarDonacionesPorEvento(IdEventoRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
 
 // Crear una donación
@@ -23,5 +28,9 @@ export const crearDonacion = (req, res) => {
     idInventario
   };
 
-  donacionClient.CrearDonacion(CrearDonacionProto, (error, response) => handleGrpcResponse(res, error, response));
+  const md = new grpc.Metadata();
+  const auth = req.get('authorization');
+  if (auth) md.add('authorization', auth);
+
+  donacionClient.CrearDonacion(CrearDonacionProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
