@@ -1,7 +1,6 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -12,12 +11,15 @@ import org.springframework.stereotype.Service;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Clients.KafkaServiceClient;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.CrearEventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ModificarEventoSolidarioDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.VoluntarioExternoDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.VoluntarioExternoMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.VoluntarioExterno;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoSolidarioRepository;
@@ -44,7 +46,6 @@ public class EventoSolidarioService implements IEventoSolidarioService {
     private final IUsuarioRepository usuarioRepository;
     private final KafkaServiceClient kafkaServiceClient;
     private final IDonacionRepository donacionRepository;
-
     private static final ZoneId ZONE_ARG = ZoneId.of("America/Argentina/Buenos_Aires");
     @Value("${ong.id}")
     private String ongEmpujeComunitarioId;
@@ -270,5 +271,39 @@ public class EventoSolidarioService implements IEventoSolidarioService {
             throw new IllegalArgumentException("El evento no existe!");
         }
         return eventoSolidarioDTO;
+    }
+    
+    ///Adherir voluntario externo:
+    @Override
+    @Transactional
+    public void adherirVoluntarioExterno(Long idEventoSolidario, VoluntarioExternoDTO voluntarioExterno) {
+    	//Buscar el evento:
+    	EventoSolidario evento = eventoSolidarioRepository.findById(idEventoSolidario)
+                .orElseThrow(() -> new EntityNotFoundException("Evento solidario no encontrado."));
+        
+    	//Obtener voluntarios externos del evento:
+    	List<VoluntarioExterno> voluntariosExternos = 
+                Optional.ofNullable(evento.getVoluntariosExternos()).orElse(new ArrayList<>());
+
+    	//Verificar si ya pertenece al evento:
+    	boolean yaAsociado = voluntariosExternos.stream()
+                .anyMatch(v -> v.getEmail().equalsIgnoreCase(voluntarioExterno.getEmail()));
+    	
+    	//Si pertenece...
+    	if (yaAsociado) {
+            throw new IllegalArgumentException("El voluntario externo ya pertenece al evento."); //Mensaje informativo.
+        }
+        
+    	//Si no pertenece, convertir a entidad:
+        VoluntarioExterno voluntarioExternoEntidad = VoluntarioExternoMapper.aEntidad(voluntarioExterno);
+        
+        //Agregar al listado de voluntarios externos:
+        voluntariosExternos.add(voluntarioExternoEntidad);
+        
+        //Reemplazar el listado de voluntarios externos del evento con el nuevo:
+        evento.setVoluntariosExternos(voluntariosExternos);
+        
+        //Persistir el evento:
+        eventoSolidarioRepository.save(evento);
     }
 }
