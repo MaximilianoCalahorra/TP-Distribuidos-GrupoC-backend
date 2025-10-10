@@ -95,7 +95,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
     @Override
     @Transactional
-    //@PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
     /// elimino un evento soldiario
     public boolean eliminarEventoSolidario(Long idEventoSolidario) {
         Optional<EventoSolidario> eventoOpt = eventoSolidarioRepository.findById(idEventoSolidario);
