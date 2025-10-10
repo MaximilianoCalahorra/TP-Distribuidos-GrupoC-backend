@@ -19,6 +19,8 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 public class KafkaConfig {
@@ -28,20 +30,23 @@ public class KafkaConfig {
 	
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
+	
+	@Value("${spring.kafka.consumer.group-id}")
+	private String consumerGroupId;
 
 	//Fábrica de productores Kakfa:
     @Bean
-    ProducerFactory<String, String> producerFactory() {
+    ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers); //Conexión con el broker.
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class); //Serialización de claves.
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class); //Serialización de valores.
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class); //Serialización de valores.
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
     //Wrapper para enviar mensajes:
     @Bean
-    KafkaTemplate<String, String> kafkaTemplate() {
+    KafkaTemplate<String, Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
@@ -52,6 +57,8 @@ public class KafkaConfig {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers); //Configuración del broker.
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class); //Deserializador de claves.
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class); //Deserializador de valores.
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupId); //ID del grupo de consumidores.
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
