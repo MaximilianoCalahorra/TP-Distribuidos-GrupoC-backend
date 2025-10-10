@@ -12,6 +12,7 @@ public class MiembroDTO {
     private String nombre;
     private String apellido;
     private String email;
+    private String telefono;
     private Rol rol;
 
     // Constructor con todos los campos
