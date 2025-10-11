@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "proto.services.kafka";
+package proto.services.kafka;
+
+import "google/protobuf/empty.proto";
+import "dtos/voluntario_externo_dto.proto";
+
+message BajaEventoKafkaProto {
+    string idOrganizacion = 1;
+    string idEvento = 2;
+}
+
+message PublicacionEventoKafkaProto {
+	string idOrganizacion = 1;
+	string idEvento = 2;
+	string nombre = 3;
+	string descripcion = 4;
+	string fechaHora = 5;
+}
+
+message AdhesionVoluntarioExternoRequestProto {
+	string idEvento = 1;
+	string idOrganizador = 2;
+	proto.dtos.VoluntarioExternoProto voluntario = 3;
+}
+
+service KafkaService {
+    rpc PublicarBajaEvento(BajaEventoKafkaProto) returns (google.protobuf.Empty);
+    rpc PublicarAltaEvento(PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
+    rpc PublicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto) returns (google.protobuf.Empty);
+    rpc PublicarEventoSolidario(PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
+}
