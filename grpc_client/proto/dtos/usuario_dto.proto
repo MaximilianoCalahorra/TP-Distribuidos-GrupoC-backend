@@ -16,7 +16,7 @@ message CrearUsuarioProto {
 }
 
 message UsuarioProto {
-    int64 idUsuario = 1;
+  int64 idUsuario = 1;
 	string nombreUsuario = 2;
 	string nombre = 3;
 	string apellido = 4;
@@ -41,20 +41,20 @@ message LoginUsuarioProto {
 }
 
 message ModificarUsuarioProto {
-    int64 idUsuario = 1;
+  int64 idUsuario = 1;
 	string nombreUsuario = 2;
-    string nombre = 3;
-    string apellido = 4;
-    string telefono = 5;
-    string email = 6;
-    RolProto rol = 7;
+  string nombre = 3;
+  string apellido = 4;
+  string telefono = 5;
+  string email = 6;
+  RolProto rol = 7;
 }
 
 message LoginUsuarioResponseProto {
-    string nombre = 1;
-    string nombreUsuario = 2;
-    string apellido = 3;
-    string email = 4;
-    string clave = 5;
-    RolProto rol = 6;
+  string nombre = 1;
+  string nombreUsuario = 2;
+  string apellido = 3;
+  string email = 4;
+  string clave = 5;
+  RolProto rol = 6;
 }
