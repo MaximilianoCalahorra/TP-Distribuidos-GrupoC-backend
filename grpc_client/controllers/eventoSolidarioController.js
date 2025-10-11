@@ -111,3 +111,19 @@ export const traerEventoSolidarioPorId = (req, res) => {
 
     eventoSolidarioClient.traerEventoSolidarioPorId(IdEventoSolidarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
 };
+
+//Publicar evento solidario:
+export const publicarEventoSolidario = (req, res) => {
+
+    const idEventoSolidario = req.params.id;
+
+    const IdEventoSolidarioRequestProto = {
+        idEventoSolidario
+    }
+
+    const md = new grpc.Metadata();
+    const auth = req.get('authorization');
+    if (auth) md.add('authorization', auth);
+
+    eventoSolidarioClient.publicarEventoSolidario(IdEventoSolidarioRequestProto, md, (error, response) => handleGrpcResponse(res, error, response));
+}

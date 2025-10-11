@@ -5,6 +5,7 @@ import rolRoutes from './routes/rolRoutes.js';
 import eventoSolidarioRoutes from './routes/eventoSolidarioRoutes.js';
 import donacionRoutes from './routes/donacionRoutes.js';
 import usuarioRoutes from './routes/usuarioRoutes.js';
+import eventosExternosRoutes from './routes/eventoExternoRoutes.js';
 import dotenv from 'dotenv';
 
 const app = express();
@@ -35,6 +36,9 @@ app.use('/donaciones', donacionRoutes);
 
 //Usuarios:
 app.use('/usuarios', usuarioRoutes);
+
+//Eventos externos:
+app.use('/eventos-externos', eventosExternosRoutes);
 
 //Configuración del puerto:
 const PORT = 3000;
