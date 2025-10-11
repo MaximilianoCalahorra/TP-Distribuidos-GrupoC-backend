@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
@@ -47,7 +48,8 @@ public class EventoExterno {
     @JoinTable(
         name = "eventos_externos_x_usuarios",
         joinColumns = @JoinColumn(name = "id_evento_externo"),
-        inverseJoinColumns = @JoinColumn(name = "id_usuario")
+        inverseJoinColumns = @JoinColumn(name = "id_usuario"),
+        uniqueConstraints = @UniqueConstraint(columnNames = {"id_evento_externo", "id_usuario"})
     )
     private List<Usuario> participantesInternos;
 }

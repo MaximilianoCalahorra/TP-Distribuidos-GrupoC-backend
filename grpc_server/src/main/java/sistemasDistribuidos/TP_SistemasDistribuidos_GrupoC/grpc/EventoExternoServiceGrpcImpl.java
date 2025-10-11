@@ -6,11 +6,9 @@ import io.grpc.stub.StreamObserver;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
+import proto.services.evento_externo.AdhesionParticipanteInternoRequestProto;
 import proto.services.evento_externo.EventoExternoServiceGrpc;
 import proto.services.evento_externo.IdEventoExternoRequestProto;
-import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.VoluntarioExternoMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations.EventoExternoService;
 
 @GrpcService
@@ -43,10 +41,9 @@ public class EventoExternoServiceGrpcImpl extends EventoExternoServiceGrpc.Event
     
     ///Adherir participante interno:
     @Override
-    public void adherirParticipanteInterno(AdhesionVoluntarioExternoRequestProto request, StreamObserver<Empty> responseObserver) {
+    public void adherirParticipanteInterno(AdhesionParticipanteInternoRequestProto request, StreamObserver<Empty> responseObserver) {
     	try {
-    		MiembroDTO participanteInternoDTO = VoluntarioExternoMapper.aMiembroDTO(request.getVoluntarioExterno());
-            eventoExternoService.adherirParticipanteInterno(request.getIdEventoSolidario(), request.getIdOrganizador(), participanteInternoDTO);
+            eventoExternoService.adherirParticipanteInterno(request.getIdEventoExterno(), request.getIdOrganizador(), request.getEmailParticipante());
             
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();

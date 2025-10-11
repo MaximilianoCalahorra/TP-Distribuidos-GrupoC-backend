@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import proto.dtos.voluntario_externo.VoluntarioExternoProto;
 import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Clients.KafkaServiceClient;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoExterno;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoExternoRepository;
@@ -56,7 +55,11 @@ public class EventoExternoService implements IEventoExternoService {
     //Adherir participante interno:
     @Override
     @Transactional
-    public void adherirParticipanteInterno(Long idEventoExterno, String idOrganizador, MiembroDTO participanteInterno) {
+    public void adherirParticipanteInterno(Long idEventoExterno, String idOrganizador, String emailParticipante) {
+    	//Buscar el participante interno:
+    	Usuario participanteInterno = usuarioRepository.findByNombreUsuarioOrEmail("", emailParticipante)
+                .orElseThrow(() -> new EntityNotFoundException("Participante interno no encontrado."));
+    	
     	//Buscar el evento:
     	EventoExterno evento = eventoExternoRepository.findById(idEventoExterno)
                 .orElseThrow(() -> new EntityNotFoundException("Evento externo no encontrado."));
@@ -67,19 +70,15 @@ public class EventoExternoService implements IEventoExternoService {
 
     	//Verificar si ya pertenece al evento:
     	boolean yaAsociado = participantesInternos.stream()
-                .anyMatch(v -> v.getEmail().equalsIgnoreCase(participanteInterno.getEmail()));
+                .anyMatch(v -> v.getEmail().equalsIgnoreCase(emailParticipante));
     	
     	//Si pertenece...
     	if (yaAsociado) {
             throw new IllegalArgumentException("El participante interno ya pertenece al evento externo."); //Mensaje informativo.
         }
         
-    	//Si no pertenece, convertir a entidad:
-    	Usuario participanteInternoEntidad = usuarioRepository.findByNombreUsuarioOrEmail("", participanteInterno.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Participante interno no encontrado."));
-        
         //Agregar al listado de participantes internos:
-        participantesInternos.add(participanteInternoEntidad);
+        participantesInternos.add(participanteInterno);
         
         //Reemplazar el listado de participantes internos del evento externo con el nuevo:
         evento.setParticipantesInternos(participantesInternos);
@@ -91,7 +90,7 @@ public class EventoExternoService implements IEventoExternoService {
         try {
         	//Mapear participante interno al proto de voluntario externo:
             VoluntarioExternoProto participanteProto = VoluntarioExternoProto.newBuilder()
-                    .setIdVoluntarioExterno(participanteInternoEntidad.getIdUsuario())
+                    .setIdVoluntarioExterno(participanteInterno.getIdUsuario())
                     .setNombre(participanteInterno.getNombre())
                     .setApellido(participanteInterno.getApellido())
                     .setTelefono(participanteInterno.getTelefono())
