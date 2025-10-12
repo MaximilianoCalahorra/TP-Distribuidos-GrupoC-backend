@@ -82,6 +82,10 @@ public class EventoSolidarioService implements IEventoSolidarioService {
             throw new EntityNotFoundException("Evento solidario no encontrado.");
         }
 
+        //Inicializamos la lista de VoluntariosExternos
+        List<VoluntarioExterno> voluntariosExternos = eventoSolidarioRepository.listAllExternalVolunteersByEventId(dto.getIdEventoSolidario());
+        eventoOpt.get().setVoluntariosExternos(voluntariosExternos);
+
         EventoSolidario evento = eventoOpt.get();
 
         /// valido y obtengo usuarios activos comparando con el listado del evento
@@ -91,6 +95,7 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         evento.setDescripcion(dto.getDescripcion());
         evento.setFechaHora(dto.getFechaHora());
         evento.setMiembros(miembros);
+
         /// guardo los nuevos cambios
         eventoSolidarioRepository.save(evento);
         return EventoSolidarioMapper.aEventoSolidarioDTO(evento);
@@ -175,6 +180,9 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         if (!eventoOpt.isPresent()) {
             throw new IllegalArgumentException("Evento solidario no encontrado.");
         }
+        //Inicializamos la lista de VoluntariosExternos
+        List<VoluntarioExterno> voluntariosExternos = eventoSolidarioRepository.listAllExternalVolunteersByEventId(idEventoSolidario);
+        eventoOpt.get().setVoluntariosExternos(voluntariosExternos);
         return EventoSolidarioMapper.aEventoSolidarioDTO(eventoOpt.get());
     }
 
@@ -222,6 +230,9 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
         //Buscamos el evento solidario en el cual se desea participar
         Optional<EventoSolidario> eventoSolidario = eventoSolidarioRepository.getByIdEvento(idEventoSolidario);
+        //Inicializamos la lista de VoluntariosExternos
+        List<VoluntarioExterno> voluntariosExternos = eventoSolidarioRepository.listAllExternalVolunteersByEventId(idEventoSolidario);
+        eventoSolidario.get().setVoluntariosExternos(voluntariosExternos);
 
         //Si el evento existe
         if (eventoSolidario.isPresent()) {
@@ -272,6 +283,9 @@ public class EventoSolidarioService implements IEventoSolidarioService {
 
         //Buscamos el evento solidario del cual el usuario desea bajarse
         Optional<EventoSolidario> eventoSolidario = eventoSolidarioRepository.getByIdEvento(idEventoSolidario);
+        //Inicializamos la lista de VoluntariosExternos
+        List<VoluntarioExterno> voluntariosExternos = eventoSolidarioRepository.listAllExternalVolunteersByEventId(idEventoSolidario);
+        eventoSolidario.get().setVoluntariosExternos(voluntariosExternos);
 
         //Si el evento existe
         if (eventoSolidario.isPresent()) {

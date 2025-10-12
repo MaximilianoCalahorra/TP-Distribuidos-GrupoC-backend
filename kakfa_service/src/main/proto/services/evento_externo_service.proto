@@ -7,6 +7,7 @@ option java_package = "proto.services.evento_externo";
 
 import "google/protobuf/empty.proto";
 import "services/kafka_service.proto";
+import "dtos/evento_externo_dto.proto";
 
 message AdhesionParticipanteInternoRequestProto {
 	string idEvento = 1;
@@ -14,8 +15,13 @@ message AdhesionParticipanteInternoRequestProto {
 	string emailParticipante = 3;
 }
 
+message ListarEventosExternosResponseProto {
+    repeated proto.dtos.EventoExternoProto eventos = 1;
+}
+
 service EventoExternoService {
     rpc EliminarEventoExterno(proto.services.kafka.BajaEventoKafkaProto) returns (google.protobuf.Empty);
     rpc AdherirParticipanteInterno(AdhesionParticipanteInternoRequestProto) returns (google.protobuf.Empty);
     rpc CrearEventoExterno(proto.services.kafka.PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
+    rpc ListarEventosExternos (google.protobuf.Empty) returns (ListarEventosExternosResponseProto);
 }

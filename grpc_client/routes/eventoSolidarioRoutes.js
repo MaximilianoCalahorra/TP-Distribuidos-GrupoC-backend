@@ -12,6 +12,6 @@ router.delete('/:id', eliminarEventoSolidario); //Eliminar un evento solidario.
 router.post('/alta/:id', participarDeEventoSolidario); //Participar de un evento solidario.
 router.post('/baja/:id', darseDeBajaDeEventoSolidario); //Darse de baja de un evento solidario.
 router.get('/:id', traerEventoSolidarioPorId); //Obtener un evento solidario por ID.
-router.patch('/publicar/:id', publicarEventoSolidario); //Publicar un evento solidario.
+router.post('/publicar/:id', publicarEventoSolidario); //Publicar un evento solidario.
 
 export default router;

@@ -208,4 +208,19 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
             );
         }
     }
+
+    ///Publicar evento solidario:
+    public void publicarEventoSolidario(IdEventoSolidarioRequestProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            eventoSolidarioService.publicarEventoSolidario(request.getIdEventoSolidario());
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al querer publicar el evento solidario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
 }

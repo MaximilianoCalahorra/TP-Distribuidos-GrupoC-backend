@@ -7,13 +7,21 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
+import proto.dtos.evento_externo.EventoExternoProto;
+import proto.dtos.evento_solidario.EventoSolidarioProto;
 import proto.services.evento_externo.AdhesionParticipanteInternoRequestProto;
 import proto.services.evento_externo.EventoExternoServiceGrpc;
+import proto.services.evento_externo.ListarEventosExternosResponseProto;
+import proto.services.evento_solidario.ListarEventosSolidariosResponseProto;
 import proto.services.kafka.BajaEventoKafkaProto;
 import proto.services.kafka.PublicacionEventoKafkaProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoExternoDTO;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoExternoMapper;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations.EventoExternoService;
+
+import java.util.List;
 
 @GrpcService
 @RequiredArgsConstructor
@@ -91,6 +99,30 @@ public class EventoExternoServiceGrpcImpl extends EventoExternoServiceGrpc.Event
             responseObserver.onError(
                     io.grpc.Status.ALREADY_EXISTS
                             .withDescription(e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    ///Obtener todos los eventos externos
+    @Override
+    public void listarEventosExternos(Empty request, StreamObserver<ListarEventosExternosResponseProto> responseObserver) {
+        try {
+            List<EventoExternoDTO> eventosExternosDTO = eventoExternoService.obtenerTodos();
+
+            ListarEventosExternosResponseProto.Builder responseBuilder = ListarEventosExternosResponseProto.newBuilder();
+            for (EventoExternoDTO eventoExternoDTO : eventosExternosDTO) {
+                EventoExternoProto eventoExternoProto = EventoExternoMapper.aProto(eventoExternoDTO);
+                responseBuilder.addEventos(eventoExternoProto);
+            }
+
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+
+        } catch (Exception e) {
+            responseObserver.onError(
+                    io.grpc.Status.INTERNAL
+                            .withDescription("Error al listar los eventos externos: " + e.getMessage())
                             .asRuntimeException()
             );
         }
