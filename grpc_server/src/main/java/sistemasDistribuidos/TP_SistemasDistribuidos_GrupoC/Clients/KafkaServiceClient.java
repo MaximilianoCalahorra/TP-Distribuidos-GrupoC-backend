@@ -10,7 +10,7 @@ import proto.services.kafka.*;
 
 @Component
 public class KafkaServiceClient {
-	///Atributo:
+    ///Atributo:
     private final KafkaServiceBlockingStub blockingStub;
 
     ///Constructor:
@@ -25,14 +25,19 @@ public class KafkaServiceClient {
     }
 
     ///Métodos para comunicarse con el Kafka Service:
-    
+
     //Publicar baja de un evento:
     public void publicarBajaEvento(BajaEventoKafkaProto proto) {
         blockingStub.publicarBajaEvento(proto);
     }
-    
+
     //Publicar la adhesión de un participante interno a un evento externo:
     public void publicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto proto) {
         blockingStub.publicarAdhesionParticipanteInterno(proto);
+    }
+
+    //Publicar evento solidario:
+    public void publicarEventoSolidario(PublicacionEventoKafkaProto proto) {
+        blockingStub.publicarEventoSolidario(proto);
     }
 }

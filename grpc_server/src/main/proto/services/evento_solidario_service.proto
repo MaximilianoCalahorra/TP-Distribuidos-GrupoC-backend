@@ -30,4 +30,5 @@ service EventoSolidarioService {
     rpc DarseDeBajaDeEventoSolidario (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
     rpc TraerEventoSolidarioPorId (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
     rpc AdherirVoluntarioExterno(proto.services.kafka.AdhesionVoluntarioExternoRequestProto) returns (google.protobuf.Empty);
+    rpc PublicarEventoSolidario(IdEventoSolidarioRequestProto) returns (google.protobuf.Empty);
 }

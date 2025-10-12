@@ -11,10 +11,10 @@ import proto.services.evento_solidario.EventoSolidarioServiceGrpc.EventoSolidari
 
 @Component
 public class EventoSolidarioServiceGrpcClient {
-	///Atributo:
-	private final EventoSolidarioServiceBlockingStub blockingStub;
+    ///Atributo:
+    private final EventoSolidarioServiceBlockingStub blockingStub;
 
-	///Constructor:
+    ///Constructor:
     public EventoSolidarioServiceGrpcClient(@Value("${grpc_server_principal}") String host, @Value("${grpc_server_principal.port}") int port) {
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress(host, port) //URL del servidor gRPC.
@@ -25,9 +25,9 @@ public class EventoSolidarioServiceGrpcClient {
     }
 
     ///Métodos para comunicarse con el servidor gRPC:
-    
+
     //Adherir voluntario externo:
     public void adherirVoluntarioExterno(AdhesionVoluntarioExternoRequestProto request) {
-    	blockingStub.adherirVoluntarioExterno(request);
+        blockingStub.adherirVoluntarioExterno(request);
     }
 }

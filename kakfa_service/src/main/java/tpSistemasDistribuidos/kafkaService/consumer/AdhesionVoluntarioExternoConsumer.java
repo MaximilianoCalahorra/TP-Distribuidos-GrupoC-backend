@@ -15,24 +15,23 @@ import tpSistemasDistribuidos.kafkaService.clients.EventoSolidarioServiceGrpcCli
 @Service
 @RequiredArgsConstructor
 public class AdhesionVoluntarioExternoConsumer {
-	///Atributos:
+    ///Atributos:
     private final EventoSolidarioServiceGrpcClient grpcClient; //Cliente gRPC en Kafka Service hacia servidor gRPC.
-    
+
     @Autowired
     private ObjectMapper mapper;
 
     @KafkaListener(topics = "adhesion-evento-1")
     public void consumirAdhesionVoluntarioExterno(String mensajeJson) {
-    	try {
-    		JsonNode root = mapper.readTree(mensajeJson);
+        try {
+            JsonNode root = mapper.readTree(mensajeJson);
 
-            //Extraer campos manualmente:
-            Long idEvento = Long.parseLong(root.get("idEvento").asText());
+            //Extraer voluntario manualmente:
             JsonNode voluntarioNode = root.get("voluntario");
 
             //Crear el voluntario externo proto:
             VoluntarioExternoProto voluntarioProto = VoluntarioExternoProto.newBuilder()
-                    .setIdVoluntarioExterno(Long.parseLong(voluntarioNode.get("idVoluntario").asText()))
+                    .setIdVoluntario(voluntarioNode.get("idVoluntario").asText())
                     .setNombre(voluntarioNode.get("nombre").asText())
                     .setApellido(voluntarioNode.get("apellido").asText())
                     .setTelefono(voluntarioNode.get("telefono").asText())
@@ -42,10 +41,10 @@ public class AdhesionVoluntarioExternoConsumer {
 
             //Crear el request proto principal:
             AdhesionVoluntarioExternoRequestProto proto = AdhesionVoluntarioExternoRequestProto.newBuilder()
-                    .setIdEventoSolidario(idEvento)
-                    .setVoluntarioExterno(voluntarioProto)
+                    .setIdEvento(root.get("idEvento").asText())
+                    .setVoluntario(voluntarioProto)
                     .build();
-            
+
             //Invocar gRPC para adherir el voluntario externo al evento en nuestra base de datos:
             grpcClient.adherirVoluntarioExterno(proto);
         } catch (Exception e) {
