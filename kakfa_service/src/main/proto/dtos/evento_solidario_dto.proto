@@ -30,4 +30,5 @@ message EventoSolidarioProto {
   google.protobuf.Timestamp fechaHora = 4;
   repeated MiembroProto miembros = 5;
   repeated proto.dtos.VoluntarioExternoProto voluntariosExternos = 6;
+  bool publicado = 7;
 }
