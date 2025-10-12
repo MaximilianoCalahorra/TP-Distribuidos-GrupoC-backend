@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "proto.dtos.donaciones";
+
+package proto.dtos.donaciones;
+
+// Importar las dependencias necesarias
+import "dtos/enums.proto"; // Para TipoItemProto
+import "dtos/donaciones.proto"; // Para ItemDonacionProto (si lo definiste aparte)
+
+message ItemDonacionProto {
+    string categoria = 1;
+    string descripcion = 2;
+    int32 cantidad = 3;
+    proto.dtos.TipoItemProto tipo = 4;
+}
+*/
+
+message OfertaDonacionProto {
+
+    string idOferta = 1; // ID único
+    string idOrganizacion = 2; // ID de la organización donante 
+
+
+    // Lista anidada de ítems
+    repeated ItemDonacionProto items = 4;
+}
+
+// Mensaje auxiliar para devolver listas en llamadas gRPC (opcional)
+message ListaOfertaDonacionProto {
+    repeated OfertaDonacionProto ofertas = 1;
+}
