@@ -7,6 +7,7 @@ option java_package = "proto.services.evento_solidario";
 
 import "google/protobuf/empty.proto";
 import "dtos/evento_solidario_dto.proto";
+import "services/kafka_service.proto";
 
 message IdEventoSolidarioRequestProto {
     int64 idEventoSolidario = 1;
@@ -28,4 +29,6 @@ service EventoSolidarioService {
     rpc ParticiparDeEventoSolidario (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
     rpc DarseDeBajaDeEventoSolidario (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
     rpc TraerEventoSolidarioPorId (IdEventoSolidarioRequestProto) returns (proto.dtos.EventoSolidarioProto);
+    rpc AdherirVoluntarioExterno(proto.services.kafka.AdhesionVoluntarioExternoRequestProto) returns (google.protobuf.Empty);
+    rpc PublicarEventoSolidario(IdEventoSolidarioRequestProto) returns (google.protobuf.Empty);
 }

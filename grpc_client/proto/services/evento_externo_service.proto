@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.evento_externo";
+
+import "google/protobuf/empty.proto";
+import "services/kafka_service.proto";
+
+message AdhesionParticipanteInternoRequestProto {
+	string idEvento = 1;
+	string idOrganizador = 2;
+	string emailParticipante = 3;
+}
+
+service EventoExternoService {
+    rpc EliminarEventoExterno(proto.services.kafka.BajaEventoKafkaProto) returns (google.protobuf.Empty);
+    rpc AdherirParticipanteInterno(AdhesionParticipanteInternoRequestProto) returns (google.protobuf.Empty);
+    rpc CrearEventoExterno(proto.services.kafka.PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
+}

@@ -27,11 +27,11 @@ message UsuarioProto {
 }
 
 message MiembroProto {
-  string nombreUsuario = 1;
+    string nombreUsuario = 1;
 	string nombre = 2;
 	string apellido = 3;
 	string email = 4;
-  string telefono = 5;
+    string telefono = 5;
 	RolProto rol = 6;
 }
 
@@ -42,7 +42,7 @@ message LoginUsuarioProto {
 
 message ModificarUsuarioProto {
     int64 idUsuario = 1;
-	string nombreUsuario = 2;
+    string nombreUsuario = 2;
     string nombre = 3;
     string apellido = 4;
     string telefono = 5;
