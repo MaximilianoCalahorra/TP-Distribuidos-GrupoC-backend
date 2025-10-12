@@ -99,11 +99,14 @@ public class EventoSolidarioMapper {
                 entidad.getMiembros().stream()
                         .map(UsuarioMapper::aMiembroDTO)
                         .collect(Collectors.toList()));
-        dto.setVoluntariosExternos(
-                entidad.getVoluntariosExternos().stream()
-                        .map(VoluntarioExternoMapper::aDTO)
-                        .collect(Collectors.toList()));
-        
+        if (entidad.getVoluntariosExternos() != null) {
+            dto.setVoluntariosExternos(
+                    entidad.getVoluntariosExternos().stream()
+                            .map(VoluntarioExternoMapper::aDTO)
+                            .collect(Collectors.toList()));
+        }
+        dto.setPublicado(entidad.isPublicado());
+
         return dto;
     }
 
@@ -217,7 +220,7 @@ public class EventoSolidarioMapper {
     public static EventoSolidarioProto toProto(EventoSolidarioDTO dto) {
         if (dto == null) return null;
 
-        return EventoSolidarioProto.newBuilder()
+        EventoSolidarioProto.Builder builder = EventoSolidarioProto.newBuilder()
                 .setIdEventoSolidario(dto.getIdEventoSolidario())
                 .setNombre(dto.getNombre())
                 .setDescripcion(dto.getDescripcion())
@@ -227,13 +230,16 @@ public class EventoSolidarioMapper {
                                 .stream()
                                 .map(UsuarioMapper::aMiembroProto)
                                 .toList()
-                )
-                .addAllVoluntariosExternos(
-                        dto.getVoluntariosExternos()
-                                .stream()
-                                .map(VoluntarioExternoMapper::aProto)
-                                .toList()
-                )
-                .build();
+                );
+                if (dto.getVoluntariosExternos() != null) {
+                    builder.addAllVoluntariosExternos(
+                            dto.getVoluntariosExternos()
+                                    .stream()
+                                    .map(VoluntarioExternoMapper::aProto)
+                                    .toList()
+                    );
+                }
+                builder.setPublicado(dto.isPublicado());
+                return builder.build();
     }
 }

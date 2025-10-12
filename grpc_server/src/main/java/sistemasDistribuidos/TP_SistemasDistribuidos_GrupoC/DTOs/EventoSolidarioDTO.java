@@ -16,14 +16,16 @@ public class EventoSolidarioDTO {
     private LocalDateTime fechaHora;
     private List<MiembroDTO> miembros;
     private List<VoluntarioExternoDTO> voluntariosExternos;
+    private boolean publicado;
 
     // Constructor con todos los campos
-    public EventoSolidarioDTO(Long idEventoSolidario, String nombre, String descripcion, LocalDateTime fechaHora, List<MiembroDTO> miembros,List<VoluntarioExternoDTO> voluntariosExternos ) {
+    public EventoSolidarioDTO(Long idEventoSolidario, String nombre, String descripcion, LocalDateTime fechaHora, List<MiembroDTO> miembros,List<VoluntarioExternoDTO> voluntariosExternos, boolean publicado ) {
         this.idEventoSolidario = idEventoSolidario;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaHora = fechaHora;
         this.miembros = miembros;
         this.voluntariosExternos = voluntariosExternos;
+        this.publicado = publicado;
     }
 }
