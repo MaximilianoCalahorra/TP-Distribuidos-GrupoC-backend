@@ -1,0 +1,14 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "proto.dtos.solicitud_donacion";
+
+package proto.dtos;
+
+import "dtos/item_donacion_dto.proto";
+
+message SolicitudDonacionProto {
+  int64 idSolicitudDonacion = 1;
+  string idSolicitudDonacionOrigen = 2;
+  string idOrganizacion = 3;
+  repeated ItemDonacionProto items = 4;
+}

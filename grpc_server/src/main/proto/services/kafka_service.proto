@@ -26,9 +26,21 @@ message AdhesionVoluntarioExternoRequestProto {
 	proto.dtos.VoluntarioExternoProto voluntario = 3;
 }
 
+message ItemSolicitudDonacionKafkaProto {
+	string categoria = 1;
+	string descripcion = 2;
+}
+
+message PublicacionSolicitudDonacionKafkaProto {
+	string idOrganizacion = 1;
+	string idSolicitud = 2;
+	repeated ItemSolicitudDonacionKafkaProto donaciones = 3;
+}
+
 service KafkaService {
     rpc PublicarBajaEvento(BajaEventoKafkaProto) returns (google.protobuf.Empty);
     rpc PublicarAltaEvento(PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
     rpc PublicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto) returns (google.protobuf.Empty);
     rpc PublicarEventoSolidario(PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
+    rpc PublicarSolicitudDonacion(PublicacionSolicitudDonacionKafkaProto) returns (google.protobuf.Empty);
 }

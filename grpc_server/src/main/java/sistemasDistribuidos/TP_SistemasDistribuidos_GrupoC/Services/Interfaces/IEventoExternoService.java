@@ -1,7 +1,6 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces;
 
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoExternoDTO;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 
 import java.util.List;
 

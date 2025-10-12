@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.solicitud_donacion";
+
+import "google/protobuf/empty.proto";
+import "dtos/solicitud_donacion_dto.proto";
+import "services/kafka_service.proto";
+
+message SolicitudesDonacionesResponseProto {
+    repeated proto.dtos.SolicitudDonacionProto solicitudes = 1;
+}
+
+service SolicitudDonacionService {
+    rpc CrearSolicitudDonacionInterna (proto.dtos.SolicitudDonacionProto) returns (google.protobuf.Empty);
+    rpc CrearSolicitudDonacionExterna (proto.services.kafka.PublicacionSolicitudDonacionKafkaProto) returns (google.protobuf.Empty);
+    rpc ListarSolicitudesDonacionesInternas (google.protobuf.Empty) returns (SolicitudesDonacionesResponseProto);
+    rpc ListarSolicitudesDonacionesExternas (google.protobuf.Empty) returns (SolicitudesDonacionesResponseProto);
+}

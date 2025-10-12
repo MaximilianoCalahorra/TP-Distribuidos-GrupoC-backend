@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoExterno;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 
 @Repository
 public interface IEventoExternoRepository extends JpaRepository<EventoExterno, Long> {

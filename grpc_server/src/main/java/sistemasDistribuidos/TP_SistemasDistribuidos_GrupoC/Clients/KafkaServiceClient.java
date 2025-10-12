@@ -35,9 +35,14 @@ public class KafkaServiceClient {
     public void publicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto proto) {
         blockingStub.publicarAdhesionParticipanteInterno(proto);
     }
-
+    
     //Publicar evento solidario:
     public void publicarEventoSolidario(PublicacionEventoKafkaProto proto) {
         blockingStub.publicarEventoSolidario(proto);
+    }
+    
+    //Publicar solicitud de donación interna:
+    public void publicarSolicitudDonacion(PublicacionSolicitudDonacionKafkaProto proto) {
+        blockingStub.publicarSolicitudDonacion(proto);
     }
 }
