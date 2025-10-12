@@ -6,7 +6,6 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.VoluntarioExtern
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import java.util.List;
-import java.util.Set;
 
 public interface IEventoSolidarioService {
 

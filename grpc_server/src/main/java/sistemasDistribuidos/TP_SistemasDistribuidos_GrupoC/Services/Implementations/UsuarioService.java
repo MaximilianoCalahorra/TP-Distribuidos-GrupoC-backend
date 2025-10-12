@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.*;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
