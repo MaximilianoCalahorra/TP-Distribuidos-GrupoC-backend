@@ -10,8 +10,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class EventoExternoDTO {
-	///Atributos:
+    ///Atributos:
     private Long idEventoExterno;
+    private String idEventoOrigen;
     private String nombre;
     private String descripcion;
     private LocalDateTime fechaHora;
@@ -19,8 +20,9 @@ public class EventoExternoDTO {
     private List<MiembroDTO> participantesInternos;
 
     ///Constructor con todos los campos:
-    public EventoExternoDTO(Long idEventoExterno, String nombre, String descripcion, LocalDateTime fechaHora, String idOrganizacion, List<MiembroDTO> participantesInternos) {
+    public EventoExternoDTO(Long idEventoExterno, String idEventoOrigen, String nombre, String descripcion, LocalDateTime fechaHora, String idOrganizacion, List<MiembroDTO> participantesInternos) {
         this.idEventoExterno = idEventoExterno;
+        this.idEventoOrigen = idEventoOrigen;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaHora = fechaHora;

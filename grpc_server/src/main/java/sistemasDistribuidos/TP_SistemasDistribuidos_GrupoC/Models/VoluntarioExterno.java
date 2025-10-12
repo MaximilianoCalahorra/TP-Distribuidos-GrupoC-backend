@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,12 +18,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "voluntarios_externos")
+@Table(name = "voluntarios_externos", uniqueConstraints = {@UniqueConstraint(columnNames = {"id_voluntario_origen", "id_organizacion"})})
 public class VoluntarioExterno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVoluntarioExterno;
+
+    @Column(name = "id_voluntario_origen", nullable = false)
+    private String idVoluntarioOrigen;
 
     @Column(name="nombre", nullable = false)
     private String nombre;

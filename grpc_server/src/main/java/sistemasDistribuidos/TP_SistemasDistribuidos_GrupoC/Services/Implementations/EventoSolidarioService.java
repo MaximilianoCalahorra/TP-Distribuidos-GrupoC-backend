@@ -15,10 +15,12 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.VoluntarioExtern
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoSolidarioDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.MiembroDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.UsuarioMapper;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.VoluntarioExternoMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Donacion;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoSolidario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.VoluntarioExterno;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.DateTimeMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.EventoSolidarioMapper;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IDonacionRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IEventoSolidarioRepository;
@@ -36,11 +38,12 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import proto.services.kafka.BajaEventoKafkaProto;
+import proto.services.kafka.PublicacionEventoKafkaProto;
 
 @Service("eventoSolidarioService")
 @RequiredArgsConstructor
 public class EventoSolidarioService implements IEventoSolidarioService {
-	///Atributos:
+    ///Atributos:
     private final IEventoSolidarioRepository eventoSolidarioRepository;
     private final IUsuarioRepository usuarioRepository;
     private final KafkaServiceClient kafkaServiceClient;
@@ -122,34 +125,44 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         }
         /// elimino el evento
         eventoSolidarioRepository.delete(evento);
-        
-        //Intentar publicar en Kafka la baja del evento:
-        try {
-        	//Armar mensaje:
-            BajaEventoKafkaProto proto = BajaEventoKafkaProto.newBuilder()
-                    .setIdEvento(idEventoSolidario)
-                    .setIdOrganizacion(ongEmpujeComunitarioId)
-                    .build();
 
-            kafkaServiceClient.publicarBajaEvento(proto); //Llamar al cliente gRPC del servidor gRPC del servicio de Kafka.
-        } catch (Exception e) {
-            System.out.println("Error publicando baja de evento en Kafka " + e);
+        //Si el evento fue publicado en Kafka...
+        if (evento.isPublicado()) {
+            //Intentar publicar en Kafka la baja del evento:
+            try {
+                //Armar mensaje:
+                BajaEventoKafkaProto proto = BajaEventoKafkaProto.newBuilder()
+                        .setIdEvento(String.valueOf(idEventoSolidario))
+                        .setIdOrganizacion(ongEmpujeComunitarioId)
+                        .build();
+
+                kafkaServiceClient.publicarBajaEvento(proto); //Llamar al cliente gRPC del servidor gRPC del servicio de Kafka.
+            } catch (Exception e) {
+                System.out.println("Error publicando baja de evento en Kafka " + e);
+            }
         }
-        
+
         return true;
     }
 
     @Override
-    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR')or hasRole('VOLUNTARIO')")
+    @PreAuthorize("hasRole('PRESIDENTE') or hasRole('COORDINADOR') or hasRole('VOLUNTARIO')")
     /// Obtengo todos los eventos solidarios
     public List<EventoSolidarioDTO> obtenerTodos() {
-        List<EventoSolidario> listaEventosSolidarios = eventoSolidarioRepository.listAllEvents();
+        List<EventoSolidario> listaEventosSolidarios = eventoSolidarioRepository.listAllEventsWithMembers();
+        //Cargamos los voluntarios externos
+        for (EventoSolidario eventoSolidario : listaEventosSolidarios) {
+            List<VoluntarioExterno> voluntariosExternos = eventoSolidarioRepository.listAllExternalVolunteersByEventId(eventoSolidario.getIdEventoSolidario());
+            eventoSolidario.setVoluntariosExternos(voluntariosExternos);
+        }
         List<EventoSolidarioDTO> listaEventosSolidariosDTO = new ArrayList<>();
         for (EventoSolidario eventoSolidario : listaEventosSolidarios) {
             EventoSolidarioDTO eventoSolidarioDTO = EventoSolidarioMapper.aEventoSolidarioDTO(eventoSolidario);
             listaEventosSolidariosDTO.add(eventoSolidarioDTO);
             List<MiembroDTO> listMiembroDTO = eventoSolidario.getMiembros().stream().map(usuario -> UsuarioMapper.aMiembroDTO(usuario)).toList();
+            List<VoluntarioExternoDTO> listVoluntarioExternoDTO = eventoSolidario.getVoluntariosExternos().stream().map(voluntarioExterno -> VoluntarioExternoMapper.aDTO(voluntarioExterno)).toList();
             eventoSolidarioDTO.setMiembros(listMiembroDTO);
+            eventoSolidarioDTO.setVoluntariosExternos(listVoluntarioExternoDTO);
         }
         return listaEventosSolidariosDTO;
     }
@@ -282,48 +295,86 @@ public class EventoSolidarioService implements IEventoSolidarioService {
         }
         return eventoSolidarioDTO;
     }
-    
+
     ///Adherir voluntario externo:
     @Override
     @Transactional
     public void adherirVoluntarioExterno(Long idEventoSolidario, VoluntarioExternoDTO voluntarioExterno) {
-    	//Buscar el evento:
-    	EventoSolidario evento = eventoSolidarioRepository.findById(idEventoSolidario)
+        //Buscar el evento:
+        EventoSolidario evento = eventoSolidarioRepository.findById(idEventoSolidario)
                 .orElseThrow(() -> new EntityNotFoundException("Evento solidario no encontrado."));
-        
-    	//Obtener voluntarios externos del evento:
-    	List<VoluntarioExterno> voluntariosExternos = 
+
+        //Obtener voluntarios externos del evento:
+        List<VoluntarioExterno> voluntariosExternos =
                 Optional.ofNullable(evento.getVoluntariosExternos()).orElse(new ArrayList<>());
 
-    	//Verificar si ya pertenece al evento:
-    	boolean yaAsociado = voluntariosExternos.stream()
+        //Verificar si ya pertenece al evento:
+        boolean yaAsociado = voluntariosExternos.stream()
                 .anyMatch(v -> v.getEmail().equalsIgnoreCase(voluntarioExterno.getEmail()));
-    	
-    	//Si pertenece...
-    	if (yaAsociado) {
+
+        //Si pertenece...
+        if (yaAsociado) {
             throw new IllegalArgumentException("El voluntario externo ya pertenece al evento."); //Mensaje informativo.
         }
-        
-    	//Acá vamos a guardar al voluntario externo para asociarlo al evento:
-    	VoluntarioExterno voluntarioExternoEntidad;
-    	
-    	//Buscar en la base de datos al voluntario:
-    	Optional<VoluntarioExterno> voluntarioOpt = voluntarioExternoService.obtenerEntidadPorEmail(voluntarioExterno.getEmail());
-    	
-    	//Si no existe...
+
+        //Acá vamos a guardar al voluntario externo para asociarlo al evento:
+        VoluntarioExterno voluntarioExternoEntidad;
+
+        //Buscar en la base de datos al voluntario:
+        Optional<VoluntarioExterno> voluntarioOpt = voluntarioExternoService.obtenerEntidadPorEmail(voluntarioExterno.getEmail());
+
+        //Si no existe...
         if (!voluntarioOpt.isPresent()) {
             voluntarioExternoEntidad = voluntarioExternoService.crearVoluntarioExterno(voluntarioExterno); //Crear voluntario.
         } else { //Si existe...
-        	voluntarioExternoEntidad = voluntarioOpt.get(); //Obtenerlo.
+            voluntarioExternoEntidad = voluntarioOpt.get(); //Obtenerlo.
         }
-        
+
         //Agregar voluntario al listado de voluntarios externos:
         voluntariosExternos.add(voluntarioExternoEntidad);
-        
+
         //Reemplazar el listado de voluntarios externos del evento con el nuevo:
         evento.setVoluntariosExternos(voluntariosExternos);
-        
+
         //Persistir el evento:
         eventoSolidarioRepository.save(evento);
+    }
+
+    ///Publicar evento solidario:
+    @Override
+    public void publicarEventoSolidario(Long idEvento) {
+        //Buscar el evento:
+        EventoSolidario evento = eventoSolidarioRepository.findById(idEvento)
+                .orElseThrow(() -> new EntityNotFoundException("Evento solidario no encontrado."));
+
+        //Si ya está publicado...
+        if (evento.isPublicado()) {
+            throw new IllegalArgumentException("El evento solidario ya está publicado."); //Mensaje informativo.
+        }
+
+        //Si el evento es pasado...
+        if (evento.getFechaHora().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Solo se pueden publicar eventos solidarios futuros.");
+        }
+
+        //Si no está publicado y es un evento futuro, actualizamos a publicado y persistimos:
+        evento.setPublicado(true);
+        eventoSolidarioRepository.save(evento);
+
+        //Intentar publicar en Kafka el evento:
+        try {
+            //Armar mensaje:
+            PublicacionEventoKafkaProto proto = PublicacionEventoKafkaProto.newBuilder()
+                    .setIdOrganizacion(ongEmpujeComunitarioId)
+                    .setIdEvento(String.valueOf(evento.getIdEventoSolidario()))
+                    .setNombre(evento.getNombre())
+                    .setDescripcion(evento.getDescripcion())
+                    .setFechaHora(DateTimeMapper.aString(evento.getFechaHora()))
+                    .build();
+
+            kafkaServiceClient.publicarEventoSolidario(proto); //Llamar al cliente gRPC del servidor gRPC del servicio de Kafka.
+        } catch (Exception e) {
+            System.out.println("Error publicando el evento en Kafka " + e);
+        }
     }
 }

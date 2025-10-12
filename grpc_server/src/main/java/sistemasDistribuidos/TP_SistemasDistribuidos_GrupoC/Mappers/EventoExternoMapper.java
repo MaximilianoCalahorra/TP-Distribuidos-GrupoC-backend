@@ -3,16 +3,17 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 import java.util.stream.Collectors;
 
 import proto.dtos.evento_externo.EventoExternoProto;
+import proto.services.kafka.PublicacionEventoKafkaProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.EventoExternoDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.EventoExterno;
 
 public class EventoExternoMapper {
-	
-	// =======================
+
+    // =======================
     // Entidad <-> DTOs
     // =======================
-	
-	// EventoExternoDTO <-> EventoExterno
+
+    // EventoExternoDTO <-> EventoExterno
     public static EventoExternoDTO aDTO(EventoExterno entidad) {
         if (entidad == null) return null;
 
@@ -21,7 +22,7 @@ public class EventoExternoMapper {
         if (entidad.getIdEventoExterno() != null && entidad.getIdEventoExterno() > 0) {
             dto.setIdEventoExterno(entidad.getIdEventoExterno());
         }
-        
+
         dto.setNombre(entidad.getNombre());
         dto.setDescripcion(entidad.getDescripcion());
         dto.setFechaHora(entidad.getFechaHora());
@@ -41,7 +42,11 @@ public class EventoExternoMapper {
         if (dto.getIdEventoExterno() != null && dto.getIdEventoExterno() > 0) {
             entidad.setIdEventoExterno(dto.getIdEventoExterno());
         }
-        
+
+        if (dto.getIdEventoOrigen() != null && !dto.getIdEventoOrigen().isEmpty()) {
+            entidad.setIdEventoOrigen(dto.getIdEventoOrigen());
+        }
+
         entidad.setNombre(dto.getNombre());
         entidad.setDescripcion(dto.getDescripcion());
         entidad.setFechaHora(dto.getFechaHora());
@@ -49,21 +54,21 @@ public class EventoExternoMapper {
 
         return entidad;
     }
-	
+
     // =======================
     // DTOs <-> Protos
     // =======================
-    
+
     // EventoExternoDTO <-> EventoExternoProto
     public static EventoExternoDTO aDTO(EventoExternoProto proto) {
         if (proto == null) return null;
 
         EventoExternoDTO dto = new EventoExternoDTO();
-        
+
         if (proto.getIdEventoExterno() != 0) {
             dto.setIdEventoExterno(proto.getIdEventoExterno());
         }
-        
+
         dto.setNombre(proto.getNombre());
         dto.setDescripcion(proto.getDescripcion());
         dto.setFechaHora(DateTimeMapper.desdeProto(proto.getFechaHora()));
@@ -81,7 +86,7 @@ public class EventoExternoMapper {
         if (dto == null) return null;
 
         return EventoExternoProto.newBuilder()
-        		.setIdEventoExterno(dto.getIdEventoExterno() != null ? dto.getIdEventoExterno() : 0)
+                .setIdEventoExterno(dto.getIdEventoExterno() != null ? dto.getIdEventoExterno() : 0)
                 .setNombre(dto.getNombre())
                 .setDescripcion(dto.getDescripcion())
                 .setFechaHora(DateTimeMapper.aProto(dto.getFechaHora()))
@@ -93,5 +98,21 @@ public class EventoExternoMapper {
                                 .toList()
                 )
                 .build();
+    }
+
+    // EventoExternoDTO <-> PublicacionEventoKafkaProto
+
+    public static EventoExternoDTO aDTO(PublicacionEventoKafkaProto proto) {
+        if (proto == null) return null;
+
+        EventoExternoDTO dto = new EventoExternoDTO();
+
+        dto.setIdEventoOrigen(proto.getIdEvento());
+        dto.setNombre(proto.getNombre());
+        dto.setDescripcion(proto.getDescripcion());
+        dto.setFechaHora(DateTimeMapper.desdeString(proto.getFechaHora()));
+        dto.setIdOrganizacion(proto.getIdOrganizacion());
+
+        return dto;
     }
 }
