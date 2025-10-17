@@ -60,6 +60,8 @@ public class InventarioServiceGrpcImpl extends InventarioServiceGrpc.InventarioS
 	            InventarioProto inventarioProto = InventarioMapper.aProto(i);
 	            responseBuilder.addInventarios(inventarioProto);
 	        }
+	        
+	        System.out.println(inventariosActivos);
 
 	        responseObserver.onNext(responseBuilder.build());
 	        responseObserver.onCompleted();
