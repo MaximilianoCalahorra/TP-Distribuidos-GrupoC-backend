@@ -24,17 +24,17 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 public class KafkaConfig {
-	
-	@Autowired
-    private KafkaAdmin kafkaAdmin;
-	
-	@Value("${spring.kafka.bootstrap-servers}")
-	private String bootstrapServers;
-	
-	@Value("${spring.kafka.consumer.group-id}")
-	private String consumerGroupId;
 
-	//Fábrica de productores Kakfa:
+    @Autowired
+    private KafkaAdmin kafkaAdmin;
+
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${spring.kafka.consumer.group-id}")
+    private String consumerGroupId;
+
+    //Fábrica de productores Kakfa:
     @Bean
     ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -102,9 +102,9 @@ public class KafkaConfig {
         NewTopic topic = new NewTopic(nombreTopic, 1, (short) 1); //Crea un topic con el nombre indicado.
         kafkaAdmin.createOrModifyTopics(topic); //KafkaAdmin gestiona ese topic.
     }
-    
+
     //Helpers para construir los topics:
-    
+
     //Transferencia de donaciones a una organización:
     public String topicTransferencia(int idOrganizacion) {
         return "transferencia-donaciones-" + idOrganizacion;

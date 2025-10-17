@@ -15,7 +15,7 @@ public interface IEventoSolidarioService {
     public EventoSolidarioDTO modificarEventoSolidario(ModificarEventoSolidarioDTO dto);
     /// eliminar fisicamente un evento solidario
     public boolean eliminarEventoSolidario(Long idEventoSolidario);
-    ///  obtengo todos los eventos solidarios
+    /// obtengo todos los eventos solidarios
     public List<EventoSolidarioDTO> obtenerTodos();
     ///  obtengo un evento solidario por ID
     public EventoSolidarioDTO obtenerPorId(Long idEventoSolidario);
@@ -29,4 +29,6 @@ public interface IEventoSolidarioService {
     public EventoSolidarioDTO darseDeBajaDeEventoSolidario (Long idEventoSolidario);
     ///Adherir voluntario externo:
     public void adherirVoluntarioExterno(Long idEvento, VoluntarioExternoDTO voluntarioExterno);
+    ///Publicar evento solidario:
+    public void publicarEventoSolidario(Long idEvento);
 }

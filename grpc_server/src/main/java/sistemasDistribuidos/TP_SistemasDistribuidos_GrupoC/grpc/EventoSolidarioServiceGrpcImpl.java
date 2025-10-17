@@ -189,21 +189,36 @@ public class EventoSolidarioServiceGrpcImpl extends EventoSolidarioServiceGrpc.E
     @Override
     public void adherirVoluntarioExterno(AdhesionVoluntarioExternoRequestProto request, StreamObserver<Empty> responseObserver) {
     	try {
-    		VoluntarioExternoDTO voluntarioExternoDTO = VoluntarioExternoMapper.aDTO(request.getVoluntarioExterno());
-            eventoSolidarioService.adherirVoluntarioExterno(request.getIdEventoSolidario(), voluntarioExternoDTO);
+    		VoluntarioExternoDTO voluntarioExternoDTO = VoluntarioExternoMapper.aDTO(request.getVoluntario());
+            eventoSolidarioService.adherirVoluntarioExterno(Long.parseLong(request.getIdEvento()), voluntarioExternoDTO);
             
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
         } catch (EntityNotFoundException e) {
             responseObserver.onError(
                     io.grpc.Status.NOT_FOUND
-                            .withDescription("Evento solidario no encontrado con id: " + request.getIdEventoSolidario())
+                            .withDescription("Evento solidario no encontrado con id: " + request.getIdEvento())
                             .asRuntimeException()
             );
         } catch (IllegalArgumentException e) {
             responseObserver.onError(
                     io.grpc.Status.INVALID_ARGUMENT
                             .withDescription("Error al querer obtener el evento solidario: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        }
+    }
+
+    ///Publicar evento solidario:
+    public void publicarEventoSolidario(IdEventoSolidarioRequestProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            eventoSolidarioService.publicarEventoSolidario(request.getIdEventoSolidario());
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INVALID_ARGUMENT
+                            .withDescription("Error al querer publicar el evento solidario: " + e.getMessage())
                             .asRuntimeException()
             );
         }

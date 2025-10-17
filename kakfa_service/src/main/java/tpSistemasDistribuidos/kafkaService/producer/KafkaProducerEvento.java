@@ -9,42 +9,43 @@ import com.google.protobuf.util.JsonFormat;
 
 import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
 import proto.services.kafka.BajaEventoKafkaProto;
+import proto.services.kafka.PublicacionEventoKafkaProto;
 import tpSistemasDistribuidos.kafkaService.config.KafkaConfig;
 
 @Component
 public class KafkaProducerEvento {
-	///Atributos:
+    ///Atributos:
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     @Autowired
     private KafkaConfig kafkaConfig;
-    
+
     @Autowired
     private ObjectMapper objectMapper;
 
     //Publicar baja de un evento:
     public void publicarBajaEvento(BajaEventoKafkaProto proto) {
-    	try {
-    	    //Convertir proto a JSON String:
-    	    String jsonString = JsonFormat.printer()
-    	            .omittingInsignificantWhitespace()
-    	            .print(proto);
+        try {
+            //Convertir proto a JSON String:
+            String jsonString = JsonFormat.printer()
+                    .omittingInsignificantWhitespace()
+                    .print(proto);
 
-    	    //Parsear con Jackson a un objeto genérico:
-    	    Object jsonObject = objectMapper.readValue(jsonString, Object.class);
+            //Parsear con Jackson a un objeto genérico:
+            Object jsonObject = objectMapper.readValue(jsonString, Object.class);
 
-    	    //Publicar el objeto:
-    	    kafkaTemplate.send("baja-evento-solidario", jsonObject);
+            //Publicar el objeto:
+            kafkaTemplate.send("baja-evento-solidario", jsonObject);
 
-    	} catch (Exception e) {
-    	    e.printStackTrace();
-    	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
+
     //Publicar adhesión de participante interno a evento externo:
     public void publicarAdhesionParticipanteInterno(AdhesionVoluntarioExternoRequestProto proto) {
-    	try {
+        try {
             //Obtener idOrganizador desde el proto:
             int idOrganizador = Integer.parseInt(proto.getIdOrganizador());
 
@@ -64,6 +65,25 @@ public class KafkaProducerEvento {
 
             //Publicar en Kafka:
             kafkaTemplate.send(topic, jsonObject);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Publicar evento solidario:
+    public void publicarEventoSolidario(PublicacionEventoKafkaProto proto) {
+        try {
+            //Convertir proto a JSON String:
+            String jsonString = JsonFormat.printer()
+                    .omittingInsignificantWhitespace()
+                    .print(proto);
+
+            //Parsear con Jackson a un objeto genérico:
+            Object jsonObject = objectMapper.readValue(jsonString, Object.class);
+
+            //Publicar el objeto:
+            kafkaTemplate.send("eventos-solidarios", jsonObject);
 
         } catch (Exception e) {
             e.printStackTrace();
