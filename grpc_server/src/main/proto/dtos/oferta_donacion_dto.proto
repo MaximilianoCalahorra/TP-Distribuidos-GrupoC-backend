@@ -15,13 +15,11 @@ message ItemDonacionProto {
     int32 cantidad = 3;
     proto.dtos.TipoItemProto tipo = 4;
 }
-*/
 
 message OfertaDonacionProto {
 
     string idOferta = 1; // ID único
     string idOrganizacion = 2; // ID de la organización donante 
-
 
     // Lista anidada de ítems
     repeated ItemDonacionProto items = 4;

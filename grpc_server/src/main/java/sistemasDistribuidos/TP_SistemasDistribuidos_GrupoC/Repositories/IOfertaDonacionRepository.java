@@ -6,7 +6,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.OfertaDonacion
 import java.util.List;
 import java.util.Optional;
 
-public interface OfertaDonacionRepository extends JpaRepository<OfertaDonacion, Long> {
+public interface IOfertaDonacionRepository extends JpaRepository<OfertaDonacion, Long> {
     
     // Listar ofertas por ID de organización (para nuestras ofertas)
     List<OfertaDonacion> findByIdOrganizacion(String idOrganizacion);

@@ -1,10 +1,12 @@
 package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Implementations;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.OfertaDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.OfertaDonacionMapper;
-import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.OfertaDonacionRepository;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IOfertaDonacionRepository;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IOfertaDonacionService;
 // importamos la entidad para guardar
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.OfertaDonacion;
@@ -19,8 +21,11 @@ public class OfertaDonacionService implements IOfertaDonacionService {
 
     // Constante para identificar a nuestra propia organización
     private static final String ID_NUESTRA_ORGANIZACION = "1";
+
+    @Value("${ong.id}")
+    private String ongEmpujeComunitarioId; ///cambiar esto por lo de arriba
     
-    private final OfertaDonacionRepository ofertaDonacionRepository;
+    private final IOfertaDonacionRepository ofertaDonacionRepository;
 
     /// Creo oferta
     @Override
@@ -58,7 +63,7 @@ public class OfertaDonacionService implements IOfertaDonacionService {
         return ofertaDonacionRepository.findByIdOrganizacionIsNot(ID_NUESTRA_ORGANIZACION).stream()
                 .map(oferta -> OfertaDonacionMapper.aDTO(oferta)) 
                 .collect(Collectors.toList());
-    }
+    } 
 
     /// busco una oferta de una organizacion especifica
     @Override

@@ -32,13 +32,13 @@ public class OfertaDonacion {
     private Long idOfertaDonacion;
 
     @Column(name = "id_oferta", nullable = false)
-    private String idOferta; 
+    private String idOfertaOrigen; 
     
     @Column(name = "id_organizacion", nullable = false)
     private String idOrganizacion;
     
     // Relación OneToMany con los items ofrecidos
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "oferta_donacion_id")
+    @JoinColumn(name = "id_oferta_donacion")
     private List<ItemDonacion> items;
 }
