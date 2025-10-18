@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import proto.services.kafka.PublicacionSolicitudDonacionKafkaProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Clients.KafkaServiceClient;
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.BajaSolicitudDonacionDTO; 
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ItemDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.SolicitudDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.Operacion;
@@ -112,4 +113,31 @@ public class SolicitudDonacionService implements ISolicitudDonacionService{
         SolicitudDonacion solicitudEntidad = SolicitudDonacionMapper.aEntidad(solicitud);
         solicitudDonacionRepository.save(solicitudEntidad);
 	}
+
+    @Override
+    @Transactional
+    public void procesarBajaSolicitud(String idOrganizacion, String idSolicitud) {
+        
+        // Buscar la Solicitud en la base de datos local
+        Optional<SolicitudDonacion> solicitudOpt = 
+                solicitudDonacionRepository.findByIdSolicitudDonacionOrigenAndIdOrganizacion(
+                        idSolicitud, 
+                        idOrganizacion);
+
+        // Si la solicitud existe, se procede al borrado físico.
+        if (solicitudOpt.isPresent()) {
+            
+            SolicitudDonacion solicitud = solicitudOpt.get();
+            
+            // Borrar la entidad de la base de datos.
+            solicitudDonacionRepository.delete(solicitud);
+            
+            System.out.println("Solicitud de donación borrada físicamente. IDs: " 
+                               + idSolicitud + ", " + idOrganizacion);
+        } else {
+        
+            System.out.println("Advertencia: Solicitud de donación no encontrada para borrado. IDs: " 
+                               + idSolicitud + ", " + idOrganizacion);
+        }
+    }
 }

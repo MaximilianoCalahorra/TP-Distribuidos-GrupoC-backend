@@ -16,4 +16,6 @@ public interface ISolicitudDonacionRepository extends JpaRepository<SolicitudDon
     
     ///Solicitud de donación por id de origen y de organización:
     Optional<SolicitudDonacion> findByIdSolicitudDonacionOrigenAndIdOrganizacion(String idSolicitudDonacionOrigen, String idOrganizacion);
+
+    
 }
