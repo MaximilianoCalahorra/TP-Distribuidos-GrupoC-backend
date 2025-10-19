@@ -24,7 +24,7 @@ import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories.IUsuario
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Services.Interfaces.IInventarioService;
 
 @Service("inventarioService")
-@PreAuthorize("hasRole('PRESIDENTE') or hasRole('VOCAL')")
+@PreAuthorize("hasRole('PRESIDENTE') or hasRole('VOCAL') or hasRole('COORDINADOR')")
 @RequiredArgsConstructor
 public class InventarioService implements IInventarioService {
 	///Atributos:

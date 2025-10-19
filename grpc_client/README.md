@@ -126,7 +126,15 @@ El cliente expone rutas HTTP organizadas por entidad, que luego traducen las lla
 
 - ```GET /eventos-solidarios``` → Obtener todos los eventos.
 
+- ```GET /eventos-solidarios/:id``` → Obtener un evento por su id.
+
 - ```POST /eventos-solidarios``` → Crear evento.
+
+- ```POST /eventos-solidarios/alta/:id``` → Participar de un evento.
+
+- ```POST /eventos-solidarios/baja/:id``` → Darse de baja de un evento.
+
+- ```POST /eventos-solidarios/publicar/:id``` → Publicar un evento.
 
 - ```PATCH /eventos-solidarios/:id``` → Modificar evento.
 
@@ -137,6 +145,24 @@ El cliente expone rutas HTTP organizadas por entidad, que luego traducen las lla
 #### 🛡️ **Roles (/roles)**
 
 - ```GET /roles``` → Listar roles.
+
+---
+
+#### 🎉 **Eventos Externos (/eventos-externos)**
+
+- ```GET /eventos-externos``` → Obtener todos los eventos externos.
+
+- ```POST /eventos-externos/participante-interno``` → Adherir un participante interno al evento externo.
+
+---
+
+#### 🎁 **Solicitud de Donaciones (/solicitudes-donaciones)**
+
+- ```GET /solicitudes-donaciones/internas``` → Obtener todas las solicitudes de donaciones de nuestra ONG.
+
+- ```GET /solicitudes-donaciones/externas``` → Obtener todas las solicitudes de donaciones de las demás ONGs.
+
+- ```POST /solicitudes-donaciones``` → Crear una solicitud de donación.
 
 ---
 
