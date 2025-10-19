@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "proto.dtos.transferencia_donacion";
+
+package proto.dtos;
+
+import "dtos/item_donacion_dto.proto";
+import "google/protobuf/timestamp.proto";
+
+message TransferenciaDonacionProto {
+  int64 idTransferenciaDonacion = 1;
+  string idSolicitudDonacion = 2;
+  string idOrganizacionDonante = 3;
+  string idOrganizacionReceptora = 4;
+  google.protobuf.Timestamp fechaHora = 5;
+  repeated ItemDonacionProto items = 6;
+}

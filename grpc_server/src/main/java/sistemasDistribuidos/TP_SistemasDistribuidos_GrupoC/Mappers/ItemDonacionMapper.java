@@ -2,6 +2,7 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers;
 
 import proto.dtos.item_donacion.ItemDonacionProto;
 import proto.services.kafka.ItemSolicitudDonacionKafkaProto;
+import proto.services.kafka.ItemTransferenciaDonacionKafkaProto;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.ItemDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.ItemDonacion;
 
@@ -73,7 +74,7 @@ public class ItemDonacionMapper {
                 .build();
     }
     
-    // 
+    // ItemDonacionDTO <-> ItemSolicitudDonacionKafkaProto
     public static ItemDonacionDTO aDTO(ItemSolicitudDonacionKafkaProto proto) {
         if (proto == null) return null;
 
@@ -92,5 +93,28 @@ public class ItemDonacionMapper {
                 .setCategoria(CategoriaMapper.aString(dto.getCategoria()))
                 .setDescripcion(dto.getDescripcion())
                 .build();
+    }
+    
+    // ItemDonacionDTO <-> ItemTransferenciaDonacionKafkaProto
+    public static ItemDonacionDTO aDTO(ItemTransferenciaDonacionKafkaProto proto) {
+    	if (proto == null) return null;
+    	
+    	ItemDonacionDTO dto = new ItemDonacionDTO();
+    	
+    	dto.setCategoria(CategoriaMapper.aEnum(proto.getCategoria()));
+    	dto.setDescripcion(proto.getDescripcion());
+    	dto.setCantidad(proto.getCantidad());
+    	
+    	return dto;
+    }
+    
+    public static ItemTransferenciaDonacionKafkaProto aItemTransferenciaProto(ItemDonacionDTO dto) {
+    	if (dto == null) return null;
+    	
+    	return ItemTransferenciaDonacionKafkaProto.newBuilder()
+    			.setCategoria(CategoriaMapper.aString(dto.getCategoria()))
+    			.setDescripcion(dto.getDescripcion())
+    			.setCantidad(dto.getCantidad())
+    			.build();
     }
 }

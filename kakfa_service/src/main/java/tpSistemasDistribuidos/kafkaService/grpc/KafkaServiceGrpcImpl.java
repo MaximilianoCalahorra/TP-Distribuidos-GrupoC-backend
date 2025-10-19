@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import proto.services.kafka.KafkaServiceGrpc;
 import proto.services.kafka.PublicacionEventoKafkaProto;
 import proto.services.kafka.PublicacionSolicitudDonacionKafkaProto;
+import proto.services.kafka.PublicacionTransferenciaDonacionKafkaProto;
 import tpSistemasDistribuidos.kafkaService.producer.KafkaProducerDonacion;
 import tpSistemasDistribuidos.kafkaService.producer.KafkaProducerEvento;
 import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
@@ -46,6 +47,13 @@ public class KafkaServiceGrpcImpl extends KafkaServiceGrpc.KafkaServiceImplBase 
     @Override
     public void publicarSolicitudDonacion(PublicacionSolicitudDonacionKafkaProto request, StreamObserver<Empty> responseObserver) {
     	producerDonacion.publicarSolicitudDonacion(request); //Enviar al topic de Kafka.
+        responseObserver.onNext(Empty.getDefaultInstance());
+        responseObserver.onCompleted();
+    }
+    
+    @Override
+    public void publicarTransferenciaDonacion(PublicacionTransferenciaDonacionKafkaProto request, StreamObserver<Empty> responseObserver) {
+    	producerDonacion.publicarTransferenciaDonacion(request); //Enviar al topic de Kafka.
         responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
     }
