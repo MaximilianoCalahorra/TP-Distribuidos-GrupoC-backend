@@ -3,6 +3,8 @@ package sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Enums.NombreRol;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Models.Usuario;
 
 import java.util.List;
@@ -24,4 +26,5 @@ public interface IUsuarioRepository extends JpaRepository <Usuario, Long> {
     Optional<Usuario> findByIdUsuario (@Param("idUsuario") Long idUsuario);
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.activo = :estado")
     Optional<List<Usuario>> listAllByEstado (@Param("estado") boolean estado);
+    Optional<Usuario> findByRol_NombreRol(NombreRol nombreRol);
 }

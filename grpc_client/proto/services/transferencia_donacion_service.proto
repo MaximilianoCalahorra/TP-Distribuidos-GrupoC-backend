@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.transferencia_donacion";
+
+import "google/protobuf/empty.proto";
+import "dtos/transferencia_donacion_dto.proto";
+import "services/kafka_service.proto";
+
+message TransferenciasDonacionesResponseProto {
+    repeated proto.dtos.TransferenciaDonacionProto transferencias = 1;
+}
+
+service TransferenciaDonacionService {
+    rpc CrearTransferenciaEntrante (proto.services.kafka.PublicacionTransferenciaDonacionKafkaProto) returns (google.protobuf.Empty);
+    rpc CrearTransferenciaSaliente (proto.dtos.TransferenciaDonacionProto) returns (google.protobuf.Empty);
+    rpc ListarTransferenciasDonaciones (google.protobuf.Empty) returns (TransferenciasDonacionesResponseProto);
+    rpc ListarTransferenciasDonacionesEntrantes (google.protobuf.Empty) returns (TransferenciasDonacionesResponseProto);
+    rpc ListarTransferenciasDonacionesSalientes (google.protobuf.Empty) returns (TransferenciasDonacionesResponseProto);
+}
