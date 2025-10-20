@@ -50,4 +50,9 @@ public class KafkaServiceClient {
     public void publicarTransferenciaDonacion(PublicacionTransferenciaDonacionKafkaProto proto) {
     	blockingStub.publicarTransferenciaDonacion(proto);
     }
+    
+    //Publicar baja de solicitud de donación:
+    public void publicarBajaSolicitudDonacion(BajaSolicitudDonacionKafkaProto proto) {
+    	blockingStub.publicarBajaSolicitudDonacion(proto);
+    }
 }

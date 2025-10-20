@@ -50,3 +50,21 @@ export const crearSolicitudDonacionInterna = (req, res) => {
   //El cliente gRPC llama al método correspondiente en el servidor:
   solicitudDonacionClient.CrearSolicitudDonacionInterna(solicitudDonacionProto, md, (error, response) => handleGrpcResponse(res, error, response));
 }
+
+//Procesar baja de solicitud de donación interna:
+export const procesarBajaSolicitudDonacionInterna = (req, res) => {
+  
+  const idSolicitud = req.params.id; //Obtener id de la solicitud.
+
+  //Construir el proto:
+  const BajaSolicitudDonacionKafkaProto = {
+      idSolicitud
+  }
+  
+  const md = new grpc.Metadata();
+  const auth = req.get('Authorization');
+  if (auth) md.add('Authorization', auth);
+
+  //El cliente gRPC llama al método correspondiente en el servidor:
+  solicitudDonacionClient.ProcesarBajaSolicitudDonacion(BajaSolicitudDonacionKafkaProto, md, (error, response) => handleGrpcResponse(res, error, response));
+}
