@@ -8,11 +8,14 @@ import com.google.protobuf.Empty;
 
 import io.grpc.stub.StreamObserver;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import proto.dtos.solicitud_donacion.SolicitudDonacionProto;
 import proto.services.solicitud_donacion.SolicitudesDonacionesResponseProto;
+import proto.services.kafka.BajaSolicitudDonacionKafkaProto;
 import proto.services.kafka.PublicacionSolicitudDonacionKafkaProto;
+import proto.services.solicitud_donacion.BajaSolicitudDonacionRequestProto;
 import proto.services.solicitud_donacion.SolicitudDonacionServiceGrpc;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.DTOs.SolicitudDonacionDTO;
 import sistemasDistribuidos.TP_SistemasDistribuidos_GrupoC.Mappers.SolicitudDonacionMapper;
@@ -118,5 +121,49 @@ public class SolicitudDonacionServiceGrpcImpl extends SolicitudDonacionServiceGr
                             .asRuntimeException()
             );
         }
+    }
+    
+    ///Procesar baja de solicitud de donación:
+    @Override
+    public void procesarBajaSolicitudDonacion(BajaSolicitudDonacionRequestProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            solicitudDonacionService.procesarBajaSolicitud(ongEmpujeComunitarioId, request.getIdSolicitud());
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (EntityNotFoundException e) {
+            responseObserver.onError(
+                    io.grpc.Status.NOT_FOUND
+                            .withDescription("Error al querer dar de baja la solicitud de donación: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INTERNAL
+                            .withDescription(e.getMessage())
+                            .asRuntimeException()
+            );
+        } 
+    }
+    
+    ///Procesar baja de solicitud de donación externa:
+    @Override
+    public void procesarBajaSolicitudDonacionExterna(BajaSolicitudDonacionKafkaProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            solicitudDonacionService.procesarBajaSolicitudExterna(request.getIdOrganizacion(), request.getIdSolicitud());
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (EntityNotFoundException e) {
+            responseObserver.onError(
+                    io.grpc.Status.NOT_FOUND
+                            .withDescription("Error al querer dar de baja la solicitud de donación: " + e.getMessage())
+                            .asRuntimeException()
+            );
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(
+                    io.grpc.Status.INTERNAL
+                            .withDescription(e.getMessage())
+                            .asRuntimeException()
+            );
+        } 
     }
 }

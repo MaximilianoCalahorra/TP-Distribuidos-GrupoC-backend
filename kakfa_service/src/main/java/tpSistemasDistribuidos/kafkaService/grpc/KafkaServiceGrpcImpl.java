@@ -10,6 +10,8 @@ import tpSistemasDistribuidos.kafkaService.producer.KafkaProducerDonacion;
 import tpSistemasDistribuidos.kafkaService.producer.KafkaProducerEvento;
 import proto.services.kafka.AdhesionVoluntarioExternoRequestProto;
 import proto.services.kafka.BajaEventoKafkaProto;
+import proto.services.kafka.BajaSolicitudDonacionKafkaProto;
+
 import com.google.protobuf.Empty;
 
 import io.grpc.stub.StreamObserver;
@@ -54,6 +56,13 @@ public class KafkaServiceGrpcImpl extends KafkaServiceGrpc.KafkaServiceImplBase 
     @Override
     public void publicarTransferenciaDonacion(PublicacionTransferenciaDonacionKafkaProto request, StreamObserver<Empty> responseObserver) {
     	producerDonacion.publicarTransferenciaDonacion(request); //Enviar al topic de Kafka.
+        responseObserver.onNext(Empty.getDefaultInstance());
+        responseObserver.onCompleted();
+    }
+    
+    @Override
+    public void publicarBajaSolicitudDonacion(BajaSolicitudDonacionKafkaProto request, StreamObserver<Empty> responseObserver) {
+    	producerDonacion.publicarBajaSolicitudDonacion(request); //Enviar al topic de Kafka.
         responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
     }

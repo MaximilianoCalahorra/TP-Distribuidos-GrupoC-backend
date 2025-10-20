@@ -13,9 +13,15 @@ message SolicitudesDonacionesResponseProto {
     repeated proto.dtos.SolicitudDonacionProto solicitudes = 1;
 }
 
+message BajaSolicitudDonacionRequestProto {
+    string idSolicitud = 1;
+}
+
 service SolicitudDonacionService {
     rpc CrearSolicitudDonacionInterna (proto.dtos.SolicitudDonacionProto) returns (google.protobuf.Empty);
     rpc CrearSolicitudDonacionExterna (proto.services.kafka.PublicacionSolicitudDonacionKafkaProto) returns (google.protobuf.Empty);
     rpc ListarSolicitudesDonacionesInternas (google.protobuf.Empty) returns (SolicitudesDonacionesResponseProto);
     rpc ListarSolicitudesDonacionesExternas (google.protobuf.Empty) returns (SolicitudesDonacionesResponseProto);
+    rpc ProcesarBajaSolicitudDonacion (BajaSolicitudDonacionRequestProto) returns (google.protobuf.Empty);
+    rpc ProcesarBajaSolicitudDonacionExterna(proto.services.kafka.BajaSolicitudDonacionKafkaProto) returns (google.protobuf.Empty);
 }
