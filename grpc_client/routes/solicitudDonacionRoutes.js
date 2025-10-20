@@ -2,7 +2,8 @@ import express from 'express';
 import {
   listarSolicitudesDonacionesInternas,
   listarSolicitudesDonacionesExternas,
-  crearSolicitudDonacionInterna
+  crearSolicitudDonacionInterna,
+  procesarBajaSolicitudDonacionInterna
 } from '../controllers/solicitudDonacionController.js';
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.get('/internas', listarSolicitudesDonacionesInternas);
 router.get('/externas', listarSolicitudesDonacionesExternas);
 router.post('/', crearSolicitudDonacionInterna);
+router.delete('/:id', procesarBajaSolicitudDonacionInterna);
 
 export default router;

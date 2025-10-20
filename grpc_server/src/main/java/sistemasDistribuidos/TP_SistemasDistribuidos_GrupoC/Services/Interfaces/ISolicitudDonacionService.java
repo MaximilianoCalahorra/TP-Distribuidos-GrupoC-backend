@@ -16,4 +16,10 @@ public interface ISolicitudDonacionService {
 	
 	///Crear solicitud de donacion externa:
 	public void crearSolicitudDonacionExterna(SolicitudDonacionDTO solicitud);
+	
+	///Procesa el evento de baja de una solicitud de donación y la elimina:
+    public void procesarBajaSolicitud(String idOrganizacion, String idSolicitud);
+    
+    ///Procesa el evento de baja de una solicitud de donación externa y la elimina:
+    public void procesarBajaSolicitudExterna(String idOrganizacion, String idSolicitud);
 }

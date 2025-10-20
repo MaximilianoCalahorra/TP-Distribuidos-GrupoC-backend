@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import proto.services.kafka.BajaSolicitudDonacionKafkaProto;
 import proto.services.kafka.PublicacionSolicitudDonacionKafkaProto;
 import proto.services.solicitud_donacion.SolicitudDonacionServiceGrpc;
 import proto.services.solicitud_donacion.SolicitudDonacionServiceGrpc.SolicitudDonacionServiceBlockingStub;
@@ -29,5 +30,10 @@ public class SolicitudDonacionServiceGrpcClient {
     //Crear solicitud de donación externa:
     public void crearSolicitudDonacionExterna(PublicacionSolicitudDonacionKafkaProto request) {
     	blockingStub.crearSolicitudDonacionExterna(request);
+    }
+    
+    //Procesar baja de solicitud de donación externa:
+    public void procesarBajaSolicitudDonacionExterna(BajaSolicitudDonacionKafkaProto request) {
+    	blockingStub.procesarBajaSolicitudDonacionExterna(request);
     }
 }
