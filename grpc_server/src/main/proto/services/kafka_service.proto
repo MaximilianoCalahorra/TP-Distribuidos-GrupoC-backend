@@ -55,6 +55,12 @@ message BajaSolicitudDonacionKafkaProto {
     string idSolicitud = 2;
 }
 
+message PublicacionOfertaDonacionKafkaProto {
+	string idOrganizacion = 1;
+	string idOferta = 2;
+	repeated ItemTransferenciaDonacionKafkaProto donaciones = 3;
+}
+
 service KafkaService {
     rpc PublicarBajaEvento(BajaEventoKafkaProto) returns (google.protobuf.Empty);
     rpc PublicarAltaEvento(PublicacionEventoKafkaProto) returns (google.protobuf.Empty);
@@ -63,4 +69,5 @@ service KafkaService {
     rpc PublicarSolicitudDonacion(PublicacionSolicitudDonacionKafkaProto) returns (google.protobuf.Empty);
     rpc PublicarTransferenciaDonacion(PublicacionTransferenciaDonacionKafkaProto) returns (google.protobuf.Empty);
     rpc PublicarBajaSolicitudDonacion(BajaSolicitudDonacionKafkaProto) returns (google.protobuf.Empty);
+    rpc PublicarOfertaDonacion(PublicacionOfertaDonacionKafkaProto) returns (google.protobuf.Empty);
 }

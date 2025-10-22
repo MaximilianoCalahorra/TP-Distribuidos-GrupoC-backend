@@ -55,4 +55,9 @@ public class KafkaServiceClient {
     public void publicarBajaSolicitudDonacion(BajaSolicitudDonacionKafkaProto proto) {
     	blockingStub.publicarBajaSolicitudDonacion(proto);
     }
+    
+    //Publicar oferta de donación interna:
+    public void publicarOfertaDonacion(PublicacionOfertaDonacionKafkaProto proto) {
+        blockingStub.publicarOfertaDonacion(proto);
+    }
 }
