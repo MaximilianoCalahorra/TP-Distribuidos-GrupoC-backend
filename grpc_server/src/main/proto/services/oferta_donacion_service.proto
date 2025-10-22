@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto.services;
+
+option java_multiple_files = true;
+option java_package = "proto.services.oferta_donacion";
+
+import "google/protobuf/empty.proto";
+import "dtos/oferta_donacion_dto.proto";
+import "services/kafka_service.proto";
+
+// Mensaje de respuesta para listar múltiples ofertas
+message OfertasDonacionesResponseProto {
+    repeated proto.dtos.OfertaDonacionProto ofertas = 1;
+}
+
+// Definición del servicio gRPC
+service OfertaDonacionService {
+    rpc CrearOfertaDonacionInterna (proto.dtos.OfertaDonacionProto) returns (google.protobuf.Empty);
+    rpc CrearOfertaDonacionExterna (proto.services.kafka.PublicacionOfertaDonacionKafkaProto) returns (google.protobuf.Empty);
+    rpc ListarOfertasDonacionesInternas (google.protobuf.Empty) returns (OfertasDonacionesResponseProto);
+    rpc ListarOfertasDonacionesExternas (google.protobuf.Empty) returns (OfertasDonacionesResponseProto);
+    rpc ListarTodasOfertasDonaciones (google.protobuf.Empty) returns (OfertasDonacionesResponseProto);
+}
