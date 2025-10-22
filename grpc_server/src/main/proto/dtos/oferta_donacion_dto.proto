@@ -1,0 +1,15 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "proto.dtos.oferta_donacion"; 
+
+package proto.dtos;
+
+import "dtos/item_donacion_dto.proto";
+
+// Mensaje para representar una Oferta de Donación
+message OfertaDonacionProto {
+  int64 idOfertaDonacion = 1; // ID autoincremental de la DB local
+  string idOfertaDonacionOrigen = 2; // ID de la oferta en su organización
+  string idOrganizacion = 3; // ID de la organización que hace la oferta
+  repeated ItemDonacionProto items = 4; // Lista de ítems ofrecidos
+}

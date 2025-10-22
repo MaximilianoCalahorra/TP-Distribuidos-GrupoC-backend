@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.util.JsonFormat;
 
 import proto.services.kafka.BajaSolicitudDonacionKafkaProto;
+import proto.services.kafka.PublicacionOfertaDonacionKafkaProto;
 import proto.services.kafka.PublicacionSolicitudDonacionKafkaProto;
 import proto.services.kafka.PublicacionTransferenciaDonacionKafkaProto;
 import tpSistemasDistribuidos.kafkaService.config.KafkaConfig;
@@ -87,6 +88,25 @@ public class KafkaProducerDonacion{
     		
     	} catch (Exception e) {
     		e.printStackTrace();
+    	}
+    }
+    
+    //Publicar solicitud de donación:
+    public void publicarOfertaDonacion(PublicacionOfertaDonacionKafkaProto proto) {
+    	try {
+    	    //Convertir proto a JSON String:
+    	    String jsonString = JsonFormat.printer()
+    	            .omittingInsignificantWhitespace()
+    	            .print(proto);
+
+    	    //Parsear con Jackson a un objeto genérico:
+    	    Object jsonObject = objectMapper.readValue(jsonString, Object.class);
+
+    	    //Publicar el objeto:
+    	    kafkaTemplate.send("oferta-donaciones", jsonObject);
+
+    	} catch (Exception e) {
+    	    e.printStackTrace();
     	}
     }
 }

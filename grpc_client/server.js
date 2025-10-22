@@ -8,6 +8,7 @@ import usuarioRoutes from './routes/usuarioRoutes.js';
 import eventosExternosRoutes from './routes/eventoExternoRoutes.js';
 import solicitudesDonacionesRoutes from './routes/solicitudDonacionRoutes.js';
 import transferenciasDonacionesRoutes from './routes/transferenciaDonacionRoutes.js';
+import ofertasDonacionesRoutes from './routes/ofertaDonacionRoutes.js';
 import dotenv from 'dotenv';
 
 const app = express();
@@ -47,6 +48,9 @@ app.use('/solicitudes-donaciones', solicitudesDonacionesRoutes)
 
 //Transferencias de donaciones:
 app.use('/transferencias-donaciones', transferenciasDonacionesRoutes)
+
+//Ofertas de donaciones:
+app.use('/ofertas-donaciones', ofertasDonacionesRoutes)
 
 //Configuración del puerto:
 const PORT = 3000;
