@@ -50,6 +50,10 @@ flowchart TD
         SOAP[Spring Boot]
     end
 
+    subgraph soapSrv [Servidor SOAP]
+        SOAPSrv[Spring Boot]
+    end
+
     UI <-->|HTTP| API
     API <-->|gRPC| Srv
     Srv <-->|SQL| DB
@@ -59,7 +63,7 @@ flowchart TD
     UI <--> |HTTP| SOAP
     GraphQL <-->|SQL| DB
     REST <-->|SQL| DB
-    SOAP <-->|SQL| DB
+    SOAP <--> |HTTP| SOAPSrv
 ```
 
 - El **frontend** consume endpoints HTTP.
