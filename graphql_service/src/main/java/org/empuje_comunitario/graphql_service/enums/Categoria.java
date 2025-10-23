@@ -1,8 +1,8 @@
 package org.empuje_comunitario.graphql_service.enums;
 
 public enum Categoria {
-    DESCONOCIDA,
-    ROPA,
+    TODAS,
+	ROPA,
     ALIMENTOS,
     JUGUETES,
     UTILES_ESCOLARES

@@ -17,15 +17,22 @@ public class TransferenciaDonacionDTO {
 	private String idOrganizacionDonante;
 	private String idOrganizacionReceptora;
 	private LocalDateTime fechaHora;
+	private MiembroDTO usuarioAlta;
+	private MiembroDTO usuarioModificacion;
+	private boolean eliminado;
 	private List<ItemDonacionDTO> items;
 	
 	///Constructor:
-	public TransferenciaDonacionDTO(Long idTransferenciaDonacion, String idSolicitudDonacion, String idOrganizacionDonante, String idOrganizacionReceptora, LocalDateTime fechaHora, List<ItemDonacionDTO> items) {
+	public TransferenciaDonacionDTO(Long idTransferenciaDonacion, String idSolicitudDonacion, String idOrganizacionDonante, String idOrganizacionReceptora, 
+			LocalDateTime fechaHora, MiembroDTO usuarioAlta, MiembroDTO usuarioModificacion, boolean eliminado, List<ItemDonacionDTO> items) {
 		this.idTransferenciaDonacion = idTransferenciaDonacion;
 		this.idSolicitudDonacion = idSolicitudDonacion;
 		this.idOrganizacionDonante = idOrganizacionDonante;
 		this.idOrganizacionReceptora = idOrganizacionReceptora;
 		this.fechaHora = fechaHora;
+		this.usuarioAlta = usuarioAlta;
+		this.usuarioModificacion = usuarioModificacion;
+		this.eliminado = eliminado;
 		this.items = items;
 	}
 }

@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.empuje_comunitario.graphql_service.dto.FiltroDonacionDTO;
-import org.empuje_comunitario.graphql_service.graphql.mapper.EstadoEliminadoMapper;
 import org.empuje_comunitario.graphql_service.graphql.mapper.FiltroDonacionMapperGraphQL;
 import org.empuje_comunitario.graphql_service.graphql.mapper.LocalDateTimeMapper;
 import org.empuje_comunitario.graphql_service.graphql.model.FiltroDonacionGraphQL;
@@ -125,7 +124,7 @@ public class FiltroDonacionService implements IFiltroDonacionService {
         filtroEntidad.setNombreFiltro(input.getNombreFiltro());
         filtroEntidad.setFechaHoraAltaDesde(LocalDateTimeMapper.desdeString(input.getFechaHoraAltaDesde()));
         filtroEntidad.setFechaHoraAltaHasta(LocalDateTimeMapper.desdeString(input.getFechaHoraAltaHasta()));
-        filtroEntidad.setEliminado(EstadoEliminadoMapper.aEnum(input.getEliminado()));
+        filtroEntidad.setEliminado(input.getEliminado());
 
         //Persistir la entidad:
         filtroDonacionRepository.save(filtroEntidad);

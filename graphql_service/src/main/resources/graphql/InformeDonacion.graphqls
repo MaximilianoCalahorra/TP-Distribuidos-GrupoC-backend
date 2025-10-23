@@ -1,0 +1,61 @@
+enum Categoria {
+  TODAS
+  ROPA
+  ALIMENTOS
+  JUGUETES
+  UTILES_ESCOLARES
+}
+
+enum EstadoEliminado {
+  AMBOS
+  SI
+  NO
+}
+
+enum TipoTransferencia {
+  ENTRANTE
+  SALIENTE
+}
+
+type InformeDonacionesPorCategoria {
+  categoria: String!
+  eliminado: Boolean!
+  cantidadTotal: Int!
+}
+
+input FiltroDonacionInput {
+  idFiltroDonacion: ID
+  nombreFiltro: String!
+  categoria: Categoria
+  fechaHoraAltaDesde: String
+  fechaHoraAltaHasta: String
+  eliminado: EstadoEliminado
+}
+
+type FiltroDonacion {
+  idFiltroDonacion: ID!
+  nombreFiltro: String!
+  categoria: Categoria
+  fechaHoraAltaDesde: String
+  fechaHoraAltaHasta: String
+  eliminado: EstadoEliminado
+}
+
+input FiltroDonacionBusquedaInput {
+  categoria: Categoria
+  fechaHoraAltaDesde: String
+  fechaHoraAltaHasta: String
+  eliminado: EstadoEliminado
+  tipoTransferencia: TipoTransferencia!
+}
+
+type Query {
+  filtrosDonacionUsuario: [FiltroDonacion]
+  informeDonacionesPorCategoria(filtro: FiltroDonacionBusquedaInput): [InformeDonacionesPorCategoria]
+}
+
+type Mutation {
+  crearFiltroDonacion(input: FiltroDonacionInput!): FiltroDonacion
+  modificarFiltroDonacion(input: FiltroDonacionInput!): FiltroDonacion
+  eliminarFiltroDonacion(idFiltroDonacion: ID!): Boolean
+}

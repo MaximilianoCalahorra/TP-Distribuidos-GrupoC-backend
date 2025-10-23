@@ -139,8 +139,15 @@ public class TransferenciaDonacionService implements ITransferenciaDonacionServi
 		transferencia.setFechaHora(LocalDateTime.now());
 		transferencia.setIdOrganizacionDonante(ongEmpujeComunitarioId);
 		
-		//Persistimos la transferencia:
+		//Mapeamos la transferencia a entidad:
 		TransferenciaDonacion transferenciaEntidad = TransferenciaDonacionMapper.aEntidad(transferencia);
+		
+		//Cargamos los datos restantes de la transferencia:
+		transferenciaEntidad.setUsuarioAlta(usuario);
+		transferenciaEntidad.setUsuarioModificacion(usuario);
+		transferenciaEntidad.setEliminado(false);
+		
+		//Persistimos la transferencia:
 		transferenciaDonacionRepository.save(transferenciaEntidad);
 		
 		//Intentar publicar en Kafka la transferencia:
@@ -179,6 +186,10 @@ public class TransferenciaDonacionService implements ITransferenciaDonacionServi
             throw new EntityExistsException("La solicitud de donación no existe.");
         }
         
+        //Obtenemos al presidente:
+		Usuario presidente = usuarioRepository.findByRol_NombreRol(NombreRol.PRESIDENTE)
+		        .orElseThrow(() -> new IllegalStateException("No se encontró el usuario PRESIDENTE"));
+        
 		//Si la solicitud existe, cargamos los demás datos de la transferencia:
 		transferencia.setFechaHora(LocalDateTime.now());
 		transferencia.setIdOrganizacionReceptora(ongEmpujeComunitarioId);
@@ -193,10 +204,6 @@ public class TransferenciaDonacionService implements ITransferenciaDonacionServi
 			//Si hay un inventario...
 			if (inventarioOpt.isPresent()) {
 				Inventario inventario = inventarioOpt.get(); //Obtenemos el inventario.
-				
-				//Obtenemos al presidente:
-				Usuario presidente = usuarioRepository.findByRol_NombreRol(NombreRol.PRESIDENTE)
-				        .orElseThrow(() -> new IllegalStateException("No se encontró el usuario PRESIDENTE"));
 
 				//Obtenemos la fecha y hora actual:
 			    LocalDateTime ahora = LocalDateTime.now();
@@ -214,8 +221,15 @@ public class TransferenciaDonacionService implements ITransferenciaDonacionServi
 			}
 		}
 		
-		//Persistimos la transferencia:
+		//Mapeamos la transferencia a entidad:
 		TransferenciaDonacion transferenciaEntidad = TransferenciaDonacionMapper.aEntidad(transferencia);
+		
+		//Cargamos los datos restantes de la transferencia:
+		transferenciaEntidad.setUsuarioAlta(presidente);
+		transferenciaEntidad.setUsuarioModificacion(presidente);
+		transferenciaEntidad.setEliminado(false);
+		
+		//Persistimos la transferencia:
 		transferenciaDonacionRepository.save(transferenciaEntidad);
 	}
 	
