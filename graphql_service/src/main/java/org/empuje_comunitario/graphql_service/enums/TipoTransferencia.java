@@ -1,7 +1,6 @@
 package org.empuje_comunitario.graphql_service.enums;
 
-public enum EstadoEliminado {
-	AMBOS,
-	SI,
-	NO
+public enum TipoTransferencia {
+	ENTRANTE,
+	SALIENTE
 }
