@@ -1,0 +1,25 @@
+input FiltroDonacionInput {
+  idFiltroDonacion: ID
+  nombreFiltro: String!
+  fechaHoraAltaDesde: String
+  fechaHoraAltaHasta: String
+  eliminado: String
+}
+
+type FiltroDonacion {
+  idFiltroDonacion: ID!
+  nombreFiltro: String!
+  fechaHoraAltaDesde: String
+  fechaHoraAltaHasta: String
+  eliminado: String
+}
+
+type Query {
+  filtrosDonacionUsuario: [FiltroDonacion]
+}
+
+type Mutation {
+  crearFiltroDonacion(input: FiltroDonacionInput!): FiltroDonacion
+  modificarFiltroDonacion(input: FiltroDonacionInput!): FiltroDonacion
+  eliminarFiltroDonacion(idFiltroDonacion: ID!): Boolean
+}
