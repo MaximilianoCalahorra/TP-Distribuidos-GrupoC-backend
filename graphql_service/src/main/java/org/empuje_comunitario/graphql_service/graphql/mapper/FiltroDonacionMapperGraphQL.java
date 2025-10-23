@@ -17,9 +17,10 @@ public class FiltroDonacionMapperGraphQL {
         
         dto.setIdFiltroDonacion(graphQL.getIdFiltroDonacion());
         dto.setNombreFiltro(graphQL.getNombreFiltro());
+        dto.setCategoria(graphQL.getCategoria());
         dto.setFechaHoraAltaDesde(LocalDateTimeMapper.desdeString(graphQL.getFechaHoraAltaDesde()));
         dto.setFechaHoraAltaHasta(LocalDateTimeMapper.desdeString(graphQL.getFechaHoraAltaHasta()));
-        dto.setEliminado(EstadoEliminadoMapper.aEnum(graphQL.getEliminado()));
+        dto.setEliminado(graphQL.getEliminado());
         
         return dto;
     }
@@ -31,9 +32,10 @@ public class FiltroDonacionMapperGraphQL {
         
         graphQL.setIdFiltroDonacion(dto.getIdFiltroDonacion());
         graphQL.setNombreFiltro(dto.getNombreFiltro());
+        graphQL.setCategoria(dto.getCategoria());
         graphQL.setFechaHoraAltaDesde(LocalDateTimeMapper.aString(dto.getFechaHoraAltaDesde()));
         graphQL.setFechaHoraAltaHasta(LocalDateTimeMapper.aString(dto.getFechaHoraAltaHasta()));
-        graphQL.setEliminado(EstadoEliminadoMapper.aString(dto.getEliminado()));
+        graphQL.setEliminado(dto.getEliminado());
 
         return graphQL;
     }
@@ -49,9 +51,10 @@ public class FiltroDonacionMapperGraphQL {
     	}
     	
     	dto.setNombreFiltro(graphQL.getNombreFiltro());
+    	dto.setCategoria(graphQL.getCategoria());
     	dto.setFechaHoraAltaDesde(LocalDateTimeMapper.desdeString(graphQL.getFechaHoraAltaDesde()));
     	dto.setFechaHoraAltaHasta(LocalDateTimeMapper.desdeString(graphQL.getFechaHoraAltaHasta()));
-    	dto.setEliminado(EstadoEliminadoMapper.aEnum(graphQL.getEliminado()));
+    	dto.setEliminado(graphQL.getEliminado());
     	
     	return dto;
     }
@@ -66,9 +69,10 @@ public class FiltroDonacionMapperGraphQL {
     	}
     	
     	inputGraphQL.setNombreFiltro(dto.getNombreFiltro());
+    	inputGraphQL.setCategoria(dto.getCategoria());
     	inputGraphQL.setFechaHoraAltaDesde(LocalDateTimeMapper.aString(dto.getFechaHoraAltaDesde()));
     	inputGraphQL.setFechaHoraAltaHasta(LocalDateTimeMapper.aString(dto.getFechaHoraAltaHasta()));
-    	inputGraphQL.setEliminado(EstadoEliminadoMapper.aString(dto.getEliminado()));
+    	inputGraphQL.setEliminado(dto.getEliminado());
     	
     	return inputGraphQL;
     }

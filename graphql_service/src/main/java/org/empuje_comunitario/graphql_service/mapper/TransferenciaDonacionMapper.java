@@ -21,6 +21,9 @@ public class TransferenciaDonacionMapper {
         dto.setIdOrganizacionDonante(entidad.getIdOrganizacionDonante());
         dto.setIdOrganizacionReceptora(entidad.getIdOrganizacionReceptora());
         dto.setFechaHora(entidad.getFechaHora());
+        dto.setUsuarioAlta(UsuarioMapper.aMiembroDTO(entidad.getUsuarioAlta()));
+        dto.setUsuarioModificacion(UsuarioMapper.aMiembroDTO(entidad.getUsuarioModificacion()));
+        dto.setEliminado(entidad.isEliminado());
         dto.setItems(
                 entidad.getItems().stream()
                         .map(ItemDonacionMapper::aDTO)

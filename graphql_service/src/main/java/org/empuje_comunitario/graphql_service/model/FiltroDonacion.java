@@ -2,6 +2,7 @@ package org.empuje_comunitario.graphql_service.model;
 
 import java.time.LocalDateTime;
 
+import org.empuje_comunitario.graphql_service.enums.Categoria;
 import org.empuje_comunitario.graphql_service.enums.EstadoEliminado;
 
 import jakarta.persistence.Column;
@@ -41,13 +42,17 @@ public class FiltroDonacion {
 	@Column(name = "nombre_filtro", nullable = false)
 	private String nombreFiltro;
 	
+	@Column(name = "categoria", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private Categoria categoria;
+	
 	@Column(name = "fecha_hora_alta_desde", nullable = true)
 	private LocalDateTime fechaHoraAltaDesde;
 	
 	@Column(name = "fecha_hora_alta_hasta", nullable = true)
 	private LocalDateTime fechaHoraAltaHasta;
 	
-	@Column(name = "eliminado", nullable = false)
+	@Column(name = "eliminado", nullable = true)
     @Enumerated(EnumType.STRING)
     private EstadoEliminado eliminado;
 	

@@ -12,9 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,6 +44,17 @@ public class TransferenciaDonacion {
 	
 	@Column(name = "fecha_hora", nullable = false)
 	private LocalDateTime fechaHora;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_alta", nullable = false)
+    private Usuario usuarioAlta;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_modificacion", nullable = false)
+    private Usuario usuarioModificacion;
+    
+    @Column(name = "eliminado", nullable = false)
+    private boolean eliminado;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_transferencia_donacion")
