@@ -19,10 +19,10 @@ public class EventoExternoMapper {
 
         EventoExternoDTO dto = new EventoExternoDTO();
 
+        dto.setIdEventoOrigen(entidad.getIdEventoOrigen());
         if (entidad.getIdEventoExterno() != null && entidad.getIdEventoExterno() > 0) {
             dto.setIdEventoExterno(entidad.getIdEventoExterno());
         }
-
         dto.setNombre(entidad.getNombre());
         dto.setDescripcion(entidad.getDescripcion());
         dto.setFechaHora(entidad.getFechaHora());
@@ -86,6 +86,7 @@ public class EventoExternoMapper {
         if (dto == null) return null;
 
         return EventoExternoProto.newBuilder()
+                .setIdEventoOrigen(Long.parseLong(dto.getIdEventoOrigen()))
                 .setIdEventoExterno(dto.getIdEventoExterno() != null ? dto.getIdEventoExterno() : 0)
                 .setNombre(dto.getNombre())
                 .setDescripcion(dto.getDescripcion())
