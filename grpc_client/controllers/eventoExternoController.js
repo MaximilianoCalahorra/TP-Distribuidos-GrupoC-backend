@@ -5,10 +5,10 @@ import { handleGrpcResponse } from '../utils/handleGrpcResponse.js';
 //Adherir participante interno:
 export const adherirParticipanteInterno = (req, res) => {
 
-  const { idEventoExterno, idOrganizador , emailParticipante } = req.body;
+  const { idEvento, idOrganizador , emailParticipante } = req.body;
 
   const adhesionParticipanteInternoRequestProto = {
-    idEventoExterno,
+    idEvento,
     idOrganizador,
     emailParticipante
   };
