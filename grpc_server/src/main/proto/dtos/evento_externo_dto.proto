@@ -8,10 +8,11 @@ import "google/protobuf/timestamp.proto";
 import "dtos/usuario_dto.proto";
 
 message EventoExternoProto {
-	int64 idEventoExterno = 1;
-	string nombre = 2;
-	string descripcion = 3;
-	google.protobuf.Timestamp fechaHora = 4;
-	string idOrganizacion = 5;
-	repeated MiembroProto participantesInternos = 6;
+    int64 idEventoOrigen = 1;
+	int64 idEventoExterno = 2;
+	string nombre = 3;
+	string descripcion = 4;
+	google.protobuf.Timestamp fechaHora = 5;
+	string idOrganizacion = 6;
+	repeated MiembroProto participantesInternos = 7;
 }
