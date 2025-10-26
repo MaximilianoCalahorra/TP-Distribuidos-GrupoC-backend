@@ -15,6 +15,7 @@ public class FiltroDonacionMapper {
         FiltroDonacionDTO dto = new FiltroDonacionDTO();
         
         dto.setIdFiltroDonacion(entidad.getIdFiltroDonacion());
+        dto.setCategoria(entidad.getCategoria());
         dto.setNombreFiltro(entidad.getNombreFiltro());
         dto.setFechaHoraAltaDesde(entidad.getFechaHoraAltaDesde());
         dto.setFechaHoraAltaHasta(entidad.getFechaHoraAltaHasta());
@@ -32,7 +33,7 @@ public class FiltroDonacionMapper {
         if (dto.getIdFiltroDonacion() != null && dto.getIdFiltroDonacion() > 0) {
         	entidad.setIdFiltroDonacion(dto.getIdFiltroDonacion());
         }
-        
+        entidad.setCategoria(dto.getCategoria());
         entidad.setNombreFiltro(dto.getNombreFiltro());
         entidad.setFechaHoraAltaDesde(dto.getFechaHoraAltaDesde());
         entidad.setFechaHoraAltaHasta(dto.getFechaHoraAltaHasta());
