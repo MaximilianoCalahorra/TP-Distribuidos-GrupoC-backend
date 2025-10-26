@@ -7,6 +7,7 @@ import org.empuje_comunitario.graphql_service.service.implementations.UserSecuri
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -32,14 +33,16 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    return http
 	            .csrf(AbstractHttpConfigurer::disable)
-	            .cors(AbstractHttpConfigurer::disable)
-	            .authorizeHttpRequests(auth -> auth
-	                    .requestMatchers("/graphiql", "/vendor/**", "/assets/**").permitAll()
-	                    .requestMatchers("/graphql").authenticated()
-	                    .anyRequest().denyAll()
-	            )
-	            .httpBasic(Customizer.withDefaults()) // misma autenticación que en gRPC
-	            .build();
+				.cors(cors -> cors.configurationSource(corsConfigurationSource(null)))
+				.authorizeHttpRequests(auth -> auth
+						// permitir preflight
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers("/graphiql", "/vendor/**", "/assets/**").permitAll()
+						.requestMatchers("/graphql").authenticated()
+						.anyRequest().denyAll()
+				)
+				.httpBasic(Customizer.withDefaults())
+				.build();
 	}
 	
 	@Bean

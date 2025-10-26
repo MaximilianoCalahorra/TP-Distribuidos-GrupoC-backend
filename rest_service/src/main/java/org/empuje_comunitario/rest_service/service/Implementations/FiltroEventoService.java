@@ -51,9 +51,9 @@ public class FiltroEventoService implements IFiltroEventoService {
     	if (!usuarioOpt.isPresent()) {
     		throw new EntityNotFoundException("El usuario con email " + dto.getEmailUsuario() + " no existe.");
     	}
-    	
+
     	//Accedemos al usuario:
-    	Usuario usuarioEntidad = usuarioOpt.get();
+    	Usuario usuarioEntidad = obtenerUsuarioLogueado();
     	
     	//Si existe el usuario, verificamos que el filtro no exista previamente:
     	Optional<FiltroEvento> filtroOpt = filtroPorNombreYUsuario(dto.getNombreFiltro(), usuarioEntidad);
