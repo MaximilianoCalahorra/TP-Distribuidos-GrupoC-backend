@@ -40,10 +40,20 @@ public class FiltroEventoService implements IFiltroEventoService {
 	            .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 	}
 
+	///Guardar filtro:
     @Override
+    @Transactional
     public FiltroEventoDTO guardarFiltro(FiltroEventoDTO dto) {
-        //Buscamos el usuario logueado:
-    	Usuario usuarioEntidad = obtenerUsuarioLogueado();
+    	//Verificamos que el usuario por el que se quiere filtrar exista:
+    	Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(dto.getEmailUsuario());
+    	
+    	//Si no existe...
+    	if (!usuarioOpt.isPresent()) {
+    		throw new EntityNotFoundException("El usuario con email " + dto.getEmailUsuario() + " no existe.");
+    	}
+    	
+    	//Accedemos al usuario:
+    	Usuario usuarioEntidad = usuarioOpt.get();
     	
     	//Si existe el usuario, verificamos que el filtro no exista previamente:
     	Optional<FiltroEvento> filtroOpt = filtroPorNombreYUsuario(dto.getNombreFiltro(), usuarioEntidad);

@@ -11,4 +11,7 @@ public interface IUsuarioRepository extends JpaRepository <Usuario, Long> {
 
     @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.nombreUsuario = :username")
     public Optional<Usuario> findByNombreUsuario(@Param("username") String username);
+    
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.rol WHERE u.email = :email")
+    public Optional<Usuario> findByEmail(@Param("email") String email);
 }
