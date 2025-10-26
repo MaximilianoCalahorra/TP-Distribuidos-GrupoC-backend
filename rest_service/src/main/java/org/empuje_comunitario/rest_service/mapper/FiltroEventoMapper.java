@@ -11,12 +11,13 @@ public class FiltroEventoMapper {
         FiltroEvento entity = new FiltroEvento();
         
         // El ID solo se setea si es una actualización
-        if (dto.getId() != null) {
+        if (dto.getId() != null && dto.getId() > 0) {
              entity.setId(dto.getId());
         }
         
         // Criterios y nombre del filtro
-        entity.setNombreFiltro(dto.getNombreFiltro()); 
+        entity.setNombreFiltro(dto.getNombreFiltro());
+        entity.setEmailUsuario(dto.getEmailUsuario());
         entity.setFechaHoraDesde(dto.getFechaHoraDesde());
         entity.setFechaHoraHasta(dto.getFechaHoraHasta());
         entity.setRepartoDonaciones(dto.getRepartoDonaciones());
@@ -32,8 +33,7 @@ public class FiltroEventoMapper {
         dto.setFechaHoraDesde(entity.getFechaHoraDesde());
         dto.setFechaHoraHasta(entity.getFechaHoraHasta());
         dto.setRepartoDonaciones(entity.getRepartoDonaciones());
-
-        dto.setUsuario(entity.getUsuario());
+        
         return dto;
     }
 }

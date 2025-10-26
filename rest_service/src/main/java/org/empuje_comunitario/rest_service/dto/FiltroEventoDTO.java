@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import org.empuje_comunitario.rest_service.model.Usuario;
+import org.empuje_comunitario.rest_service.enums.RepartoDonacion;
 
 @Data
 @NoArgsConstructor
@@ -18,8 +18,7 @@ public class FiltroEventoDTO {
     private String emailUsuario; 
     private LocalDateTime fechaHoraDesde;
     private LocalDateTime fechaHoraHasta;
-    private String repartoDonaciones;
-    private Usuario usuario;
+    private RepartoDonacion repartoDonaciones;
 
 }
 

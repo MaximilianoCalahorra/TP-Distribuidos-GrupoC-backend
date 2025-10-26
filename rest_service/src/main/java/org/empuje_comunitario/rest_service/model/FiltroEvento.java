@@ -4,8 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+import org.empuje_comunitario.rest_service.enums.RepartoDonacion;
+
 @Entity
-@Table(name = "filtros_eventos")
+@Table(
+		name = "filtros_eventos",
+		uniqueConstraints = {
+		        @UniqueConstraint(columnNames = {"nombre_filtro", "id_usuario"})
+		}
+)
 @Data 
 public class FiltroEvento {
 
@@ -29,9 +36,9 @@ public class FiltroEvento {
     @Column(columnDefinition = "DATETIME(6)")
     private LocalDateTime fechaHoraHasta;
 
-    // Campo para el criterio 'SI', 'NO' o 'AMBOS'
-    @Column(length = 10)
-    private String repartoDonaciones; 
+    @Column(name = "reparto_donaciones", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private RepartoDonacion repartoDonaciones;
     
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
